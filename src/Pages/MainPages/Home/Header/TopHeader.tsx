@@ -2,6 +2,7 @@ import { Input } from "antd";
 import { CiUser } from "react-icons/ci";
 import Cart from "../../../../Components/Cart";
 import Wishlist from "../../../../Components/Wishlist";
+import { Link } from "react-router-dom";
 
 const { Search } = Input;
 const TopHeader = () => {
@@ -26,6 +27,7 @@ const TopHeader = () => {
           />
         </div>
         <div className="col-span-1 flex gap-4 justify-between items-center">
+          <Link to="/login">
           <div className="flex justify-between items-center gap-2">
             <CiUser size={30} />
             <div className="">
@@ -33,6 +35,7 @@ const TopHeader = () => {
               <h4 className="text-sm font-semibold">Account</h4>
             </div>
           </div>
+          </Link>
           <div className="flex justify-between items-center gap-2">
        <Wishlist/>
           </div>
