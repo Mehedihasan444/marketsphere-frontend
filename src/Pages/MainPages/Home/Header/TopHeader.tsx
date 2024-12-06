@@ -6,7 +6,7 @@ import Wishlist from "../../../../Components/Wishlist";
 const { Search } = Input;
 const TopHeader = () => {
   return (
-    <div className="bg-white lg:mx-16 px-4 py-2">
+    <div className="bg-white lg:mx-16 px-4 py-5">
       <div className="grid  grid-cols-5 gap-4 justify-between items-center ">
         <div className="col-span-1 flex items-center">
           <img

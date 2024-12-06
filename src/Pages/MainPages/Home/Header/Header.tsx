@@ -3,7 +3,7 @@ import TopHeader from "./TopHeader";
 
 const Header = () => {
     return (
-        <div className="my-4 space-y-2  ">
+        <div className="mb-4 space-y-2  ">
             <TopHeader/>
             <Navbar/>
         </div>
