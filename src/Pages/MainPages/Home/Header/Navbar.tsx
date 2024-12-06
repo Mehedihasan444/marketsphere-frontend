@@ -8,51 +8,15 @@ import { RiDiscountPercentFill } from "react-icons/ri";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
-// const items: MenuItem[] = [
-//   {
-//     label: "Navigation One",
-//     key: "mail",
-//   },
-//   {
-//     label: "Navigation Two",
-//     key: "app",
-//     disabled: true,
-//   },
-//   {
-//     label: "Navigation Three - Submenu",
-//     key: "SubMenu",
-//     children: [
-//       {
-//         type: "group",
-//         label: "Item 1",
-//         children: [
-//           { label: "Option 1", key: "setting:1" },
-//           { label: "Option 2", key: "setting:2" },
-//         ],
-//       },
-//       {
-//         type: "group",
-//         label: "Item 2",
-//         children: [
-//           { label: "Option 3", key: "setting:3" },
-//           { label: "Option 4", key: "setting:4" },
-//         ],
-//       },
-//     ],
-//   },
-//   {
-//     key: "alipay",
-//     label: (
-//       <a href="https://ant.design" target="_blank" rel="noopener noreferrer">
-//         Navigation Four - Link
-//       </a>
-//     ),
-//   },
-// ];
+
 const items: MenuItem[] = [
     {
       label: "Home",
       key: "home",
+    },
+    {
+      label:  (<a href="/products" >Products</a>) ,
+      key: "products",
     },
     {
       label: "Categories",
@@ -99,7 +63,7 @@ const items: MenuItem[] = [
       key: "deals",
     },
     {
-      label: "About Us",
+      label: (<a href="/about" >About Us</a>) ,
       key: "about",
     },
     {

@@ -4,6 +4,7 @@ import { Card, Rate, Typography, Tooltip } from "antd";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { FaRegHeart } from "react-icons/fa";
 import { IoCartOutline, IoEyeOutline, IoLayersOutline } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const { Meta } = Card;
 const { Text } = Typography;
@@ -43,7 +44,9 @@ const ProductCard: React.FC<{ product }> = ({ product }) => {
           <FaRegHeart className="" style={{ fontSize: 16, color: "#1890ff" }} />
         </Tooltip>
         <Tooltip title="View Details">
+          <Link to={`/products/${product._id}`} style={{ color: "#1890ff" }}>
           <IoEyeOutline style={{ fontSize: 18, color: "#1890ff" }} />
+          </Link>
         </Tooltip>
         <Tooltip title="Compare">
           <IoLayersOutline style={{ fontSize: 18, color: "#1890ff" }} />

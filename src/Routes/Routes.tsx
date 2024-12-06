@@ -4,17 +4,29 @@ import Dashboard from "../Layout/Dashboard";
 import SuspenseWrapper from "../Utils/SuspenseWrapper";
 import Login from "../Pages/AuthenticationPages/Login/Login";
 import Register from "../Pages/AuthenticationPages/Register/Register";
+import ProductDetails from "../Pages/MainPages/ProductDetails/ProductDetails";
+import Products from "../Pages/MainPages/Products/Products";
+// import App from "../App";
 
 // Router configuration
 const router = createBrowserRouter([
   {
     path: "/",
-    errorElement: <div>404 - Page Not Found</div>,
+    // element: <App />,
     element: <SuspenseWrapper />,
+    errorElement: <div>404 - Page Not Found</div>,
     children: [
       {
-        path: "/",
+       path: "/",
         element: <Home />,
+      },
+      {
+        path: "/products",
+        element: <Products />,
+      },
+      {
+        path: "/products/:id",
+        element: <ProductDetails />,
       },
     ],
   },
@@ -34,6 +46,6 @@ const router = createBrowserRouter([
     element: <Register />,
     errorElement: <div>404-Page Not Found</div>,
   },
-]);
+],);
 
 export default router;
