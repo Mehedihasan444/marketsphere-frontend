@@ -1,6 +1,7 @@
 import BannerCarousal from "./BannerCarousal";
 import BannerCategoryMenu from "./BannerCategoryMenu";
 
+
 const Style1 = {
   backgroundImage:
     "url(https://demo-uminex.myshopify.com/cdn/shop/files/3_1.jpg?v=1681466981&width=2000)",
