@@ -1,12 +1,11 @@
-import { Button } from "antd";
+import Banner from "./Banner";
 
 const Home = () => {
-    return (
-        <div>
-            <h1 className="text-4xl text-center text-purple-500 font-bold">Welcome</h1>
-            <Button type="primary">Click Me</Button>
-        </div>
-    );
+  return (
+    <div className="max-w-8xl mx-auto bg-neutral-100 min-h-screen">
+      <Banner />
+    </div>
+  );
 };
 
 export default Home;
