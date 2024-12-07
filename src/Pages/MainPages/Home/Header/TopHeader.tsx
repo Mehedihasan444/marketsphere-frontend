@@ -29,7 +29,7 @@ const TopHeader = () => {
         <div className="col-span-1 flex gap-4 justify-between items-center">
           <Link to="/login">
           <div className="flex justify-between items-center gap-2">
-            <CiUser size={30} />
+            <CiUser size={30} className="hover:text-blue-500"/>
             <div className="">
               <h4 className="text-xs">Login</h4>
               <h4 className="text-sm font-semibold">Account</h4>

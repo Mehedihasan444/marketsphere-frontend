@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Filters from "./FilterSideber/FilterSideber";
 import ProductCard from "../../../Components/Shared/ProductCard";
-import { Select } from "antd";
+import { Pagination, Select } from "antd";
 
 const Products = () => {
   const [filters, setFilters] = useState({
@@ -174,6 +174,9 @@ const Products = () => {
               <p className="text-gray-500 col-span-3">No products found.</p>
             )}
           </div>
+
+          {/* pagination */}
+          <Pagination align="end" defaultCurrent={1} total={50} />
         </div>
       </div>
     </div>
