@@ -23,23 +23,27 @@ type FieldType = {
   remember?: boolean;
 };
 
+type TJwtPayload = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+};
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const [login] = useLoginMutation();
   const navigate = useNavigate();
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
-    
-
     const userInfo = {
       email: values.email as string,
       password: values.password as string,
     };
     try {
       const res = await login(userInfo);
-      console.log(res.data.success)
       if (res && res.data.success) {
-        const user = verifyToken(res.data.data.accessToken) as any;
+        const user = verifyToken(res.data.data.accessToken) as TJwtPayload;
         if (!user) {
           message.open({
             type: "error",

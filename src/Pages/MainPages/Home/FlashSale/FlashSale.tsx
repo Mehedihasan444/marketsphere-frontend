@@ -116,6 +116,8 @@ const FlashSale = () => {
             color="primary"
             size="large"
             type="primary"
+            variant="outlined"
+            shape="default"
             className="border-blue-500"
           >
             SHOP ALL PRODUCTS
