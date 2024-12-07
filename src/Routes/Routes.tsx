@@ -9,14 +9,10 @@ import NotFound from "../Components/NotFound";
 import Shop from "../Pages/MainPages/Shop/Shop";
 import Dashboard from "../Pages/DashboardPages/Dashboard";
 import CustomerHome from "../Pages/DashboardPages/CustomerPages/CustomerHome/CustomerHome";
+import UserManagement from "../Pages/DashboardPages/AdminPages/UserManagement";
 
 
-const customer=[
-  {
-    path: "/dashboard/home",
-    element: <CustomerHome/>
-  }
-]
+
 // Router configuration
 const router = createBrowserRouter([
   {
@@ -43,10 +39,41 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/dashboard",
+    path: "/dashboard/customer",
     errorElement: <NotFound/>,
     element: <Dashboard />,
-    children: customer,
+    children: [
+      {
+        path: "/dashboard/customer/home",
+        element: <CustomerHome/>
+      }
+    ],
+  },
+  {
+    path: "/dashboard/vendor",
+    errorElement: <NotFound/>,
+    element: <Dashboard />,
+    children: [
+      {
+        path: "/dashboard/vendor/home",
+        element: <CustomerHome/>
+      }
+    ],
+  },
+  {
+    path: "/dashboard/admin",
+    errorElement: <NotFound/>,
+    element: <Dashboard />,
+    children: [
+      {
+        path: "/dashboard/admin/home",
+        element: <CustomerHome/>
+      },
+      {
+        path: "/dashboard/admin/user-management",
+        element: <UserManagement/>
+      },
+    ],
   },
   {
     path: "/login",

@@ -17,7 +17,7 @@ const baseQueryWithReauth: BaseQueryFn<
     baseUrl: import.meta.env.VITE_SERVER_URL,
     credentials: "include",
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).auth.access_token;
+      const token = (getState() as RootState).auth.token;
       if (token) {
         headers.set("authorization", token);
       }

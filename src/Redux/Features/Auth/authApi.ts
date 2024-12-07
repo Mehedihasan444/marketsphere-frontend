@@ -1,10 +1,5 @@
 import { baseApi } from "../../Api/baseApi";
 
-interface User {
-    id: string;
-    name: string;
-    email: string;
-}
 
 
 const authApi = baseApi.injectEndpoints({
@@ -15,10 +10,6 @@ const authApi = baseApi.injectEndpoints({
                 method: 'POST',
                 body: credentials,
             }),
-        }),
-        // ! need to fix
-        getUser: builder.query<User, void>({
-            query: () => 'auth/user',
         }),
         register: builder.mutation({
             query: (credentials) => ({
@@ -31,5 +22,5 @@ const authApi = baseApi.injectEndpoints({
     overrideExisting: false,
 });
 
-export const { useLoginMutation, useGetUserQuery, useRegisterMutation } = authApi;
+export const { useLoginMutation, useRegisterMutation } = authApi;
 export { authApi };

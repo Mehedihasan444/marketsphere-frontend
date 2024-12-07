@@ -1,13 +1,12 @@
 import { Outlet } from "react-router-dom";
 import DashboardSidebar from "../Components/DashboardSidebar";
-import { Avatar, Button, Input } from "antd";
+import { Avatar, Button } from "antd";
 import { useState } from "react";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-const { Search } = Input;
 const DashboardLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
 
@@ -32,19 +31,12 @@ const DashboardLayout = () => {
               {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </Button>
           </div>
-          <div className="flex justify-center items-center">
-            <Search
-              placeholder="input search text"
-              enterButton="Search"
-              size="large"
-              loading
-              // className="w-2/3"
-            />
-          </div>
+         
           <div className="flex justify-between items-center gap-2">
             <Avatar size="large" icon={<UserOutlined />} />
           </div>
         </div>
+        <hr />
         {/* main content */}
         <div className="bg-neutral-100 min-h-[calc(100vh-64px)]">
           <Outlet />
