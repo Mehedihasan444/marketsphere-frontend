@@ -6,6 +6,7 @@ import Login from "../Pages/AuthenticationPages/Login/Login";
 import Register from "../Pages/AuthenticationPages/Register/Register";
 import ProductDetails from "../Pages/MainPages/ProductDetails/ProductDetails";
 import Products from "../Pages/MainPages/Products/Products";
+import NotFound from "../Components/NotFound";
 // import App from "../App";
 
 // Router configuration
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
     path: "/",
     // element: <App />,
     element: <SuspenseWrapper />,
-    errorElement: <div>404 - Page Not Found</div>,
+    errorElement: <NotFound/>,
     children: [
       {
        path: "/",
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    errorElement: <div>404 - Page Not Found</div>,
+    errorElement: <NotFound/>,
     element: <Dashboard />,
     children: [],
   },

@@ -1,6 +1,14 @@
+import {   Spin } from 'antd';
 
 const Loader = () => {
-    return <div>Loading...</div>;
-  };
+ 
 
+  return (
+
+    <div className='h-screen flex justify-center items-center ' >
+
+      <Spin  size="large" />
+    </div>
+  );
+};
   export default Loader;

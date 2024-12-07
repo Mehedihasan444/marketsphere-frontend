@@ -126,10 +126,10 @@ const Products = () => {
   );
 
   return (
-    <div className="bg-neutral-100 ">
-      <div className="flex p-6 space-x-4 max-w-8xl mx-auto lg:mx-16">
+    <div className="max-w-8xl mx-auto bg-neutral-100 ">
+      <div className="flex  space-x-4  lg:mx-16">
         {/* Filters Sidebar */}
-        <aside className="w-1/4">
+        <aside className="w-1/4 ">
           <Filters filters={filters} setFilters={setFilters} />
         </aside>
         <div className="flex-1">

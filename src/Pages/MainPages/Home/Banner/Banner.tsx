@@ -60,7 +60,7 @@ const items = [
 ];
 const Banner = () => {
   return (
-    <div className="grid grid-cols-5 grid-rows-3 gap-4 lg:mx-16 h-[75vh]">
+    <div className="grid grid-cols-5 grid-rows-3 gap-4 lg:mx-16 h-[75vh] ">
       {/* Vertical Menu */}
       <div className="col-span-1 row-span-3">
         <BannerCategoryMenu />

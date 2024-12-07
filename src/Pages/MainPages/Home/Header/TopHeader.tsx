@@ -1,6 +1,6 @@
 import { Input } from "antd";
 import { CiUser } from "react-icons/ci";
-import Cart from "../../../../Components/Cart";
+import Cart from "../../Cart/Cart";
 import Wishlist from "../../../../Components/Wishlist";
 import { Link } from "react-router-dom";
 
