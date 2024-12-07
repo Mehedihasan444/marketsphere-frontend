@@ -7,6 +7,7 @@ import Register from "../Pages/AuthenticationPages/Register/Register";
 import ProductDetails from "../Pages/MainPages/ProductDetails/ProductDetails";
 import Products from "../Pages/MainPages/Products/Products";
 import NotFound from "../Components/NotFound";
+import Shop from "../Pages/MainPages/Shop/Shop";
 // import App from "../App";
 
 // Router configuration
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/products",
         element: <Products />,
+      },
+      {
+        path: "/shop",
+        element: <Shop />,
       },
       {
         path: "/products/:id",

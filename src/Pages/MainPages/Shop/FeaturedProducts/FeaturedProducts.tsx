@@ -1,15 +1,7 @@
-import { useState } from "react";
-import Filters from "./FilterSideber/FilterSideber";
-import ProductCard from "../../../Components/Shared/ProductCard";
-import { Pagination, Select } from "antd";
+import ProductCard from "../../../../Components/Shared/ProductCard";
 
-const Products = () => {
-  const [filters, setFilters] = useState({
-    priceRange: [0, 500000],
-    categories: [],
-  });
-
-  const allProducts = [
+const FeaturedProducts = () => {
+  const products = [
     {
       id: "1",
       name: "Smartphone Pro Max",
@@ -112,75 +104,21 @@ const Products = () => {
       updatedAt: "2024-12-06T00:00:00.000Z",
     },
   ];
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
-
-  // Filter Logic
-  const filteredProducts = allProducts.filter(
-    (product) =>
-      product.price >= filters.priceRange[0] &&
-      product.price <= filters.priceRange[1] &&
-      (filters.categories.length === 0 ||
-        filters.categories.includes(product.category))
-  );
-
   return (
-    <div className="max-w-8xl mx-auto bg-neutral-100 ">
-      <div className="flex  space-x-4  lg:mx-16">
-        {/* Filters Sidebar */}
-        <aside className="w-1/4 ">
-          <Filters filters={filters} setFilters={setFilters} />
-        </aside>
-        <div className="flex-1 pb-4">
-          <div className="flex justify-between items-center gap-4 bg-white p-4 mb-4 w-full">
-            <div className="font-semibold">SearchTerm</div>
-            <div className="flex gap-4">
-              <div className="flex gap-2 items-center">
-                <span className="font-semibold text-neutral-600">Shows:</span>
-                <Select
-                  defaultValue="20"
-                  style={{ width: 120 }}
-                  onChange={handleChange}
-                  options={[
-                    { value: 20, label: "20" },
-                    { value: 30, label: "30" },
-                    { value: 40, label: "40" },
-                  ]}
-                />
-              </div>
-              <div className="flex gap-2 items-center">
-                <span className="font-semibold text-neutral-600">Sort By:</span>
-                <Select
-                  defaultValue="Default"
-                  style={{ width: 120 }}
-                  onChange={handleChange}
-                  options={[
-                    { value: " ", label: "Default" },
-                    { value: "-price", label: "Price (High > Low)" },
-                    { value: "price", label: "Price (Low > High)" },
-                  ]}
-                />
-              </div>
-            </div>
-          </div>
-          {/* Product Grid */}
-          <div className="grid grid-cols-4 gap-6 ">
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map((product, index) => (
-                <ProductCard key={index} product={product} />
-              ))
-            ) : (
-              <p className="text-gray-500 col-span-3">No products found.</p>
-            )}
-          </div>
-
-          {/* pagination */}
-          <Pagination align="end" defaultCurrent={1} total={50} />
-        </div>
+    <div className="bg-white  p-4 mt-4">
+      {/* filter */}
+      <div className="py-4">
+        <h2 className="text-xl font-semibold pb-2">Featured </h2>
+        <hr />
+      </div>
+      <div className="flex gap-2 items-center">
+        {/* product list */}
+        {products.map((product, index) => (
+          <ProductCard product={product} key={index} />
+        ))}
       </div>
     </div>
   );
 };
 
-export default Products;
+export default FeaturedProducts;
