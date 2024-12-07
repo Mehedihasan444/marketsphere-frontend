@@ -1,24 +1,84 @@
 import React from "react";
 import type { FormProps } from "antd";
-import { Button, Checkbox, Form, Input, Typography } from "antd";
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  message,
+  Typography,
+} from "antd";
+import { useAppDispatch } from "../../../Redux/hook";
+import { useLoginMutation } from "../../../Redux/Features/Auth/authApi";
+import { useNavigate } from "react-router-dom";
+import { verifyToken } from "../../../Utils/verifyToken";
+import { setUser } from "../../../Redux/Features/Auth/authSlice";
 
 const { Title, Text } = Typography;
 
 type FieldType = {
-  username?: string;
+  email?: string;
   password?: string;
   remember?: boolean;
 };
 
-const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-  console.log("Success:", values);
-};
-
-const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
-
 const Login: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const [login] = useLoginMutation();
+  const navigate = useNavigate();
+
+  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+    
+
+    const userInfo = {
+      email: values.email as string,
+      password: values.password as string,
+    };
+    try {
+      const res = await login(userInfo);
+      console.log(res.data.success)
+      if (res && res.data.success) {
+        const user = verifyToken(res.data.data.accessToken) as any;
+        if (!user) {
+          message.open({
+            type: "error",
+            content: "Login Failed!",
+          });
+          return;
+        }
+        dispatch(setUser({ user: user, token: res.data.data.accessToken }));
+        message.open({
+          type: "success",
+          content: `Logged in as ${user?.name as string}`,
+        });
+        navigate(`/`);
+      } else if (res.error) {
+        message.open({
+          type: "error",
+          content: res.error.data.message as string,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      message.open({
+        type: "error",
+        content: "Login Failed!",
+      });
+    }
+  };
+
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+    errorInfo
+  ) => {
+    console.log("Failed:", errorInfo);
+    <Alert
+      message={errorInfo.errorFields[0].errors[0]}
+      type="error"
+      showIcon
+    />;
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
       <div className="p-8 bg-white shadow-lg rounded-lg max-w-sm w-full">
@@ -38,22 +98,18 @@ const Login: React.FC = () => {
         >
           {/* Username Field */}
           <Form.Item<FieldType>
-            label="Username"
-            name="username"
-            rules={[
-              { required: true, message: "Please input your username!" },
-            ]}
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: "Please input your email!" }]}
           >
-            <Input placeholder="Enter your username" />
+            <Input placeholder="Enter your email" />
           </Form.Item>
 
           {/* Password Field */}
           <Form.Item<FieldType>
             label="Password"
             name="password"
-            rules={[
-              { required: true, message: "Please input your password!" },
-            ]}
+            rules={[{ required: true, message: "Please input your password!" }]}
           >
             <Input.Password placeholder="Enter your password" />
           </Form.Item>

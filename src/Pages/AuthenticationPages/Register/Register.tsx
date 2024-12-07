@@ -1,25 +1,56 @@
 import React from "react";
 import type { FormProps } from "antd";
 import { Button, Form, Input, Typography } from "antd";
-
+import {  useRegisterMutation } from "../../../Redux/Features/Auth/authApi";
+import { message } from 'antd';
+import { useNavigate } from "react-router-dom";
 const { Title, Text } = Typography;
 
 type FieldType = {
-  username?: string;
+  name?: string;
   email?: string;
   password?: string;
   confirmPassword?: string;
 };
 
-const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-  console.log("Success:", values);
-};
-
-const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
-
 const Register: React.FC = () => {
+  const [register] = useRegisterMutation();
+  const navigate = useNavigate();
+  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+  
+    const userInfo = {
+      name: values.name as string,
+      email: values.email as string,
+      password: values.password as string,
+    };
+    try {
+      const res = await register(userInfo);
+      if (res && res?.data?.success) {
+        message.open({
+          type: 'success',
+          content: 'Registration Completed!',
+        });
+        navigate('/login', { replace: true });
+      } else if ('error' in res) {
+        const error = res.error;
+        message.open({
+          type: 'error',
+          content: `${error?.data?.message}`,
+        });
+      }
+    } catch (error) {
+      message.open({
+        type: 'error',
+        content: 'Registration Failed!',
+      });
+      console.log(error);
+    }
+  };
+  
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
       <div className="p-8 bg-white shadow-lg rounded-lg max-w-sm w-full">
@@ -39,14 +70,14 @@ const Register: React.FC = () => {
         >
           {/* Username Field */}
           <Form.Item<FieldType>
-            label="Username"
-            name="username"
+            label="Name"
+            name="name"
             rules={[
-              { required: true, message: "Please input your username!" },
-              { min: 3, message: "Username must be at least 3 characters." },
+              { required: true, message: "Please input your name!" },
+              { min: 3, message: "name must be at least 3 characters." },
             ]}
           >
-            <Input placeholder="Enter your username" />
+            <Input placeholder="Enter your name" />
           </Form.Item>
 
           {/* Email Field */}

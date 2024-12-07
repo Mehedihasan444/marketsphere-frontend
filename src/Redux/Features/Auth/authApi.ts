@@ -6,32 +6,12 @@ interface User {
     email: string;
 }
 
-interface LoginResponse {
-    token: string;
-    user: User;
-}
-
-interface LoginRequest {
-    email: string;
-    password: string;
-}
-
-interface RegisterRequest {
-    name: string;
-    email: string;
-    password: string;
-}
-
-interface RegisterResponse {
-    token: string;
-    user: User;
-}
 
 const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        login: builder.mutation<LoginResponse, LoginRequest>({
+        login: builder.mutation({
             query: (credentials) => ({
-                url: 'auth/login',
+                url: '/auth/login',
                 method: 'POST',
                 body: credentials,
             }),
@@ -40,9 +20,9 @@ const authApi = baseApi.injectEndpoints({
         getUser: builder.query<User, void>({
             query: () => 'auth/user',
         }),
-        register: builder.mutation<RegisterResponse, RegisterRequest>({
+        register: builder.mutation({
             query: (credentials) => ({
-                url: 'auth/register',
+                url: '/auth/register',
                 method: 'POST',
                 body: credentials,
             }),
