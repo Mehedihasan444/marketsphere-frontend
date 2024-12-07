@@ -16,6 +16,17 @@ interface LoginRequest {
     password: string;
 }
 
+interface RegisterRequest {
+    name: string;
+    email: string;
+    password: string;
+}
+
+interface RegisterResponse {
+    token: string;
+    user: User;
+}
+
 const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         login: builder.mutation<LoginResponse, LoginRequest>({
@@ -25,12 +36,20 @@ const authApi = baseApi.injectEndpoints({
                 body: credentials,
             }),
         }),
+        // ! need to fix
         getUser: builder.query<User, void>({
             query: () => 'auth/user',
+        }),
+        register: builder.mutation<RegisterResponse, RegisterRequest>({
+            query: (credentials) => ({
+                url: 'auth/register',
+                method: 'POST',
+                body: credentials,
+            }),
         }),
     }),
     overrideExisting: false,
 });
 
-export const { useLoginMutation, useGetUserQuery } = authApi;
+export const { useLoginMutation, useGetUserQuery, useRegisterMutation } = authApi;
 export { authApi };
