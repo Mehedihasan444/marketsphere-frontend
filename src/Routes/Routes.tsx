@@ -9,7 +9,12 @@ import NotFound from "../Components/NotFound";
 import Shop from "../Pages/MainPages/Shop/Shop";
 import Dashboard from "../Pages/DashboardPages/Dashboard";
 import CustomerHome from "../Pages/DashboardPages/CustomerPages/CustomerHome/CustomerHome";
-import UserManagement from "../Pages/DashboardPages/AdminPages/UserManagement";
+import UserManagement from "../Pages/DashboardPages/AdminPages/UserManagement/UserManagement";
+import VendorManagement from "../Pages/DashboardPages/AdminPages/VendorManagement/VendorManagement";
+import CategoryManagement from "../Pages/DashboardPages/AdminPages/CategoryManagement/CategoryManagement";
+import MonitorTransactions from "../Pages/DashboardPages/AdminPages/MonitorTransactions/MonitorTransactions";
+import ReviewActivities from "../Pages/DashboardPages/AdminPages/ReviewActivities/ReviewActivities";
+import BlacklistShop from "../Pages/DashboardPages/AdminPages/BlacklistShop/BlacklistShop";
 
 
 
@@ -72,6 +77,26 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/admin/user-management",
         element: <UserManagement/>
+      },
+      {
+        path: "/dashboard/admin/vendor-management",
+        element: <VendorManagement/>
+      },
+      {
+        path: "/dashboard/admin/category-management",
+        element: <CategoryManagement/>
+      },
+      {
+        path: "/dashboard/admin/monitor-transactions",
+        element: <MonitorTransactions/>
+      },
+      {
+        path: "/dashboard/admin/review-activities",
+        element: <ReviewActivities/>
+      },
+      {
+        path: "/dashboard/admin/blacklist-shop",
+        element: <BlacklistShop/>
       },
     ],
   },

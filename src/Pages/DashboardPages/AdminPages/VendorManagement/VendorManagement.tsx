@@ -17,7 +17,7 @@ import {
     useDeleteUserMutation,
   useGetAllUsersQuery,
   useUpdateUserMutation,
-} from "../../../Redux/Features/User/userApi";
+} from "../../../../Redux/Features/User/userApi";
 
 const { Option } = Select;
 
@@ -32,7 +32,7 @@ interface DataType {
   updatedAt: string;
 }
 
-const UserManagement: React.FC = () => {
+const VendorManagement: React.FC = () => {
   const [searchEmail, setSearchEmail] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -94,29 +94,7 @@ const UserManagement: React.FC = () => {
     }
   };
 
-  // Update user role
-  const onRoleUpdate = async (UserId: string, newRole: string) => {
-    try {
-      const res = await updateUser({ UserId, role: newRole });
-      if (res.data.success) {
-        message.open({
-          type: "success",
-          content: `User role updated successfully!`,
-        });
-      } else if (res.error) {
-        message.open({
-          type: "error",
-          content: res.error.data.message,
-        });
-      }
-    } catch (error) {
-      console.log(error);
-      message.open({
-        type: "error",
-        content: "Failed to update user role.",
-      });
-    }
-  };
+ 
   // Delete user 
   const handleDelete = async (UserId: string) => {
     try {
@@ -170,21 +148,14 @@ const UserManagement: React.FC = () => {
       ),
     },
     {
-      title: "Role",
-      dataIndex: "role",
-      key: "role",
-      render: (role, record) => (
-        <Select
-          value={role}
-          onChange={(value) => onRoleUpdate(record.id, value)}
-          style={{ width: "120px" }}
-          disabled={isUpdating}
-        >
-          <Option value="ADMIN">Admin</Option>
-          <Option value="VENDOR">Vendor</Option>
-          <Option value="CUSTOMER">Customer</Option>
-        </Select>
-      ),
+      title: "Phone",
+      dataIndex: "phone",
+      key: "phone",
+    },
+    {
+      title: "Shop Name",
+      dataIndex: "shopName",
+      key: "shopName",
     },
     {
       title: "Created At",
@@ -201,13 +172,15 @@ const UserManagement: React.FC = () => {
         key: 'action',
         render: (_, record) => (
           <Space size="middle">
-            <Button danger onClick={()=>handleDelete(record.id)}>Delete</Button>
+            <Button danger onClick={()=>handleDelete(record.id)} loading={isDeleting}>Delete</Button>
           </Space>
         ),
       },
   ];
   if (isLoading) {
-    return <Spin tip="Loading..." />;
+    return <div className="flex justify-center items-center h-screen w-full">
+    <Spin tip="Loading..." />
+    </div>;;
   }
 
   if (error) {
@@ -294,4 +267,4 @@ const UserManagement: React.FC = () => {
   );
 };
 
-export default UserManagement;
+export default VendorManagement;

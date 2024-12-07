@@ -23,13 +23,15 @@ import {
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
-import {  useAppDispatch, useAppSelector } from "../Redux/hook";
+import { useAppDispatch, useAppSelector } from "../Redux/hook";
 import { logout } from "../Redux/Features/Auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 type MenuItem = Required<MenuProps>["items"][number];
 const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
   const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
+const navigate = useNavigate();
   const Customers: MenuItem[] = [
     { key: "1", icon: <HomeOutlined />, label: "Home" }, // Browse Products
     { key: "2", icon: <SearchOutlined />, label: "Advanced Search" }, // Advanced Search/Filters
@@ -61,7 +63,11 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
         { key: "14", label: "FAQs" },
       ],
     },
-    { key: "15", icon: <LogoutOutlined />, label: <button   onClick={() => dispatch(logout())}>Logout</button> },
+    {
+      key: "15",
+      icon: <LogoutOutlined />,
+      label: <button onClick={() => dispatch(logout())}>Logout</button>,
+    },
   ];
   const Vendors: MenuItem[] = [
     {
@@ -89,40 +95,51 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
       icon: <StarOutlined />,
       label: "Customer Reviews",
     },
-    { key: "6", icon: <LogoutOutlined />, label: <button   onClick={() => dispatch(logout())}>Logout</button> },
+    {
+      key: "6",
+      icon: <LogoutOutlined />,
+      label: <button onClick={() => dispatch(logout())}>Logout</button>,
+    },
   ];
   const Admins: MenuItem[] = [
     {
       key: "1",
       icon: <TeamOutlined />,
-      label: <a href="/dashboard/admin/user-management" className="">Manage Users</a> ,
+      label: <button onClick={()=>navigate("/dashboard/admin/user-management")}>Manage Users </button>,
     },
     {
       key: "2",
       icon: <ShopOutlined />,
-      label: "Manage Vendors",
+      label: <button onClick={()=>navigate("/dashboard/admin/vendor-management")}>Manage Vendors</button>,
     },
     {
       key: "3",
       icon: <AppstoreAddOutlined />,
-      label: "Manage Categories",
+      label: (
+        <button onClick={()=>navigate("/dashboard/admin/category-management")}>Manage Categories</button>
+      ),
     },
     {
       key: "4",
       icon: <DollarOutlined />,
-      label: "Monitor Transactions",
+      label: <button onClick={()=>navigate("/dashboard/admin/monitor-transactions")}>Monitor Transactions</button>
     },
     {
       key: "5",
       icon: <EyeOutlined />,
-      label: "Review Activities",
+      label: <button onClick={()=>navigate("/dashboard/admin/review-activities")}>Review Activities</button>
     },
     {
       key: "6",
       icon: <WarningOutlined />,
-      label: "Blacklist Shops",
+      label: <button onClick={()=>navigate("/dashboard/admin/blacklist-shop")}>Blacklist Shops</button>
+   
     },
-    { key: "7", icon: <LogoutOutlined />, label: <button   onClick={() => dispatch(logout())}>Logout</button> },
+    {
+      key: "7",
+      icon: <LogoutOutlined />,
+      label: <button onClick={() => dispatch(logout())}>Logout</button>,
+    },
   ];
 
   const items =
@@ -141,7 +158,9 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
         transition: "width 0.3s ease",
       }}
       className="h-screen "
+    
     >
+
       {/* Sidebar Menu */}
       <Menu
         defaultSelectedKeys={["1"]}
@@ -150,6 +169,7 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
         inlineCollapsed={collapsed}
         items={items}
         className="h-full pt-10"
+        
       />
     </div>
   );
