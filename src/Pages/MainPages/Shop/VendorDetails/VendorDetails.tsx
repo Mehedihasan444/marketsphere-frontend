@@ -41,7 +41,7 @@ const VendorDetails = ({ shop }) => {
   };
 
   return (
-    <div className="bg-white shadow p-6 rounded-lg mb-8">
+    <div className="bg-white shadow p-6 rounded-lg mb-4">
       {/* Breadcrumb */}
       <div className="mb-4">
         <DynamicBreadcrumb items={breadcrumbItems} />
