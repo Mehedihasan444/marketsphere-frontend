@@ -60,7 +60,7 @@ const Login: React.FC = () => {
       } else if (res.error) {
         message.open({
           type: "error",
-          content: res.error.data.message as string,
+          content: res?.error?.data?.message as string,
         });
       }
     } catch (error) {

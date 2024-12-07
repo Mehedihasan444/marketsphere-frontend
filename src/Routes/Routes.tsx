@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "../Pages/MainPages/Home/Home";
-import Dashboard from "../Layout/Dashboard";
 import SuspenseWrapper from "../Utils/SuspenseWrapper";
 import Login from "../Pages/AuthenticationPages/Login/Login";
 import Register from "../Pages/AuthenticationPages/Register/Register";
@@ -8,13 +7,20 @@ import ProductDetails from "../Pages/MainPages/ProductDetails/ProductDetails";
 import Products from "../Pages/MainPages/Products/Products";
 import NotFound from "../Components/NotFound";
 import Shop from "../Pages/MainPages/Shop/Shop";
-// import App from "../App";
+import Dashboard from "../Pages/DashboardPages/Dashboard";
+import CustomerHome from "../Pages/DashboardPages/CustomerPages/CustomerHome/CustomerHome";
 
+
+const customer=[
+  {
+    path: "/dashboard/home",
+    element: <CustomerHome/>
+  }
+]
 // Router configuration
 const router = createBrowserRouter([
   {
     path: "/",
-    // element: <App />,
     element: <SuspenseWrapper />,
     errorElement: <NotFound/>,
     children: [
@@ -40,7 +46,7 @@ const router = createBrowserRouter([
     path: "/dashboard",
     errorElement: <NotFound/>,
     element: <Dashboard />,
-    children: [],
+    children: customer,
   },
   {
     path: "/login",
