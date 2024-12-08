@@ -13,13 +13,13 @@ import {
   ProfileOutlined,
   LogoutOutlined,
   AppstoreOutlined,
-  EditOutlined,
   StarOutlined,
   WarningOutlined,
   EyeOutlined,
   DollarOutlined,
   AppstoreAddOutlined,
   TeamOutlined,
+  BoxPlotFilled,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
@@ -93,12 +93,12 @@ const handleLogout =async () => {
     {
       key: "3",
       icon: <AppstoreOutlined />,
-      label: <button onClick={()=>navigate("/dashboard/vendor/add-product")}>Add Products  </button>,
+      label: <button onClick={()=>navigate("/dashboard/vendor/manage-product")}>Manage Product  </button>,
     },
     {
       key: "4",
-      icon: <EditOutlined />,
-      label:  <button onClick={()=>navigate("/dashboard/vendor/edit-product")}>Edit Products</button>,
+      icon: <BoxPlotFilled />,
+      label:  <button onClick={()=>navigate("/dashboard/vendor/manage-order")}>Manage Order</button>,
     },
     {
       key: "5",

@@ -31,15 +31,17 @@ const DashboardLayout = () => {
               {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </Button>
           </div>
-         
+
           <div className="flex justify-between items-center gap-2">
             <Avatar size="large" icon={<UserOutlined />} />
           </div>
         </div>
         <hr />
         {/* main content */}
-        <div className="bg-neutral-100 min-h-[calc(100vh-64px)]">
-          <Outlet />
+        <div className="h-[calc(100vh-64px)] overflow-y-auto">
+          <div className="bg-neutral-100 h-full  p-5">
+            <Outlet />
+          </div>
         </div>
       </div>
     </div>

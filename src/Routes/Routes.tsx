@@ -17,6 +17,8 @@ import ReviewActivities from "../Pages/DashboardPages/AdminPages/ReviewActivitie
 import BlacklistShop from "../Pages/DashboardPages/AdminPages/BlacklistShop/BlacklistShop";
 import VendorHome from "../Pages/DashboardPages/VendorPages/VendorHome/VendorHome";
 import ManageShop from "../Pages/DashboardPages/VendorPages/ManageShop/ManageShop";
+import AddProduct from "../Pages/DashboardPages/VendorPages/ProductManagement/ProductModal";
+import ProductManagement from "../Pages/DashboardPages/VendorPages/ProductManagement/ProductManagement";
 
 
 
@@ -68,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/vendor/manage-shop",
         element: <ManageShop/>
+      },
+      {
+        path: "/dashboard/vendor/manage-product",
+        element: <ProductManagement/>
       },
     ],
   },
