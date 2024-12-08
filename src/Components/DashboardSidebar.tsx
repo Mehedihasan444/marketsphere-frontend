@@ -20,6 +20,7 @@ import {
   AppstoreAddOutlined,
   TeamOutlined,
   BoxPlotFilled,
+  ShopFilled,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
@@ -31,22 +32,33 @@ type MenuItem = Required<MenuProps>["items"][number];
 const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
   const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
-const navigate = useNavigate();
-const handleLogout =async () => {
-
+  const navigate = useNavigate();
+  const handleLogout = async () => {
     await dispatch(logout());
     navigate("/");
-}
+  };
 
   const Customers: MenuItem[] = [
     {
       key: "1",
       icon: <HomeOutlined />,
-      label:<button onClick={()=>navigate("/dashboard/customer/home")}>Dashboard</button>,
+      label: (
+        <button onClick={() => navigate("/dashboard/customer/home")}>
+          Dashboard
+        </button>
+      ),
     },
     { key: "2", icon: <SearchOutlined />, label: "Advanced Search" }, // Advanced Search/Filters
     { key: "3", icon: <ShoppingCartOutlined />, label: "Cart" }, // Cart (with multi-vendor logic)
-    { key: "4", icon: <BarsOutlined />, label: "Compare Products" }, // Compare Products
+    {
+      key: "4",
+      icon: <BarsOutlined />,
+      label: (
+        <button onClick={() => navigate("/dashboard/customer/compare")}>
+          Compare Products
+        </button>
+      ),
+    }, // Compare Products
     {
       key: "5",
       icon: <FileTextOutlined />,
@@ -76,39 +88,74 @@ const handleLogout =async () => {
     {
       key: "15",
       icon: <LogoutOutlined />,
-      label: <button onClick={() =>handleLogout()}>Logout</button>,
+      label: (
+        <button onClick={() => navigate("/dashboard/customer/be-a-vendor")}>
+          Be A Vendor
+        </button>
+      ),
+    },
+    {
+      key: "16",
+      icon: <LogoutOutlined />,
+      label: <button onClick={() => handleLogout()}>Logout</button>,
     },
   ];
   const Vendors: MenuItem[] = [
     {
       key: "1",
       icon: <HomeOutlined />,
-      label:<button onClick={()=>navigate("/dashboard/vendor/home")}>Dashboard</button>,
+      label: (
+        <button onClick={() => navigate("/dashboard/vendor/home")}>
+          Dashboard
+        </button>
+      ),
     },
     {
       key: "2",
       icon: <ShopOutlined />,
-      label:<button onClick={()=>navigate("/dashboard/vendor/manage-shop")}>Manage Shop</button>,
+      label: (
+        <button onClick={() => navigate("/dashboard/vendor/manage-shop")}>
+          Manage Shop
+        </button>
+      ),
     },
     {
       key: "3",
       icon: <AppstoreOutlined />,
-      label: <button onClick={()=>navigate("/dashboard/vendor/manage-product")}>Manage Product  </button>,
+      label: (
+        <button onClick={() => navigate("/dashboard/vendor/manage-product")}>
+          Manage Product{" "}
+        </button>
+      ),
     },
     {
       key: "4",
       icon: <BoxPlotFilled />,
-      label:  <button onClick={()=>navigate("/dashboard/vendor/manage-order")}>Manage Order</button>,
+      label: (
+        <button onClick={() => navigate("/dashboard/vendor/manage-order")}>
+          Manage Order
+        </button>
+      ),
     },
     {
       key: "5",
       icon: <HistoryOutlined />,
-      label:<button onClick={()=>navigate("/dashboard/vendor/order-history")}> Order History </button>,
+      label: (
+        <button onClick={() => navigate("/dashboard/vendor/order-history")}>
+          {" "}
+          Order History{" "}
+        </button>
+      ),
     },
     {
       key: "6",
       icon: <StarOutlined />,
-      label: <button onClick={()=>navigate("/dashboard/vendor/customer-review")}> Customer Reviews</button>,
+      label: (
+        <button onClick={() => navigate("/dashboard/vendor/customer-review")}>
+          {" "}
+          Customer Reviews
+        </button>
+      ),
     },
     {
       key: "7",
@@ -120,43 +167,81 @@ const handleLogout =async () => {
     {
       key: "1",
       icon: <HomeOutlined />,
-      label:<button onClick={()=>navigate("/dashboard/vendor/home")}>Dashboard</button>,
+      label: (
+        <button onClick={() => navigate("/dashboard/vendor/home")}>
+          Dashboard
+        </button>
+      ),
     },
     {
       key: "2",
       icon: <TeamOutlined />,
-      label: <button onClick={()=>navigate("/dashboard/admin/user-management")}>Manage Users </button>,
+      label: (
+        <button onClick={() => navigate("/dashboard/admin/user-management")}>
+          Manage Users{" "}
+        </button>
+      ),
     },
     {
       key: "3",
       icon: <ShopOutlined />,
-      label: <button onClick={()=>navigate("/dashboard/admin/vendor-management")}>Manage Vendors</button>,
+      label: (
+        <button onClick={() => navigate("/dashboard/admin/vendor-management")}>
+          Manage Vendors
+        </button>
+      ),
     },
     {
       key: "4",
       icon: <AppstoreAddOutlined />,
       label: (
-        <button onClick={()=>navigate("/dashboard/admin/category-management")}>Manage Categories</button>
+        <button
+          onClick={() => navigate("/dashboard/admin/category-management")}
+        >
+          Manage Categories
+        </button>
       ),
     },
     {
       key: "5",
       icon: <DollarOutlined />,
-      label: <button onClick={()=>navigate("/dashboard/admin/monitor-transactions")}>Monitor Transactions</button>
+      label: (
+        <button
+          onClick={() => navigate("/dashboard/admin/monitor-transactions")}
+        >
+          Monitor Transactions
+        </button>
+      ),
     },
     {
       key: "6",
       icon: <EyeOutlined />,
-      label: <button onClick={()=>navigate("/dashboard/admin/review-activities")}>Review Activities</button>
+      label: (
+        <button onClick={() => navigate("/dashboard/admin/review-activities")}>
+          Review Activities
+        </button>
+      ),
     },
     {
       key: "7",
-      icon: <WarningOutlined />,
-      label: <button onClick={()=>navigate("/dashboard/admin/blacklist-shop")}>Blacklist Shops</button>
-   
+      icon: <ShopFilled />,
+      label: (
+        <button onClick={() => navigate("/dashboard/admin/all-shops")}>
+          Shops
+        </button>
+      ),
     },
     {
       key: "8",
+      icon: <WarningOutlined />,
+      label: (
+        <button onClick={() => navigate("/dashboard/admin/blacklist-shop")}>
+          Blacklist Shops
+        </button>
+      ),
+    },
+    {
+      key: "9",
       icon: <LogoutOutlined />,
       label: <button onClick={() => handleLogout()}>Logout</button>,
     },
@@ -178,9 +263,7 @@ const handleLogout =async () => {
         transition: "width 0.3s ease",
       }}
       className="h-screen "
-    
     >
-
       {/* Sidebar Menu */}
       <Menu
         defaultSelectedKeys={["1"]}
@@ -189,7 +272,6 @@ const handleLogout =async () => {
         inlineCollapsed={collapsed}
         items={items}
         className="h-full pt-10"
-        
       />
     </div>
   );
