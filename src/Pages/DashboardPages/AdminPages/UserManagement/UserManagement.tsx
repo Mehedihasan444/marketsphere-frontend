@@ -98,7 +98,7 @@ const UserManagement: React.FC = () => {
   const onRoleUpdate = async (UserId: string, newRole: string) => {
     try {
       const res = await updateUser({ UserId, role: newRole });
-      if (res.data.success) {
+      if (res?.data?.success) {
         message.open({
           type: "success",
           content: `User role updated successfully!`,

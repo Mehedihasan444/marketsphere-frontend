@@ -17,11 +17,13 @@ import ReviewActivities from "../Pages/DashboardPages/AdminPages/ReviewActivitie
 import BlacklistShop from "../Pages/DashboardPages/AdminPages/BlacklistShop/BlacklistShop";
 import VendorHome from "../Pages/DashboardPages/VendorPages/VendorHome/VendorHome";
 import ManageShop from "../Pages/DashboardPages/VendorPages/ManageShop/ManageShop";
-import AddProduct from "../Pages/DashboardPages/VendorPages/ProductManagement/ProductModal";
 import ProductManagement from "../Pages/DashboardPages/VendorPages/ProductManagement/ProductManagement";
 import ManageOrder from "../Pages/DashboardPages/VendorPages/ManageOrder/ManageOrder";
 import OrderHistory from "../Pages/DashboardPages/VendorPages/OrderHistory/OrderHistory";
 import CustomerReviews from "../Pages/DashboardPages/VendorPages/CustomerReviews/CustomerReviews";
+import Shops from "../Pages/DashboardPages/AdminPages/Shops/Shops";
+import BecomeSeller from "../Pages/DashboardPages/CustomerPages/BecomeSeller/BecomeSeller";
+import CompareProducts from "../Pages/DashboardPages/CustomerPages/CompareProducts/CompareProducts";
 
 
 
@@ -58,6 +60,14 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/customer/home",
         element: <CustomerHome/>
+      },
+      {
+        path: "/dashboard/customer/be-a-vendor",
+        element: <BecomeSeller/>
+      },
+      {
+        path: "/dashboard/customer/compare",
+        element: <CompareProducts/>
       }
     ],
   },
@@ -122,6 +132,10 @@ const router = createBrowserRouter([
         element: <ReviewActivities/>
       },
       {
+        path: "/dashboard/admin/all-shops",
+        element: <Shops/>
+      },
+      {
         path: "/dashboard/admin/blacklist-shop",
         element: <BlacklistShop/>
       },
@@ -130,12 +144,12 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
-    errorElement: <div>404-Page Not Found</div>,
+    errorElement: <NotFound/>,
   },
   {
     path: "/signup",
     element: <Register />,
-    errorElement: <div>404-Page Not Found</div>,
+    errorElement: <NotFound/>,
   },
 ],);
 

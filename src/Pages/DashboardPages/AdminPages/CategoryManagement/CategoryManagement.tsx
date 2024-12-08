@@ -4,7 +4,6 @@ import {
   Input,
   Spin,
   Table,
-  Select,
   Pagination,
   Row,
   Col,
@@ -13,24 +12,22 @@ import {
   Button,
 } from "antd";
 import type { TableProps } from "antd";
-import { useDeleteCategoryMutation, useGetAllCategoriesQuery, useUpdateCategoryMutation } from "../../../../Redux/Features/Category/categoryApi";
-import AddCategoryForm from "./AddCategoryForm";
-import AddCategoryModal from "./AddCategoryModal";
+import { useDeleteCategoryMutation, useGetAllCategoriesQuery } from "../../../../Redux/Features/Category/categoryApi";
+import CategoryModal from "./CategoryModal";
 
 
-const { Option } = Select;
 
 interface CategoryType {
   id: string;
   name: string;
-  status: string;
   createdAt: string;
   updatedAt: string;
+  description: string;
+  image: string;
 }
 
 const CategoryManagement: React.FC = () => {
   const [searchName, setSearchName] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 8;
 
@@ -40,7 +37,6 @@ const CategoryManagement: React.FC = () => {
     error,
   } = useGetAllCategoriesQuery({
     name: searchName,
-    status: selectedStatus,
     page: currentPage,
     limit,
   });
@@ -48,41 +44,14 @@ const CategoryManagement: React.FC = () => {
   const { data: categories = [], meta } = data?.data || {};
   const { total } = meta || {};
 
-  const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation();
   const [deleteCategory, { isLoading: isDeleting }] = useDeleteCategoryMutation();
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  const handleStatusChange = (value: string) => {
-    setSelectedStatus(value);
-    setCurrentPage(1); // Reset to page 1 when filter changes
-  };
 
-  // Update category status
-  const onStatusUpdate = async (CategoryId: string, newStatus: string) => {
-    try {
-      const res = await updateCategory({ CategoryId, status: newStatus });
-      if (res.data.success) {
-        message.open({
-          type: "success",
-          content: `Category status updated successfully!`,
-        });
-      } else if (res.error) {
-        message.open({
-          type: "error",
-          content: res.error.data.message,
-        });
-      }
-    } catch (error) {
-      console.log(error);
-      message.open({
-        type: "error",
-        content: "Failed to update category status.",
-      });
-    }
-  };
+
 
   // Delete category
   const handleDelete = async (CategoryId: string) => {
@@ -115,19 +84,11 @@ const CategoryManagement: React.FC = () => {
       key: "name",
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status, record) => (
-        <Select
-          value={status}
-          onChange={(value) => onStatusUpdate(record.id, value)}
-          style={{ width: "100px" }}
-          disabled={isUpdating}
-        >
-          <Option value="ACTIVE">Active</Option>
-          <Option value="INACTIVE">Inactive</Option>
-        </Select>
+      title: "NO. of Products",
+      dataIndex: "noOfProducts",
+      key: "noOfProducts",
+      render: ( record) => (
+        <span>{record?.products?.length||0}</span>
       ),
     },
     {
@@ -145,6 +106,7 @@ const CategoryManagement: React.FC = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
+           <CategoryModal initialData={record}/>
           <Button danger onClick={() => handleDelete(record.id)} loading={isDeleting}>
             Delete
           </Button>
@@ -192,7 +154,7 @@ const CategoryManagement: React.FC = () => {
             />
           </Col>
           <Col span={4}>
-            <AddCategoryModal />
+            <CategoryModal initialData={null}/>
           </Col>
         </Row>
 

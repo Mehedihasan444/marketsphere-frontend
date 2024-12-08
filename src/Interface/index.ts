@@ -48,3 +48,10 @@ export type TReview = {
   comment: string;
   createdAt: string;
 };
+
+export type TCategory = {
+  name: string;
+  description: string;
+  image: string;
+  id: string;
+}

@@ -439,7 +439,6 @@ const ProductModal: React.FC<ProductModalProps> = ({ initialData }) => {
 
     try {
       const response = await addProduct(formData);
-      console.log(response)
       if (response?.data?.success) {
         message.success(
           initialData ? "Product updated successfully!" : "Product added successfully!"
