@@ -6,34 +6,35 @@ import { Link } from "react-router-dom";
 import { DownOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { useAppSelector } from "../../../Redux/hook";
 const { Search } = Input;
-const items: MenuProps['items'] = [
-  {
-    key: '1',
-    label: 'My Account',
-    disabled: true,
-  },
-  {
-    type: 'divider',
-  },
-  {
-    key: '2',
-    label:  <a href="/profile">Profile</a>,
-    extra: '⌘P',
-  },
-  {
-    key: '3',
-    label: 'Billing',
-    extra: '⌘B',
-  },
-  {
-    key: '4',
-    label: <a href="/dashboard">Dashboard</a> ,
-    icon: <SettingOutlined />,
-    extra: '⌘S',
-  },
-];
 const TopHeader = () => {
   const user = useAppSelector((state) => state.auth.user);
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: 'My Account',
+      disabled: true,
+    },
+    {
+      type: 'divider',
+    },
+    {
+      key: '2',
+      label:  <a href="/profile">Profile</a>,
+      extra: '⌘P',
+    },
+    {
+      key: '3',
+      label: 'Billing',
+      extra: '⌘B',
+    },
+    {
+      key: '4',
+      label: <a href= {`/dashboard/${user?.role.toLowerCase()}/home`} >Dashboard</a> ,
+      icon: <SettingOutlined />,
+      extra: '⌘S',
+    },
+  ];
+  
   return (
     <div className="bg-white lg:mx-16 px-4 py-5">
       <div className="grid  grid-cols-5 gap-4 justify-between items-center ">

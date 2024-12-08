@@ -32,8 +32,18 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
   const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
 const navigate = useNavigate();
+const handleLogout =async () => {
+
+    await dispatch(logout());
+    navigate("/");
+}
+
   const Customers: MenuItem[] = [
-    { key: "1", icon: <HomeOutlined />, label: "Home" }, // Browse Products
+    {
+      key: "1",
+      icon: <HomeOutlined />,
+      label:<button onClick={()=>navigate("/dashboard/customer/home")}>Dashboard</button>,
+    },
     { key: "2", icon: <SearchOutlined />, label: "Advanced Search" }, // Advanced Search/Filters
     { key: "3", icon: <ShoppingCartOutlined />, label: "Cart" }, // Cart (with multi-vendor logic)
     { key: "4", icon: <BarsOutlined />, label: "Compare Products" }, // Compare Products
@@ -66,79 +76,89 @@ const navigate = useNavigate();
     {
       key: "15",
       icon: <LogoutOutlined />,
-      label: <button onClick={() => dispatch(logout())}>Logout</button>,
+      label: <button onClick={() =>handleLogout()}>Logout</button>,
     },
   ];
   const Vendors: MenuItem[] = [
     {
       key: "1",
-      icon: <ShopOutlined />,
-      label: "Manage Shop",
+      icon: <HomeOutlined />,
+      label:<button onClick={()=>navigate("/dashboard/vendor/home")}>Dashboard</button>,
     },
     {
       key: "2",
-      icon: <AppstoreOutlined />,
-      label: "Add Products",
+      icon: <ShopOutlined />,
+      label:<button onClick={()=>navigate("/dashboard/vendor/manage-shop")}>Manage Shop</button>,
     },
     {
       key: "3",
-      icon: <EditOutlined />,
-      label: "Edit Products",
+      icon: <AppstoreOutlined />,
+      label: <button onClick={()=>navigate("/dashboard/vendor/add-product")}>Add Products  </button>,
     },
     {
       key: "4",
-      icon: <HistoryOutlined />,
-      label: "Order History",
+      icon: <EditOutlined />,
+      label:  <button onClick={()=>navigate("/dashboard/vendor/edit-product")}>Edit Products</button>,
     },
     {
       key: "5",
-      icon: <StarOutlined />,
-      label: "Customer Reviews",
+      icon: <HistoryOutlined />,
+      label:<button onClick={()=>navigate("/dashboard/vendor/order-history")}> Order History </button>,
     },
     {
       key: "6",
+      icon: <StarOutlined />,
+      label: <button onClick={()=>navigate("/dashboard/vendor/customer-reviews")}> Customer Reviews</button>,
+    },
+    {
+      key: "7",
       icon: <LogoutOutlined />,
-      label: <button onClick={() => dispatch(logout())}>Logout</button>,
+      label: <button onClick={() => handleLogout()}>Logout</button>,
     },
   ];
   const Admins: MenuItem[] = [
     {
       key: "1",
+      icon: <HomeOutlined />,
+      label:<button onClick={()=>navigate("/dashboard/vendor/home")}>Dashboard</button>,
+    },
+    {
+      key: "2",
       icon: <TeamOutlined />,
       label: <button onClick={()=>navigate("/dashboard/admin/user-management")}>Manage Users </button>,
     },
     {
-      key: "2",
+      key: "3",
       icon: <ShopOutlined />,
       label: <button onClick={()=>navigate("/dashboard/admin/vendor-management")}>Manage Vendors</button>,
     },
     {
-      key: "3",
+      key: "4",
       icon: <AppstoreAddOutlined />,
       label: (
         <button onClick={()=>navigate("/dashboard/admin/category-management")}>Manage Categories</button>
       ),
     },
     {
-      key: "4",
+      key: "5",
       icon: <DollarOutlined />,
       label: <button onClick={()=>navigate("/dashboard/admin/monitor-transactions")}>Monitor Transactions</button>
     },
     {
-      key: "5",
+      key: "6",
       icon: <EyeOutlined />,
       label: <button onClick={()=>navigate("/dashboard/admin/review-activities")}>Review Activities</button>
     },
     {
-      key: "6",
+      key: "7",
       icon: <WarningOutlined />,
       label: <button onClick={()=>navigate("/dashboard/admin/blacklist-shop")}>Blacklist Shops</button>
    
     },
     {
-      key: "7",
+      key: "8",
       icon: <LogoutOutlined />,
-      label: <button onClick={() => dispatch(logout())}>Logout</button>,
+      label: <button onClick={() => handleLogout()}>Logout</button>,
     },
   ];
 

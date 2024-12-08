@@ -12,11 +12,33 @@ const shopApi = baseApi.injectEndpoints({
       },
       providesTags: ["shop"],
     }),
+    getShop: builder.query({
+      query: (id: string) => ({
+        url: `/shops/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["shop"],
+    }),
     updateShopStatus: builder.mutation({
       query: ({ id, status }: { id: string; status: string }) => ({
         url: `/shops/${id}/status`,
         method: "PATCH",
         body: { status },
+      }),
+      invalidatesTags: ["shop"],
+    }),
+    addShop: builder.mutation({
+      query: (payload) => ({
+      url: "/shops",
+      method: "POST",
+      body: payload,
+      }),
+      invalidatesTags: ["shop"],
+    }),
+    deleteShop: builder.mutation({
+      query: (id: string) => ({
+        url: `/shops/${id}`,
+        method: "DELETE",
       }),
       invalidatesTags: ["shop"],
     }),

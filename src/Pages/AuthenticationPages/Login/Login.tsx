@@ -42,29 +42,22 @@ const Login: React.FC = () => {
     };
     try {
       const res = await login(userInfo);
-      if (res && res.data.success) {
+      if (res && res?.data?.success) {
         const user = verifyToken(res.data.data.accessToken) as TJwtPayload;
-        if (!user) {
-          message.open({
-            type: "error",
-            content: "Login Failed!",
-          });
-          return;
-        }
         dispatch(setUser({ user: user, token: res.data.data.accessToken }));
         message.open({
           type: "success",
-          content: `Logged in as ${user?.name as string}`,
+          content: `Logged in as ${user?.name}`,
         });
         navigate(`/`);
-      } else if (res.error) {
+      } else if (res && res?.error) {
         message.open({
           type: "error",
-          content: res?.error?.data?.message as string,
+          content: res?.error?.data?.message,
         });
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       message.open({
         type: "error",
         content: "Login Failed!",
@@ -76,11 +69,11 @@ const Login: React.FC = () => {
     errorInfo
   ) => {
     console.log("Failed:", errorInfo);
-    <Alert
-      message={errorInfo.errorFields[0].errors[0]}
-      type="error"
-      showIcon
-    />;
+    // <Alert
+    //   message={errorInfo.errorFields[0].errors[0]}
+    //   type="error"
+    //   showIcon
+    // />;
   };
 
   return (
