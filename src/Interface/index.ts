@@ -29,3 +29,13 @@ export type TProduct = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+
+export type TOrder = {
+  _id: string;
+  customerName: string;
+  productName: string;
+  quantity: number;
+  totalPrice: number;
+  status: string;
+};

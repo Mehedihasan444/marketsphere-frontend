@@ -19,6 +19,8 @@ import VendorHome from "../Pages/DashboardPages/VendorPages/VendorHome/VendorHom
 import ManageShop from "../Pages/DashboardPages/VendorPages/ManageShop/ManageShop";
 import AddProduct from "../Pages/DashboardPages/VendorPages/ProductManagement/ProductModal";
 import ProductManagement from "../Pages/DashboardPages/VendorPages/ProductManagement/ProductManagement";
+import ManageOrder from "../Pages/DashboardPages/VendorPages/ManageOrder/ManageOrder";
+import OrderHistory from "../Pages/DashboardPages/VendorPages/OrderHistory/OrderHistory";
 
 
 
@@ -74,6 +76,14 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/vendor/manage-product",
         element: <ProductManagement/>
+      },
+      {
+        path: "/dashboard/vendor/manage-order",
+        element: <ManageOrder/>
+      },
+      {
+        path: "/dashboard/vendor/order-history",
+        element: <OrderHistory/>
       },
     ],
   },
