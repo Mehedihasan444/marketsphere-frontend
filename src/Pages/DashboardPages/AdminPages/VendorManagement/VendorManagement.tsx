@@ -11,10 +11,11 @@ import {
   message,
   Space,
   Button,
+  Popconfirm,
 } from "antd";
 import type { TableProps } from "antd";
 import {
-    useDeleteUserMutation,
+  useDeleteUserMutation,
   useGetAllUsersQuery,
   useUpdateUserMutation,
 } from "../../../../Redux/Features/User/userApi";
@@ -44,7 +45,7 @@ const VendorManagement: React.FC = () => {
     isLoading,
     error,
   } = useGetAllUsersQuery({
-    role: selectedRole,
+    role: "VENDOR",
     userStatus: selectedStatus,
     email: searchEmail,
     page: currentPage,
@@ -94,12 +95,11 @@ const VendorManagement: React.FC = () => {
     }
   };
 
- 
-  // Delete user 
+  // Delete user
   const handleDelete = async (UserId: string) => {
     try {
-      const res = await deleteUser( UserId);
-      if (res.data.success) {
+      const res = await deleteUser(UserId);
+      if (res?.data?.success) {
         message.open({
           type: "success",
           content: `User deleted successfully!`,
@@ -168,19 +168,34 @@ const VendorManagement: React.FC = () => {
       key: "updatedAt",
     },
     {
-        title: 'Action',
-        key: 'action',
-        render: (_, record) => (
-          <Space size="middle">
-            <Button danger onClick={()=>handleDelete(record.id)} loading={isDeleting}>Delete</Button>
-          </Space>
-        ),
-      },
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <Popconfirm
+            title="Are you sure you want to delete this vendor?"
+            onConfirm={() => handleDelete(record.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              danger
+              // onClick={() => handleDelete(record.id)}
+              loading={isDeleting}
+            >
+              Delete
+            </Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
   ];
   if (isLoading) {
-    return <div className="flex justify-center items-center h-screen w-full">
-    <Spin tip="Loading..." />
-    </div>;;
+    return (
+      <div className="flex justify-center items-center h-screen w-full">
+        <Spin tip="Loading..." />
+      </div>
+    );
   }
 
   if (error) {

@@ -21,6 +21,7 @@ import AddProduct from "../Pages/DashboardPages/VendorPages/ProductManagement/Pr
 import ProductManagement from "../Pages/DashboardPages/VendorPages/ProductManagement/ProductManagement";
 import ManageOrder from "../Pages/DashboardPages/VendorPages/ManageOrder/ManageOrder";
 import OrderHistory from "../Pages/DashboardPages/VendorPages/OrderHistory/OrderHistory";
+import CustomerReviews from "../Pages/DashboardPages/VendorPages/CustomerReviews/CustomerReviews";
 
 
 
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/vendor/order-history",
         element: <OrderHistory/>
+      },
+      {
+        path: "/dashboard/vendor/customer-review",
+        element: <CustomerReviews/>
       },
     ],
   },

@@ -20,7 +20,16 @@ const reviewApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["review"],
     }),
+    getVendorReviews: builder.query({
+      query: ({ vendorId, page, limit }: { vendorId: string; page: number; limit: number }) => {
+      let queryString = `/vendors/${vendorId}/reviews?`;
+      if (page) queryString += `page=${page}&`;
+      if (limit) queryString += `limit=${limit}&`;
+      return { url: queryString, method: "GET" };
+      },
+      providesTags: ["review"],
+    }),
   }),
 });
 
-export const { useGetAllReviewsQuery, useUpdateReviewStatusMutation } = reviewApi;
+export const { useGetAllReviewsQuery, useUpdateReviewStatusMutation,useGetVendorReviewsQuery } = reviewApi;

@@ -39,3 +39,12 @@ export type TOrder = {
   totalPrice: number;
   status: string;
 };
+
+export type TReview = {
+  _id: string;
+  customerName: string;
+  productName: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+};

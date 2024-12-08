@@ -11,31 +11,31 @@ export const orderApi = baseApi.injectEndpoints({
 
     endpoints: (builder) => ({
         getOrders: builder.query<Order[], void>({
-            query: () => 'orders',
+            query: () => '/orders',
         }),
         getOrderHistory: builder.query<Order[], void>({
-            query: () => 'orders',
+            query: () => '/orders',
         }),
         getOrderById: builder.query<Order, string>({
-            query: (id) => `orders/${id}`,
+            query: (id) => `/orders/${id}`,
         }),
         createOrder: builder.mutation<Order, Partial<Order>>({
             query: (newOrder) => ({
-                url: 'orders',
+                url: '/orders',
                 method: 'POST',
                 body: newOrder,
             }),
         }),
         updateOrder: builder.mutation<Order, Partial<Order>>({
             query: ({ id, ...patch }) => ({
-                url: `orders/${id}`,
+                url: `/orders/${id}`,
                 method: 'PATCH',
                 body: patch,
             }),
         }),
         deleteOrder: builder.mutation<{ success: boolean; id: string }, string>({
             query: (id) => ({
-                url: `orders/${id}`,
+                url: `/orders/${id}`,
                 method: 'DELETE',
             }),
         }),

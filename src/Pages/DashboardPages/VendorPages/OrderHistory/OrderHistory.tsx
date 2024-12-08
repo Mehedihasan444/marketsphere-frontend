@@ -100,7 +100,7 @@ const OrderHistory = () => {
       <Table
         columns={columns}
         dataSource={orderHistory}
-        rowKey="_id"
+        rowKey="id"
         loading={isLoading}
         pagination={{ pageSize: 5 }}
         bordered

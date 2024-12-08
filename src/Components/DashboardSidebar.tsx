@@ -108,7 +108,7 @@ const handleLogout =async () => {
     {
       key: "6",
       icon: <StarOutlined />,
-      label: <button onClick={()=>navigate("/dashboard/vendor/customer-reviews")}> Customer Reviews</button>,
+      label: <button onClick={()=>navigate("/dashboard/vendor/customer-review")}> Customer Reviews</button>,
     },
     {
       key: "7",

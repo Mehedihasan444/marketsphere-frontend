@@ -3,20 +3,32 @@ import { Button, Modal, Form, Input, Select, message } from "antd";
 import { useAddCategoryMutation } from "../../../../Redux/Features/Category/categoryApi";
 
 const { Option } = Select;
-
+const { TextArea } = Input;
 const AddCategoryModal: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
   const [form] = Form.useForm();
   const [addCategory, { isLoading }] = useAddCategoryMutation();
 
-  const handleSubmit = async (values: { name: string; status: string }) => {
+  const handleSubmit = async (values: { name: string; description: string,image:File }) => {
     try {
-      const response = await addCategory(values);
+      const formData = new FormData();
+      const data={
+        name:values.name,
+        description:values.description,
+      }
+      formData.append("data", JSON.stringify(data));
+      if (file) {
+        formData.append("image", file);
+      }
+      const response = await addCategory(formData);
+      console.log(response);
+      console.log(values);
       if (response?.data?.success) {
         message.success("Category added successfully!");
         form.resetFields(); // Reset the form
         setOpen(false); // Close the modal
-      } else {
+      } else if (response?.error) {
         message.error(response?.error?.data?.message || "Failed to add category.");
       }
     } catch (error) {
@@ -59,22 +71,20 @@ const AddCategoryModal: React.FC = () => {
             <Input placeholder="Enter category name" />
           </Form.Item>
           <Form.Item
+            name="description"
+            label="Description"
+            rules={[{ required: true, message: "Please enter category description!" }]}
+          >
+            <TextArea placeholder="Enter category name" />
+          </Form.Item>
+          <Form.Item
             name="image"
             label="Category Image"
             rules={[{ required: true, message: "Please select a category image!" }]}
           >
-            <Input type="file"  variant="outlined"  />
+            <Input type="file"  variant="outlined" accept="image/*"  onChange={(e)=>setFile(e.target.files![0])}/>
           </Form.Item>
-          <Form.Item
-            name="status"
-            label="Status"
-            rules={[{ required: true, message: "Please select a status!" }]}
-          >
-            <Select placeholder="Select category status">
-              <Option value="ACTIVE">Active</Option>
-              <Option value="INACTIVE">Inactive</Option>
-            </Select>
-          </Form.Item>
+          
           <Form.Item>
             <Button
               type="primary"
