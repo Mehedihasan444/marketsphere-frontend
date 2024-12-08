@@ -12,6 +12,8 @@ import {
 import { useUpdateShopStatusMutation } from "../../../../Redux/Features/Shop/shopApi";
 import { useAppSelector } from "../../../../Redux/hook";
 import { useGetVendorQuery } from "../../../../Redux/Features/Vendor/vendorApi";
+import AddShopModal from "./AddShopModal/AddShopModal";
+import { TShop } from "../../../../Interface";
 // import { useGetAllShopsQuery, useUpdateShopStatusMutation } from "../../Redux/Features/Shop/shopApi";
 
 const ManageShop: React.FC = () => {
@@ -22,7 +24,9 @@ const ManageShop: React.FC = () => {
     isLoading,
     error,
   } = useGetVendorQuery(vendor?.email as string);
-  const { shop = [] } = data.data || {};
+
+  const { id, shop = [], name } = data.data || {};
+
   const [updateShopStatus, { isLoading: updating }] =
     useUpdateShopStatusMutation();
 
@@ -72,7 +76,14 @@ const ManageShop: React.FC = () => {
       title: "Vendor",
       dataIndex: ["vendor", "name"],
       key: "vendorName",
-      render: (vendorName: string) => vendorName || "N/A",
+      render: () => name || "N/A",
+    },
+    {
+      title: "Number of products",
+      key: "noOfProducts",
+      render: (record:TShop) => {
+        return record.products?.length || 0;
+      },
     },
     {
       title: "Status",
@@ -94,27 +105,28 @@ const ManageShop: React.FC = () => {
       render: (_: any, record: any) => (
         <Space size="middle">
           <Popconfirm
-            title="Are you sure you want to activate this shop?"
-            onConfirm={() => handleStatusUpdate(record.id, "ACTIVE")}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button type="link" disabled={record.status === "ACTIVE"}>
-              Activate
-            </Button>
-          </Popconfirm>
-          <Popconfirm
             title="Are you sure you want to blacklist this shop?"
             onConfirm={() => handleStatusUpdate(record.id, "BLACKLISTED")}
             okText="Yes"
             cancelText="No"
           >
             <Button
-              type="link"
-              danger
+              type="default"
+              variant="outlined"
+           
               disabled={record.status === "BLACKLISTED"}
             >
-              Blacklist
+              Edit
+            </Button>
+          </Popconfirm>
+          <Popconfirm
+            title="Are you sure you want to activate this shop?"
+            onConfirm={() => handleStatusUpdate(record.id, "ACTIVE")}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="primary" danger disabled={record.status === "ACTIVE"}>
+              Delete
             </Button>
           </Popconfirm>
         </Space>
@@ -124,7 +136,10 @@ const ManageShop: React.FC = () => {
 
   return (
     <div className="p-5 bg-white rounded-lg">
-      <h2 className="mb-4 text-xl font-semibold">Manage Shops</h2>
+      <div className="flex justify-between items-center gap-5">
+        <h2 className="mb-4 text-xl font-semibold">Manage Shops</h2>
+        <AddShopModal vendorId={id} />
+      </div>
       <Table
         columns={columns}
         dataSource={shop}

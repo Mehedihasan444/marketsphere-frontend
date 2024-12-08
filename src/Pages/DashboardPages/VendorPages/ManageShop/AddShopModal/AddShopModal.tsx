@@ -1,36 +1,46 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Select, Button, Upload, message } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { Modal, Form, Input, Button, message } from "antd";
+import { useAddShopMutation } from "../../../../../Redux/Features/Shop/shopApi";
 
-const { Option } = Select;
 
-const AddShopModal: React.FC = () => {
+const AddShopModal: React.FC<{ vendorId: string }> = ({ vendorId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
   const [addShop, { isLoading }] = useAddShopMutation();
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
 
   const handleSubmit = async (values: any) => {
+    const formData = new FormData();
+
+    // Append text fields
+    const data = {
+      name: values.name,
+      description: values.description,
+      vendorId: vendorId, // Use the vendorId prop passed to the component
+    };
+    formData.append("data", JSON.stringify(data));
+
+    // Append the logo and banner file if they exist
+    if (logoFile) formData.append("logo", logoFile); // Append the logo file
+    if (bannerFile) formData.append("banner", bannerFile); // Append the banner file
+
     try {
-      const response = await addShop(values).unwrap();
-      if (response.success) {
+      // Make the API request
+      const response = await addShop(formData);
+      console.log(response);
+      if (response?.data?.success) {
         message.success("Shop added successfully!");
-        form.resetFields();
-        setIsModalOpen(false);
-      } else {
-        message.error(response.message || "Failed to add shop.");
+        // form.resetFields();
+        // setLogoFile(null);
+        // setBannerFile(null);
+        // setIsModalOpen(false);
+      } else if(response?.error) {
+        message.error(response?.error?.data.message || "Failed to add shop.");
       }
     } catch (error) {
       console.error(error);
       message.error("An error occurred while adding the shop.");
-    }
-  };
-
-  const handleUpload = (info: any) => {
-    if (info.file.status === "done") {
-      message.success(`${info.file.name} uploaded successfully.`);
-      return info.file.response?.url || "";
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} upload failed.`);
     }
   };
 
@@ -44,18 +54,11 @@ const AddShopModal: React.FC = () => {
       </Button>
       <Modal
         title="Add New Shop"
-        visible={isModalOpen}
+        open={isModalOpen}
         onCancel={handleCancel}
         footer={null}
       >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={handleSubmit}
-          initialValues={{
-            status: "PENDING",
-          }}
-        >
+        <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item
             name="name"
             label="Shop Name"
@@ -75,37 +78,23 @@ const AddShopModal: React.FC = () => {
           </Form.Item>
 
           <Form.Item name="logo" label="Shop Logo">
-            <Upload
-              name="file"
-              action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-              listType="picture"
-              onChange={handleUpload}
-            >
-              <Button icon={<UploadOutlined />}>Upload Logo</Button>
-            </Upload>
+            <Input
+              type="file"
+              variant="outlined"
+              accept="image/*"
+              name="logo"
+              onChange={(e) => setLogoFile(e.target.files![0])}
+            />
           </Form.Item>
 
           <Form.Item name="banner" label="Shop Banner">
-            <Upload
-              name="file"
-              action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-              listType="picture"
-              onChange={handleUpload}
-            >
-              <Button icon={<UploadOutlined />}>Upload Banner</Button>
-            </Upload>
-          </Form.Item>
-
-          <Form.Item
-            name="status"
-            label="Status"
-            rules={[{ required: true, message: "Please select a status!" }]}
-          >
-            <Select>
-              <Option value="PENDING">Pending</Option>
-              <Option value="ACTIVE">Active</Option>
-              <Option value="BLACKLISTED">Blacklisted</Option>
-            </Select>
+            <Input
+              type="file"
+              name="logo"
+              accept="image/*"
+              variant="outlined"
+              onChange={(e) => setBannerFile(e.target.files![0])}
+            />
           </Form.Item>
 
           <Form.Item>

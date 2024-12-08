@@ -45,4 +45,4 @@ const shopApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllShopsQuery, useUpdateShopStatusMutation } = shopApi;
+export const { useGetAllShopsQuery, useUpdateShopStatusMutation,useAddShopMutation,useDeleteShopMutation } = shopApi;
