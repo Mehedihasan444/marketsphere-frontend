@@ -57,6 +57,7 @@ export const baseApi = createApi({
     "shop",
     "transaction",
     "vendor",
+    "BecomeVendorRequest"
   ],
 
   endpoints: () => ({}),

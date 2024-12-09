@@ -1,30 +1,44 @@
-// ! have to implement this page
-import React, { useState } from 'react';
-import { Table, Button, Modal, message, Tag } from 'antd';
-import { useFetchRequestsQuery, useUpdateRequestMutation } from '../../Redux/Features/Requests/requestApi';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from "react";
+import { Table, Button, Modal, message, Tag, Alert, Spin } from "antd";
+import {
+  useGetAllBecomeVendorRequestsQuery,
+  useUpdateBecomeVendorRequestMutation,
+} from "../../../../Redux/Features/BecomeSeller/becomeSellerApi";
 
 const CustomerRequests: React.FC = () => {
-  const { data: requests, isLoading } = useFetchRequestsQuery(); // Fetch requests from the API
-  const [updateRequest, { isLoading: isUpdating }] = useUpdateRequestMutation(); // Mutation for updating requests
+  const {
+    data = {},
+    isLoading,
+    error,
+  } = useGetAllBecomeVendorRequestsQuery(""); 
+  const requests = data.data || {};
 
-  const [selectedRequest, setSelectedRequest] = useState<any>(null); // For modal details
+  const [updateBecomeVendorRequest, { isLoading: isUpdating }] =
+    useUpdateBecomeVendorRequestMutation();
+
+  const [selectedRequest, setSelectedRequest] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleApprove = async (id: string) => {
     try {
-      await updateRequest({ id, status: 'approved' }).unwrap();
-      message.success('Request approved successfully!');
+      await updateBecomeVendorRequest({ id, status: "APPROVED" }).unwrap();
+
+      message.success("Request approved successfully!");
     } catch (error) {
-      message.error('Failed to approve request!');
+      console.log(error);
+      message.error("Failed to approve request!");
     }
   };
 
   const handleReject = async (id: string) => {
     try {
-      await updateRequest({ id, status: 'rejected' }).unwrap();
-      message.success('Request rejected successfully!');
+      const res=await updateBecomeVendorRequest({ id, status: "REJECTED" }).unwrap();
+      console.log(res)
+      message.success("Request rejected successfully!");
     } catch (error) {
-      message.error('Failed to reject request!');
+      console.log(error);
+      message.error("Failed to reject request!");
     }
   };
 
@@ -40,33 +54,48 @@ const CustomerRequests: React.FC = () => {
 
   const columns = [
     {
-      title: 'Customer Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: "Customer Name",
+      dataIndex: "name",
+      key: "name",
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
       render: (status: string) => {
-        let color = status === 'pending' ? 'orange' : status === 'approved' ? 'green' : 'red';
+        const color =
+          status === "pending"
+            ? "orange"
+            : status === "approved"
+            ? "green"
+            : "red";
         return <Tag color={color}>{status.toUpperCase()}</Tag>;
       },
     },
     {
-      title: 'Action',
-      key: 'action',
+      title: "Action",
+      key: "action",
       render: (_: any, record: any) => (
         <div className="flex gap-2">
-          <Button type="primary" onClick={() => handleApprove(record.id)} disabled={record.status !== 'pending'}>
+          <Button
+            type="primary"
+            loading={isUpdating}
+            onClick={() => handleApprove(record.id)}
+            disabled={record.status !== "PENDING"}
+          >
             Approve
           </Button>
-          <Button type="danger" onClick={() => handleReject(record.id)} disabled={record.status !== 'pending'}>
+          <Button
+            danger
+            loading={isUpdating}
+            onClick={() => handleReject(record.id)}
+            disabled={record.status !== "PENDING"}
+          >
             Reject
           </Button>
           <Button onClick={() => openDetailsModal(record)}>View Details</Button>
@@ -75,9 +104,29 @@ const CustomerRequests: React.FC = () => {
     },
   ];
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen w-full">
+        <Spin tip="Loading..." />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert
+        message="Error"
+        description="Failed to load users."
+        type="error"
+        showIcon
+      />
+    );
+  }
   return (
     <div>
-      <h2 className="text-lg font-bold mb-4">Customer Requests to Become Vendors</h2>
+      <h2 className="text-lg font-bold mb-4">
+        Customer Requests to Become Vendors
+      </h2>
       <Table
         columns={columns}
         dataSource={requests?.map((req: any) => ({ ...req, key: req.id }))}
@@ -108,7 +157,8 @@ const CustomerRequests: React.FC = () => {
               <strong>Status:</strong> {selectedRequest.status}
             </p>
             <p>
-              <strong>Reason:</strong> {selectedRequest.reason || 'No reason provided'}
+              <strong>Reason:</strong>{" "}
+              {selectedRequest.reason || "No reason provided"}
             </p>
           </div>
         )}

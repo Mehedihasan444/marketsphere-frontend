@@ -1,42 +1,30 @@
-// ! have to complete this page
-import React, { useState } from "react";
-import { Form, Input, Button, message, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-// import { useBecomeSellerMutation } from "../../Redux/Features/Requests/requestApi";
+import React from "react";
+import { Form, Input, Button, message } from "antd";
+import { useSendBecomeVendorRequestMutation } from "../../../../Redux/Features/BecomeSeller/becomeSellerApi";
 
 const BecomeSeller: React.FC = () => {
   const [form] = Form.useForm();
-//   const [becomeSeller, { isLoading }] = useBecomeSellerMutation(); // Mutation for submitting seller request
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]); // For handling uploaded files
-
-  const handleFileUpload = (file: File) => {
-    setUploadedFiles((prevFiles) => [...prevFiles, file]);
-    return false; // Prevent auto upload by Ant Design
-  };
+  const [sendBecomeVendorRequest, { isLoading }] =
+    useSendBecomeVendorRequestMutation(); 
 
   const handleSubmit = async (values: any) => {
-    const formData = new FormData();
-    formData.append("name", values.name);
-    formData.append("email", values.email);
-    formData.append("reason", values.reason);
-
-    uploadedFiles.forEach((file) => {
-      formData.append("documents", file); // Append uploaded files
-    });
-
-    // try {
-    //   const response = await becomeSeller(formData).unwrap();
-    //   if (response.success) {
-    //     message.success("Your request to become a seller has been submitted successfully!");
-    //     form.resetFields();
-    //     setUploadedFiles([]);
-    //   } else {
-    //     message.error("Failed to submit your request. Please try again.");
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    //   message.error("An error occurred while submitting your request.");
-    // }
+    console.log(values)
+    try {
+      const response = await sendBecomeVendorRequest(values);
+      console.log(response);
+      if (response?.data?.success) {
+        message.success(
+          "Your request to become a seller has been submitted successfully!"
+        );
+        form.resetFields();
+        // setUploadedFiles([]);
+      } else if (response?.error) {
+        message.error(response?.error?.data?.message);
+      }
+    } catch (error) {
+      console.error(error);
+      message.error("An error occurred while submitting your request.");
+    }
   };
 
   return (
@@ -46,26 +34,53 @@ const BecomeSeller: React.FC = () => {
         form={form}
         layout="vertical"
         onFinish={handleSubmit}
-        initialValues={{ name: "", email: "", reason: "" }}
+        initialValues={{ name: "", email: "", reason: "" , phone: "", address: ""}}
       >
-        <Form.Item
-          name="name"
-          label="Full Name"
-          rules={[{ required: true, message: "Please enter your full name!" }]}
-        >
-          <Input placeholder="Enter your full name" />
-        </Form.Item>
+        <div className="flex justify-between items-center gap-4">
+          <Form.Item
+            name="name"
+            label="Full Name"
+            rules={[
+              { required: true, message: "Please enter your full name!" },
+            ]}
+            className="flex-1"
+          >
+            <Input placeholder="Enter your full name" />
+          </Form.Item>
 
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[
-            { required: true, message: "Please enter your email!" },
-            { type: "email", message: "Please enter a valid email address!" },
-          ]}
-        >
-          <Input placeholder="Enter your email" />
-        </Form.Item>
+          <Form.Item
+            name="email"
+            label="Email"
+            rules={[
+              { required: true, message: "Please enter your email!" },
+              { type: "email", message: "Please enter a valid email address!" },
+            ]}
+            className="flex-1"
+          >
+            <Input placeholder="Enter your email" />
+          </Form.Item>
+        </div>
+        <div className="flex justify-between items-center gap-4">
+          <Form.Item
+            name="phone"
+            label="Phone Number"
+            rules={[
+              { required: true, message: "Please enter your full name!" },
+            ]}
+            className="flex-1"
+          >
+            <Input placeholder="Enter your phone number" />
+          </Form.Item>
+
+          <Form.Item
+            name="address"
+            label="Address"
+            rules={[{ required: true, message: "Please enter your address!" }]}
+            className="flex-1"
+          >
+            <Input placeholder="Enter your address" />
+          </Form.Item>
+        </div>
 
         <Form.Item
           name="reason"
@@ -78,7 +93,7 @@ const BecomeSeller: React.FC = () => {
           />
         </Form.Item>
 
-        <Form.Item
+        {/* <Form.Item
           name="documents"
           label="Supporting Documents (Optional)"
           extra="You can upload any supporting documents such as licenses or business proof."
@@ -98,13 +113,13 @@ const BecomeSeller: React.FC = () => {
           >
             <Button icon={<UploadOutlined />}>Upload Documents</Button>
           </Upload>
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item>
           <Button
             type="primary"
             htmlType="submit"
-            // loading={isLoading}
+            loading={isLoading}
             className="w-full"
           >
             Submit Request

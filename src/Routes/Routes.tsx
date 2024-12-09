@@ -24,6 +24,7 @@ import CustomerReviews from "../Pages/DashboardPages/VendorPages/CustomerReviews
 import Shops from "../Pages/DashboardPages/AdminPages/Shops/Shops";
 import BecomeSeller from "../Pages/DashboardPages/CustomerPages/BecomeSeller/BecomeSeller";
 import CompareProducts from "../Pages/DashboardPages/CustomerPages/CompareProducts/CompareProducts";
+import CustomerRequests from "../Pages/DashboardPages/AdminPages/CustomerRequests/CustomerRequests";
 
 
 
@@ -134,6 +135,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/admin/all-shops",
         element: <Shops/>
+      },
+      {
+        path: "/dashboard/admin/become-vendor-requests",
+        element: <CustomerRequests/>
       },
       {
         path: "/dashboard/admin/blacklist-shop",

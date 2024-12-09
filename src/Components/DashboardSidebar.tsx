@@ -27,6 +27,7 @@ import { Menu } from "antd";
 import { useAppDispatch, useAppSelector } from "../Redux/hook";
 import { logout } from "../Redux/Features/Auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import { MdRequestPage } from "react-icons/md";
 
 type MenuItem = Required<MenuProps>["items"][number];
 const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
@@ -242,6 +243,15 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
     },
     {
       key: "9",
+      icon: <MdRequestPage />,
+      label: (
+        <button onClick={() => navigate("/dashboard/admin/become-vendor-requests",)}>
+         Become Vendor Requests
+        </button>
+      ),
+    },
+    {
+      key: "10",
       icon: <LogoutOutlined />,
       label: <button onClick={() => handleLogout()}>Logout</button>,
     },
