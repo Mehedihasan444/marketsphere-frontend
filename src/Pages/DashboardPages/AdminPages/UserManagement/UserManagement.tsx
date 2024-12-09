@@ -103,10 +103,10 @@ const UserManagement: React.FC = () => {
           type: "success",
           content: `User role updated successfully!`,
         });
-      } else if (res.error) {
+      } else if (res?.error) {
         message.open({
           type: "error",
-          content: res.error.data.message,
+          content: res?.error?.data.message,
         });
       }
     } catch (error) {

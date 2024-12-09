@@ -28,6 +28,7 @@ import CustomerRequests from "../Pages/DashboardPages/AdminPages/CustomerRequest
 import Profile from "../Pages/DashboardPages/CustomerPages/Profile/Profile";
 import FollowedShops from "../Pages/DashboardPages/CustomerPages/FollowedShops/FollowedShops";
 import CartPage from "../Pages/MainPages/Cart/CartPage";
+import AdminHome from "../Pages/DashboardPages/AdminPages/AdminHome/AdminHome";
 
 // Router configuration
 const router = createBrowserRouter([
@@ -124,7 +125,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/dashboard/admin/home",
-        element: <CustomerHome />,
+        element: <AdminHome />,
       },
       {
         path: "/dashboard/admin/user-management",

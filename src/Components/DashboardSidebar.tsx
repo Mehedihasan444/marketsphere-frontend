@@ -170,7 +170,7 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
       key: "1",
       icon: <HomeOutlined />,
       label: (
-        <button onClick={() => navigate("/dashboard/vendor/home")}>
+        <button onClick={() => navigate("/dashboard/admin/home")}>
           Dashboard
         </button>
       ),

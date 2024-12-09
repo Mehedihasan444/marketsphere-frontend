@@ -1,60 +1,63 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import { Card, Col, Row, Statistic, Table, Button, Space, Tag } from "antd";
+import { Card, Col, Row, Statistic, Table, Button, Space, Tag, Alert, Spin } from "antd";
 import { DollarCircleOutlined, ShoppingCartOutlined, TeamOutlined } from "@ant-design/icons";
-import { useGetVendorDashboardDataQuery } from "../../Redux/Features/Vendor/vendorApi";
+import { useGetVendorDashboardDataQuery } from "../../../../Redux/Features/DashboardHome/dashboardHomeApi";
+import { FcRatings } from "react-icons/fc";
 
-// ! 
-const dashboardData={
-    "data": {
-      "totalSales": 25000,
-      "totalOrders": 1200,
-      "totalProducts": 50,
-      "totalCustomers": 150,
-      "recentOrders": [
+// ! have to remove this
+const recentOrders= [
         {
-          "orderId": "ORD12345",
-          "customerName": "John Doe",
-          "totalAmount": 150.75,
-          "status": "Completed"
+          orderId: "ORD12345",
+          customerName: "John Doe",
+          totalAmount: 150.75,
+          status: "Completed"
         },
         {
-          "orderId": "ORD12346",
-          "customerName": "Jane Smith",
-          "totalAmount": 75.50,
-          "status": "Pending"
+          orderId: "ORD12346",
+          customerName: "Jane Smith",
+          totalAmount: 75.50,
+          status: "Pending"
         },
         {
-          "orderId": "ORD12347",
-          "customerName": "Emily Johnson",
-          "totalAmount": 99.99,
-          "status": "Cancelled"
+          orderId: "ORD12347",
+          customerName: "Emily Johnson",
+          totalAmount: 99.99,
+          status: "Cancelled"
         }
       ]
-    }
-  }
-  
 
 const VendorHome: React.FC = () => {
   // Fetch vendor-specific dashboard data
-//   const { data, isLoading, error } = useGetVendorDashboardDataQuery();
+  const { data={}, isLoading, error } = useGetVendorDashboardDataQuery("");
+const { data:dashboardData } = data;
+if (isLoading) {
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <Spin size="large" />
+    </div>
+  );
+}
 
-//   if (isLoading) return <div>Loading...</div>;
-//   if (error) return <div>Error loading dashboard data. Please try again.</div>;
+if (error) {
+  return (
+    <Alert
+      message="Error"
+      description="Failed to load users."
+      type="error"
+      showIcon
+    />
+  );
+}
 
-//   const {
-//     totalSales,
-//     totalOrders,
-//     totalProducts,
-//     totalCustomers,
-//     recentOrders,
-//   } = data?.data || {};
   const {
-    totalSales,
     totalOrders,
+    totalEarnings,
     totalProducts,
-    totalCustomers,
-    recentOrders,
-  } = dashboardData.data || {};
+    totalReviews,
+    averageRating,
+
+  } = dashboardData ;
 
   const columns = [
     {
@@ -108,7 +111,7 @@ const VendorHome: React.FC = () => {
           <Card>
             <Statistic
               title="Total Sales"
-              value={totalSales}
+              value={totalEarnings}
               prefix={<DollarCircleOutlined />}
             />
           </Card>
@@ -133,12 +136,24 @@ const VendorHome: React.FC = () => {
         <Col span={6}>
           <Card>
             <Statistic
-              title="Total Customers"
-              value={totalCustomers}
+              title="Total Reviews"
+              value={totalReviews}
               prefix={<TeamOutlined />}
             />
           </Card>
         </Col>
+      </Row>
+      <Row gutter={16} className="mb-5">
+        <Col span={6}>
+          <Card>
+            <Statistic
+              title="AVerage Rating"
+              value={averageRating}
+              prefix={<FcRatings />}
+            />
+          </Card>
+        </Col>
+
       </Row>
 
       {/* Recent Orders Table */}
