@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { Table, Button, Modal, message, Popconfirm } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Table, Button, message, Popconfirm } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import {
   useDeleteProductMutation,
   useGetProductsQuery,
@@ -14,15 +14,15 @@ const ProductManagement = () => {
   const [category, setCategory] = useState("");
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
-const { data = {}, isLoading } = useGetProductsQuery({
-  brand,
-  category,
-  page,
-  limit,
-  searchTerm,
-}); // Fetch all products
-const { data: products } = data.data || {};
-const [editingProduct, setEditingProduct] = useState(null);
+  const { data = {}, isLoading } = useGetProductsQuery({
+    brand,
+    category,
+    page,
+    limit,
+    searchTerm,
+  }); // Fetch all products
+  const { data: products } = data?.data || {};
+  const [editingProduct, setEditingProduct] = useState(null);
   const [deleteProduct] = useDeleteProductMutation(); // Mutation for deleting products
 
   // Delete product handler

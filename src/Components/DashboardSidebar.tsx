@@ -49,48 +49,55 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
         </button>
       ),
     },
-    { key: "2", icon: <SearchOutlined />, label: "Advanced Search" }, // Advanced Search/Filters
-    { key: "3", icon: <ShoppingCartOutlined />, label: "Cart" }, // Cart (with multi-vendor logic)
-    
+
     {
-      key: "4",
+      key: "2",
       icon: <FileTextOutlined />,
       label: "Orders",
       children: [
-        { key: "5", label: "Order History", icon: <HistoryOutlined /> },
-        { key: "6", label: "Leave Reviews", icon: <FileTextOutlined /> },
+        { key: "3", label: "Order History", icon: <HistoryOutlined /> },
+        { key: "4", label: "Leave Reviews", icon: <FileTextOutlined /> },
       ],
     },
-    { key: "7", icon: <HeartOutlined />, label: "Wishlist" }, // Wishlist
+    {
+      key: "5",
+      icon: <ShopOutlined />,
+      label: (
+        <button onClick={() => navigate("/dashboard/customer/followed-shops")}>
+          Followed Shops
+        </button>
+      ),
+    }, // Followed Vendor Shops
+    { key: "6", icon: <ProfileOutlined />, label: "Recent Products" }, // Last 10 Products Viewed
+    {
+      key: "7",
+      icon: <UserOutlined />,
+      label: (
+        <button onClick={() => navigate("/dashboard/customer/profile")}>
+          Profile
+        </button>
+      ),
+    }, // Customer Profile
+    
     {
       key: "8",
-      icon: <ShopOutlined />,
-      label: <button onClick={() => navigate("/dashboard/customer/followed-shops")}>Followed Shops</button> ,
-    }, // Followed Vendor Shops
-    { key: "9", icon: <ProfileOutlined />, label: "Recent Products" }, // Last 10 Products Viewed
-    { key: "10", icon: <UserOutlined />, label:<button onClick={() => navigate("/dashboard/customer/profile")}>
-    Profile
-  </button> }, // Customer Profile
-    {
-      key: "11",
-      icon: <QuestionCircleOutlined />,
-      label: "Support",
-      children: [
-        { key: "12", label: "Contact Us" },
-        { key: "13", label: "FAQs" },
-      ],
-    },
-    {
-      key: "14",
       icon: <LogoutOutlined />,
       label: (
         <button onClick={() => navigate("/dashboard/customer/be-a-vendor")}>
           Be A Vendor
         </button>
       ),
+    },{
+      key: "9",
+      icon: <QuestionCircleOutlined />,
+      label: "Support",
+      children: [
+        { key: "10", label: "Contact Us" },
+        { key: "11", label: "FAQs" },
+      ],
     },
     {
-      key: "15",
+      key: "12",
       icon: <LogoutOutlined />,
       label: <button onClick={() => handleLogout()}>Logout</button>,
     },
@@ -239,8 +246,10 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
       key: "9",
       icon: <MdRequestPage />,
       label: (
-        <button onClick={() => navigate("/dashboard/admin/become-vendor-requests",)}>
-         Become Vendor Requests
+        <button
+          onClick={() => navigate("/dashboard/admin/become-vendor-requests")}
+        >
+          Become Vendor Requests
         </button>
       ),
     },
