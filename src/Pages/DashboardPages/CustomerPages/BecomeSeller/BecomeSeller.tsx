@@ -1,8 +1,10 @@
 import React from "react";
 import { Form, Input, Button, message } from "antd";
 import { useSendBecomeVendorRequestMutation } from "../../../../Redux/Features/BecomeSeller/becomeSellerApi";
+import { useAppSelector } from "../../../../Redux/hook";
 
 const BecomeSeller: React.FC = () => {
+  const user = useAppSelector((state) => state.auth.user);
   const [form] = Form.useForm();
   const [sendBecomeVendorRequest, { isLoading }] =
     useSendBecomeVendorRequestMutation(); 
@@ -34,7 +36,7 @@ const BecomeSeller: React.FC = () => {
         form={form}
         layout="vertical"
         onFinish={handleSubmit}
-        initialValues={{ name: "", email: "", reason: "" , phone: "", address: ""}}
+        initialValues={{ name: "", email: user?.email, reason: "" , phone: "", address: ""}}
       >
         <div className="flex justify-between items-center gap-4">
           <Form.Item
@@ -57,7 +59,7 @@ const BecomeSeller: React.FC = () => {
             ]}
             className="flex-1"
           >
-            <Input placeholder="Enter your email" />
+            <Input placeholder="Enter your email" disabled/>
           </Form.Item>
         </div>
         <div className="flex justify-between items-center gap-4">

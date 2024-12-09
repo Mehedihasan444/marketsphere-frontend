@@ -18,8 +18,6 @@
 //   const [addProduct, { isLoading }] = useAddProductMutation(); // Redux mutation hook
 //   const [imageFiles, setImageFiles] = useState<File[]>([]); // Handle multiple images
 
-
-
 //   const handleSubmit = async (values: any) => {
 //     const formData = new FormData();
 
@@ -383,7 +381,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Input, InputNumber, message, Modal, Select } from "antd";
 import { useAddProductMutation } from "../../../../Redux/Features/Product/productApi";
-import { TProduct } from "../../../../Interface";
+import { TCategory, TProduct } from "../../../../Interface";
+import { useGetAllCategoriesQuery } from "../../../../Redux/Features/Category/categoryApi";
+import { useGetVendorQuery } from "../../../../Redux/Features/Vendor/vendorApi";
+import { useAppSelector } from "../../../../Redux/hook";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -397,6 +398,18 @@ const ProductModal: React.FC<ProductModalProps> = ({ initialData }) => {
   const [imageFiles, setImageFiles] = useState<File[]>([]); // Handle multiple images
   const [form] = Form.useForm();
   const [addProduct, { isLoading }] = useAddProductMutation(); // Redux mutation hook
+  const { data = {} } = useGetAllCategoriesQuery({ page: 1, limit: 10 }); // Redux query hook
+  const { data: categories = [] } = data.data || {};
+  const vendor = useAppSelector((state) => state.auth.user);
+  // Fetch vendor all shops
+  const {
+    data: shopData = {},
+    isLoading: shopLoading,
+    error,
+  } = useGetVendorQuery(vendor?.email as string);
+
+  const { id, shop: shops = [], name } = shopData.data || {};
+  console.log(shops);
 
   // Open modal
   const showModal = () => setOpen(true);
@@ -428,8 +441,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ initialData }) => {
       discount: values.discount,
       quantity: values.quantity,
       rating: values.rating || 0, // Default rating to 0
-      categoryId: "2d0cf94c-bc94-4169-81e4-43f75d0d4fc7",
-      shopId:" 2d0cf94c-bc94-4169-81e4-43f75d0d4fc7",
+      categoryId: values.categoryId,
+      shopId: values.shopId,
       flashSaleId: values.flashSaleId || null, // Optional field
     };
     formData.append("data", JSON.stringify(data));
@@ -441,7 +454,9 @@ const ProductModal: React.FC<ProductModalProps> = ({ initialData }) => {
       const response = await addProduct(formData);
       if (response?.data?.success) {
         message.success(
-          initialData ? "Product updated successfully!" : "Product added successfully!"
+          initialData
+            ? "Product updated successfully!"
+            : "Product added successfully!"
         );
         onClose(); // Close modal on success
       } else if (response?.error) {
@@ -479,7 +494,9 @@ const ProductModal: React.FC<ProductModalProps> = ({ initialData }) => {
             <Form.Item
               name="name"
               label="Product Name"
-              rules={[{ required: true, message: "Please enter the product name!" }]}
+              rules={[
+                { required: true, message: "Please enter the product name!" },
+              ]}
             >
               <Input placeholder="Enter product name" />
             </Form.Item>
@@ -487,7 +504,9 @@ const ProductModal: React.FC<ProductModalProps> = ({ initialData }) => {
             <Form.Item
               name="description"
               label="Description"
-              rules={[{ required: true, message: "Please enter a description!" }]}
+              rules={[
+                { required: true, message: "Please enter a description!" },
+              ]}
             >
               <TextArea placeholder="Enter product description" rows={4} />
             </Form.Item>
@@ -509,7 +528,9 @@ const ProductModal: React.FC<ProductModalProps> = ({ initialData }) => {
               <Form.Item
                 name="quantity"
                 label="Quantity"
-                rules={[{ required: true, message: "Please enter the quantity!" }]}
+                rules={[
+                  { required: true, message: "Please enter the quantity!" },
+                ]}
               >
                 <InputNumber
                   min={1}
@@ -535,8 +556,9 @@ const ProductModal: React.FC<ProductModalProps> = ({ initialData }) => {
               rules={[{ required: true, message: "Please select a category!" }]}
             >
               <Select placeholder="Select category">
-                <Option value="category1">Category 1</Option>
-                <Option value="category2">Category 2</Option>
+                {categories.map((category: TCategory) => (
+                  <Option value={category.id}>{category.name}</Option>
+                ))}
               </Select>
             </Form.Item>
 
@@ -546,13 +568,14 @@ const ProductModal: React.FC<ProductModalProps> = ({ initialData }) => {
               rules={[{ required: true, message: "Please select a shop!" }]}
             >
               <Select placeholder="Select shop">
-                <Option value="shop1">Shop 1</Option>
-                <Option value="shop2">Shop 2</Option>
+                {shops.map((shop: any) => (
+                  <Option value={shop.id}>{shop.name}</Option>
+                ))}
               </Select>
             </Form.Item>
 
             <Form.Item name="flashSaleId" label="Flash Sale (Optional)">
-              <Select placeholder="Select flash sale (if applicable)">
+              <Select placeholder="Select flash sale (if applicable)" disabled>
                 <Option value="flashSale1">Flash Sale 1</Option>
                 <Option value="flashSale2">Flash Sale 2</Option>
               </Select>

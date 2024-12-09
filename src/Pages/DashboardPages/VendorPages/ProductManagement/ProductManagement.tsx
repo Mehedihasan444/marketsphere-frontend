@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { Table, Button, Modal, message, Popconfirm } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
@@ -9,16 +10,19 @@ import ProductModal from "./ProductModal";
 
 const ProductManagement = () => {
   const [brand, setBrand] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
-  const { data: products, isLoading } = useGetProductsQuery({
-    brand,
-    category,
-    page,
-    limit,
-  }); // Fetch all products
-
+const { data = {}, isLoading } = useGetProductsQuery({
+  brand,
+  category,
+  page,
+  limit,
+  searchTerm,
+}); // Fetch all products
+const { data: products } = data.data || {};
+const [editingProduct, setEditingProduct] = useState(null);
   const [deleteProduct] = useDeleteProductMutation(); // Mutation for deleting products
 
   // Delete product handler
@@ -71,9 +75,8 @@ const ProductManagement = () => {
       render: (_: any, record: any) => (
         <>
           <Button
-            icon={<EditOutlined />}
             style={{ marginRight: 8 }}
-            onClick={() => openModal(record)}
+            onClick={() => setEditingProduct(record)}
           >
             <ProductModal initialData={editingProduct} />
           </Button>

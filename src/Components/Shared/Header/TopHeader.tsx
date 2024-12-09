@@ -3,11 +3,13 @@ import { Avatar, Dropdown, Input, MenuProps, Space } from "antd";
 import Cart from "../../../Pages/MainPages/Cart/Cart";
 import Wishlist from "../../Wishlist";
 import { Link } from "react-router-dom";
-import { DownOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons";
-import { useAppSelector } from "../../../Redux/hook";
+import { DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons";
+import { useAppDispatch, useAppSelector } from "../../../Redux/hook";
+import { logout } from "../../../Redux/Features/Auth/authSlice";
 const { Search } = Input;
 const TopHeader = () => {
   const user = useAppSelector((state) => state.auth.user);
+  const dispatch=useAppDispatch()
   const items: MenuProps["items"] = [
     {
       key: "1",
@@ -33,6 +35,14 @@ const TopHeader = () => {
         <a href={`/dashboard/${user?.role.toLowerCase()}/home`}>Dashboard</a>
       ),
       icon: <SettingOutlined />,
+      extra: "⌘S",
+    },
+    {
+      key: "5",
+      label: (
+        <button onClick={()=>dispatch(logout())}>Logout</button>
+      ),
+      icon: <LogoutOutlined />,
       extra: "⌘S",
     },
   ];

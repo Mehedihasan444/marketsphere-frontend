@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+// ! have implement edit functionality
 import React from "react";
 import {
   Table,
@@ -14,7 +17,6 @@ import { useAppSelector } from "../../../../Redux/hook";
 import { useGetVendorQuery } from "../../../../Redux/Features/Vendor/vendorApi";
 import AddShopModal from "./AddShopModal/AddShopModal";
 import { TShop } from "../../../../Interface";
-// import { useGetAllShopsQuery, useUpdateShopStatusMutation } from "../../Redux/Features/Shop/shopApi";
 
 const ManageShop: React.FC = () => {
   const vendor = useAppSelector((state) => state.auth.user);

@@ -3,7 +3,15 @@ import { baseApi } from "../../Api/baseApi";
 const shopApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllShops: builder.query({
-      query: ({ status, page, limit }: { status: string; page: number; limit: number }) => {
+      query: ({
+        status,
+        page,
+        limit,
+      }: {
+        status: string;
+        page: number;
+        limit: number;
+      }) => {
         let queryString = "/shops?";
         if (status) queryString += `status=${status}&`;
         if (page) queryString += `page=${page}&`;
@@ -29,11 +37,11 @@ const shopApi = baseApi.injectEndpoints({
     }),
     addShop: builder.mutation({
       query: (payload) => ({
-      url: "/shops",
-      method: "POST",
-      body: payload,
+        url: "/shops",
+        method: "POST",
+        body: payload,
       }),
-      invalidatesTags: ["shop"],
+      invalidatesTags: ["vendor"],
     }),
     deleteShop: builder.mutation({
       query: (id: string) => ({
@@ -42,8 +50,12 @@ const shopApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["shop"],
     }),
- 
   }),
 });
 
-export const { useGetAllShopsQuery, useUpdateShopStatusMutation,useAddShopMutation,useDeleteShopMutation } = shopApi;
+export const {
+  useGetAllShopsQuery,
+  useUpdateShopStatusMutation,
+  useAddShopMutation,
+  useDeleteShopMutation,
+} = shopApi;

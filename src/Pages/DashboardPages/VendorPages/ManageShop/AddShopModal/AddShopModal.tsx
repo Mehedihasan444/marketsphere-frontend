@@ -28,13 +28,13 @@ const AddShopModal: React.FC<{ vendorId: string }> = ({ vendorId }) => {
     try {
       // Make the API request
       const response = await addShop(formData);
-      console.log(response);
+
       if (response?.data?.success) {
         message.success("Shop added successfully!");
-        // form.resetFields();
-        // setLogoFile(null);
-        // setBannerFile(null);
-        // setIsModalOpen(false);
+        form.resetFields();
+        setLogoFile(null);
+        setBannerFile(null);
+        setIsModalOpen(false);
       } else if(response?.error) {
         message.error(response?.error?.data.message || "Failed to add shop.");
       }
