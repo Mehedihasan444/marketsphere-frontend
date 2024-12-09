@@ -76,7 +76,9 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
       label: "Followed Shops",
     }, // Followed Vendor Shops
     { key: "10", icon: <ProfileOutlined />, label: "Recent Products" }, // Last 10 Products Viewed
-    { key: "11", icon: <UserOutlined />, label: "Profile" }, // Customer Profile
+    { key: "11", icon: <UserOutlined />, label:<button onClick={() => navigate("/dashboard/customer/profile")}>
+    Profile
+  </button> }, // Customer Profile
     {
       key: "12",
       icon: <QuestionCircleOutlined />,

@@ -25,6 +25,7 @@ import Shops from "../Pages/DashboardPages/AdminPages/Shops/Shops";
 import BecomeSeller from "../Pages/DashboardPages/CustomerPages/BecomeSeller/BecomeSeller";
 import CompareProducts from "../Pages/DashboardPages/CustomerPages/CompareProducts/CompareProducts";
 import CustomerRequests from "../Pages/DashboardPages/AdminPages/CustomerRequests/CustomerRequests";
+import Profile from "../Pages/DashboardPages/CustomerPages/Profile/Profile";
 
 
 
@@ -50,7 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/products/:id",
         element: <ProductDetails />,
-      },
+      },{
+        path: "/profile",
+        element: <Profile />,
+      }
     ],
   },
   {
@@ -69,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/customer/compare",
         element: <CompareProducts/>
+      },
+      {
+        path: "/dashboard/customer/profile",
+        element: <Profile />,
       }
     ],
   },
