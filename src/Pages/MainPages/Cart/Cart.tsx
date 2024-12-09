@@ -3,6 +3,7 @@ import { Button, Drawer, Tooltip } from "antd";
 import { IoCartOutline } from "react-icons/io5";
 import CartCard from "./CartCard";
 import { DeleteOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 const allProducts = [
   {
     id: "1",
@@ -136,20 +137,18 @@ const Cart: React.FC = () => {
         open={open}
         loading={loading}
         onClose={() => setOpen(false)}
-        
       >
         <div className="mb-28">
-
-        {allProducts.map((product, idx) => (
-          <div className="relative" key={idx}>
-            <CartCard product={product} />
-            <div className="absolute top-0 right-0 cursor-pointer">
-              <Tooltip title={"Delete"}>
-                <DeleteOutlined className="hover:text-blue-500" />
-              </Tooltip>
+          {allProducts.map((product, idx) => (
+            <div className="relative" key={idx}>
+              <CartCard product={product} />
+              <div className="absolute top-0 right-0 cursor-pointer">
+                <Tooltip title={"Delete"}>
+                  <DeleteOutlined className="hover:text-blue-500" />
+                </Tooltip>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
         </div>
 
         {/* <Button
@@ -165,9 +164,11 @@ const Cart: React.FC = () => {
             <span className="font-semibold">SUBTOTAL:</span>
             <span className="text-red-500 font-bold">$65456</span>
           </div>
-          <Button shape={"round"} className="w-full">
-            VIEW CART
-          </Button>
+          <Link to={"/cart"}>
+            <Button shape={"round"} className="w-full" onClick={()=>setOpen(false)}>
+              VIEW CART
+            </Button>
+          </Link>
           <Button shape="round" type="primary" className="w-full">
             CHECK OUT
           </Button>

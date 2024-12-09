@@ -11,7 +11,7 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
     {
-      label: "Home",
+      label: <a href="/" >Home</a>,
       key: "home",
     },
     {

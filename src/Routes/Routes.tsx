@@ -27,6 +27,7 @@ import CompareProducts from "../Pages/MainPages/CompareProducts/CompareProducts"
 import CustomerRequests from "../Pages/DashboardPages/AdminPages/CustomerRequests/CustomerRequests";
 import Profile from "../Pages/DashboardPages/CustomerPages/Profile/Profile";
 import FollowedShops from "../Pages/DashboardPages/CustomerPages/FollowedShops/FollowedShops";
+import CartPage from "../Pages/MainPages/Cart/CartPage";
 
 // Router configuration
 const router = createBrowserRouter([
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: "/shop",
         element: <Shop />,
+      },
+      {
+        path: "/cart",
+        element: <CartPage />,
       },
       {
         path: "/products/:id",
