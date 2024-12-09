@@ -23,21 +23,20 @@ import OrderHistory from "../Pages/DashboardPages/VendorPages/OrderHistory/Order
 import CustomerReviews from "../Pages/DashboardPages/VendorPages/CustomerReviews/CustomerReviews";
 import Shops from "../Pages/DashboardPages/AdminPages/Shops/Shops";
 import BecomeSeller from "../Pages/DashboardPages/CustomerPages/BecomeSeller/BecomeSeller";
-import CompareProducts from "../Pages/DashboardPages/CustomerPages/CompareProducts/CompareProducts";
+import CompareProducts from "../Pages/MainPages/CompareProducts/CompareProducts";
 import CustomerRequests from "../Pages/DashboardPages/AdminPages/CustomerRequests/CustomerRequests";
 import Profile from "../Pages/DashboardPages/CustomerPages/Profile/Profile";
-
-
+import FollowedShops from "../Pages/DashboardPages/CustomerPages/FollowedShops/FollowedShops";
 
 // Router configuration
 const router = createBrowserRouter([
   {
     path: "/",
     element: <SuspenseWrapper />,
-    errorElement: <NotFound/>,
+    errorElement: <NotFound />,
     children: [
       {
-       path: "/",
+        path: "/",
         element: <Home />,
       },
       {
@@ -51,119 +50,121 @@ const router = createBrowserRouter([
       {
         path: "/products/:id",
         element: <ProductDetails />,
-      },{
-        path: "/profile",
-        element: <Profile />,
-      }
+      },
+      {
+        path: "/compare-products",
+        element: <CompareProducts />,
+      },
     ],
   },
   {
     path: "/dashboard/customer",
-    errorElement: <NotFound/>,
+    errorElement: <NotFound />,
     element: <Dashboard />,
     children: [
       {
         path: "/dashboard/customer/home",
-        element: <CustomerHome/>
+        element: <CustomerHome />,
       },
       {
         path: "/dashboard/customer/be-a-vendor",
-        element: <BecomeSeller/>
+        element: <BecomeSeller />,
       },
-      {
-        path: "/dashboard/customer/compare",
-        element: <CompareProducts/>
-      },
+
       {
         path: "/dashboard/customer/profile",
         element: <Profile />,
-      }
+      },
+      {
+        path: "/dashboard/customer/followed-shops",
+        element: <FollowedShops />,
+      },
     ],
   },
   {
     path: "/dashboard/vendor",
-    errorElement: <NotFound/>,
+    errorElement: <NotFound />,
     element: <Dashboard />,
     children: [
       {
         path: "/dashboard/vendor/home",
-        element: <VendorHome/>
+        element: <VendorHome />,
       },
       {
         path: "/dashboard/vendor/manage-shop",
-        element: <ManageShop/>
+        element: <ManageShop />,
       },
       {
         path: "/dashboard/vendor/manage-product",
-        element: <ProductManagement/>
+        element: <ProductManagement />,
       },
       {
         path: "/dashboard/vendor/manage-order",
-        element: <ManageOrder/>
+        element: <ManageOrder />,
       },
       {
         path: "/dashboard/vendor/order-history",
-        element: <OrderHistory/>
+        element: <OrderHistory />,
       },
       {
         path: "/dashboard/vendor/customer-review",
-        element: <CustomerReviews/>
+        element: <CustomerReviews />,
       },
     ],
   },
   {
     path: "/dashboard/admin",
-    errorElement: <NotFound/>,
+    errorElement: <NotFound />,
     element: <Dashboard />,
     children: [
       {
         path: "/dashboard/admin/home",
-        element: <CustomerHome/>
+        element: <CustomerHome />,
       },
       {
         path: "/dashboard/admin/user-management",
-        element: <UserManagement/>
+        element: <UserManagement />,
       },
       {
         path: "/dashboard/admin/vendor-management",
-        element: <VendorManagement/>
+        element: <VendorManagement />,
       },
       {
         path: "/dashboard/admin/category-management",
-        element: <CategoryManagement/>
+        element: <CategoryManagement />,
       },
       {
         path: "/dashboard/admin/monitor-transactions",
-        element: <MonitorTransactions/>
+        element: <MonitorTransactions />,
       },
       {
         path: "/dashboard/admin/review-activities",
-        element: <ReviewActivities/>
+        element: <ReviewActivities />,
       },
       {
         path: "/dashboard/admin/all-shops",
-        element: <Shops/>
+        element: <Shops />,
       },
       {
         path: "/dashboard/admin/become-vendor-requests",
-        element: <CustomerRequests/>
+        element: <CustomerRequests />,
       },
       {
         path: "/dashboard/admin/blacklist-shop",
-        element: <BlacklistShop/>
+        element: <BlacklistShop />,
       },
     ],
   },
   {
     path: "/login",
     element: <Login />,
-    errorElement: <NotFound/>,
+    errorElement: <NotFound />,
   },
   {
     path: "/signup",
     element: <Register />,
-    errorElement: <NotFound/>,
+    errorElement: <NotFound />,
   },
-],);
+]);
 
 export default router;

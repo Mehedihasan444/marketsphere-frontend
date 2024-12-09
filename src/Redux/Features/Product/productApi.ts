@@ -20,9 +20,10 @@ type Product = {
 export const productApi =  baseApi.injectEndpoints({
 
     endpoints: (builder) => ({
-        getProducts: builder.query<Product[], {brand:string; category: string; page: number; limit: number }>({
-            query: ({ category,brand, page, limit }: { category: string;brand:string; page: number; limit: number }) => {
+        getProducts: builder.query<Product[], {brand:string;searchTerm:string; category: string; page: number; limit: number }>({
+            query: ({ category,searchTerm,brand, page, limit }: { category: string;searchTerm:string,brand:string; page: number; limit: number }) => {
                 let queryString = "/products?";
+                if (searchTerm) queryString += `searchTerm=${searchTerm}&`;
                 if (brand) queryString += `brand=${brand}&`;
                 if (category) queryString += `category=${category}&`;
                 if (page) queryString += `page=${page}&`;

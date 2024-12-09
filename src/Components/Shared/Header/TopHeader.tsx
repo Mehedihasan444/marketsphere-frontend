@@ -19,7 +19,7 @@ const TopHeader = () => {
     },
     {
       key: '2',
-      label:  <a href="/profile">Profile</a>,
+      label:  <a href="/dashboard/customer/profile">Profile</a>,
       extra: '⌘P',
     },
     {

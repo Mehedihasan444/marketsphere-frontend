@@ -59,8 +59,8 @@ const items: MenuItem[] = [
       ],
     },
     {
-      label: "Deals",
-      key: "deals",
+      label: (<a href="/compare-products" >Compare</a>) ,
+      key: "compare",
     },
     {
       label: (<a href="/about" >About Us</a>) ,
