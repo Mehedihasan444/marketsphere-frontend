@@ -26,6 +26,7 @@ export type TProduct = {
   flashSaleId: string;
   shopId: string;
   isDeleted: boolean;
+  reviews: [];
   createdAt: Date;
   updatedAt: Date;
 };

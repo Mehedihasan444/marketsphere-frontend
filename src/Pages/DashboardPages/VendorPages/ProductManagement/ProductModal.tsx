@@ -98,7 +98,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ initialData }) => {
   return (
     <>
       <Button type="primary" variant="outlined" onClick={showModal}>
-        {initialData ? "Edit" : "Add"}
+        {initialData ? "Edit Product" : "Add Product"}
       </Button>
       <Modal
         key={initialData?.id || "add-product"}

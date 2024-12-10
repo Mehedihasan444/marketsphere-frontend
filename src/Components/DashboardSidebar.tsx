@@ -23,7 +23,7 @@ import {
   ShopFilled,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Menu } from "antd";
+import { Button, Menu } from "antd";
 import { useAppDispatch, useAppSelector } from "../Redux/hook";
 import { logout } from "../Redux/Features/Auth/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -78,7 +78,7 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
         </button>
       ),
     }, // Customer Profile
-    
+
     {
       key: "8",
       icon: <LogoutOutlined />,
@@ -87,7 +87,8 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
           Be A Vendor
         </button>
       ),
-    },{
+    },
+    {
       key: "9",
       icon: <QuestionCircleOutlined />,
       label: "Support",
@@ -275,7 +276,7 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
         width: collapsed ? "auto " : 256,
         transition: "width 0.3s ease",
       }}
-      className="h-screen "
+      className="h-screen relative"
     >
       {/* Sidebar Menu */}
       <Menu
@@ -286,6 +287,16 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
         items={items}
         className="h-full pt-10"
       />
+
+      <Button
+      icon={<HomeOutlined />}
+        size="large"
+        type="default"
+        className="w-full text-lg  rounded-none mt-auto absolute bottom-0 left-0 right-0 flex-grow"
+        onClick={() => navigate("/")}
+      >
+        {collapsed ? " " : "Home"}
+      </Button>
     </div>
   );
 };

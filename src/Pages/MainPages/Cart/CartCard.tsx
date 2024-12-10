@@ -1,8 +1,9 @@
 import { Button, Divider, Input } from "antd";
 import { useState } from "react";
+import { TProduct } from "../../../Interface";
 
-const CartCard = ({ product }) => {
-  const { name, price, color, images } = product;
+const CartCard = ({ product }:{product:TProduct}) => {
+  const { name, price, images } = product;
   const [quantity, setQuantity] = useState(1);
   // Increase quantity
   const increaseQuantity = () => {
@@ -21,7 +22,7 @@ const CartCard = ({ product }) => {
       <div className="flex justify-between gap-5">
         <div className="">
           <img
-            src={images[0]}
+            src={images![0]}
             alt={name}
             className="h-32 w-32 object-contain"
           />

@@ -131,7 +131,7 @@ const router = createBrowserRouter([
     path: "/dashboard/admin",
     errorElement: <NotFound />,
     element: (
-      <ProtectedRoute role="VENDOR">
+      <ProtectedRoute role="ADMIN">
         <Dashboard />
       </ProtectedRoute>
     ),

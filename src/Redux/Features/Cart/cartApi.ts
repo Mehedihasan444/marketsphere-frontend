@@ -7,21 +7,21 @@ interface CartItem {
   quantity: number;
 }
 
-interface AddToCartResponse {
-  success: boolean;
-  cartItem: CartItem;
-}
+
 
 export const cartApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getCartItems: builder.query<CartItem[], void>({
-      query: () => "cart",
+    getCartItems: builder.query({
+      query: () => ({
+        url:"/cart",
+        method: "GET",
+      }),
     }),
-    addToCart: builder.mutation<AddToCartResponse, Partial<CartItem>>({
-      query: (item) => ({
+    addToCart: builder.mutation({
+      query: ({userEmail,productId}) => ({
         url: "/cart",
         method: "POST",
-        body: item,
+        body: {email:userEmail,productId},
       }),
     }),
     removeFromCart: builder.mutation<{ success: boolean }, string>({
