@@ -29,6 +29,7 @@ import Profile from "../Pages/DashboardPages/CustomerPages/Profile/Profile";
 import FollowedShops from "../Pages/DashboardPages/CustomerPages/FollowedShops/FollowedShops";
 import CartPage from "../Pages/MainPages/Cart/CartPage";
 import AdminHome from "../Pages/DashboardPages/AdminPages/AdminHome/AdminHome";
+import ProtectedRoute from "./ProtectedRole";
 
 // Router configuration
 const router = createBrowserRouter([
@@ -66,7 +67,11 @@ const router = createBrowserRouter([
   {
     path: "/dashboard/customer",
     errorElement: <NotFound />,
-    element: <Dashboard />,
+    element: (
+      <ProtectedRoute role="CUSTOMER">
+        <Dashboard />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "/dashboard/customer/home",
@@ -90,7 +95,11 @@ const router = createBrowserRouter([
   {
     path: "/dashboard/vendor",
     errorElement: <NotFound />,
-    element: <Dashboard />,
+    element: (
+      <ProtectedRoute role="VENDOR">
+        <Dashboard />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "/dashboard/vendor/home",
@@ -121,7 +130,11 @@ const router = createBrowserRouter([
   {
     path: "/dashboard/admin",
     errorElement: <NotFound />,
-    element: <Dashboard />,
+    element: (
+      <ProtectedRoute role="VENDOR">
+        <Dashboard />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "/dashboard/admin/home",

@@ -17,6 +17,7 @@ const Home = () => {
         type="primary"
         style={{ insetInlineEnd: 24 }}
         icon={<BiSolidUpArrowSquare />}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       />
     </div>
   );

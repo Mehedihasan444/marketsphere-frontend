@@ -7,6 +7,7 @@ import {
   useGetProductsQuery,
 } from "../../../../Redux/Features/Product/productApi";
 import ProductModal from "./ProductModal";
+import { TProduct } from "../../../../Interface";
 
 const ProductManagement = () => {
   const [brand, setBrand] = useState("");
@@ -22,7 +23,6 @@ const ProductManagement = () => {
     searchTerm,
   }); // Fetch all products
   const { data: products } = data?.data || {};
-  const [editingProduct, setEditingProduct] = useState(null);
   const [deleteProduct] = useDeleteProductMutation(); // Mutation for deleting products
 
   // Delete product handler
@@ -72,32 +72,28 @@ const ProductManagement = () => {
     {
       title: "Actions",
       key: "actions",
-      render: (_: any, record: any) => (
-        <>
-          <Button
-            style={{ marginRight: 8 }}
-            onClick={() => setEditingProduct(record)}
-          >
-            <ProductModal initialData={editingProduct} />
-          </Button>
+      render: (_: any, record: TProduct) => (
+        <div className="sm:flex justify-between items-center gap-2 ">
+          <ProductModal key={`edit-${record.id}`} initialData={record} />
+
           <Popconfirm
             title="Are you sure you want to delete this product?"
             onConfirm={() => handleDelete(record.id)}
             okText="Yes"
             cancelText="No"
           >
-            <Button danger icon={<DeleteOutlined />}>
+            <Button danger type="primary" icon={<DeleteOutlined />}>
               Delete
             </Button>
           </Popconfirm>
-        </>
+        </div>
       ),
     },
   ];
 
   return (
     <div>
-      <div className="flex justify-between items-center gap-5">
+      <div className="flex justify-between items-center gap-5 my-4">
         <h2>Manage Products</h2>
 
         <ProductModal initialData={null} />
