@@ -51,6 +51,7 @@ export const baseApi = createApi({
     "product",
     "wishlist",
     "order",
+    "cart",
     "review",
     "user",
     "category",

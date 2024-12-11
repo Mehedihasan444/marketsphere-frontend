@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Table, Button, Tag, Space, message, Select, Pagination, Spin, Alert } from "antd";
-import { useGetAllReviewsQuery, useUpdateReviewStatusMutation } from "../../../../Redux/Features/Review/reviewApi";
+import { useGetAdminReviewsQuery, useUpdateReviewStatusMutation } from "../../../../Redux/Features/Review/reviewApi";
 
 const { Option } = Select;
 
@@ -19,7 +19,7 @@ const ReviewActivities= () => {
   const limit = 10;
 
   // Fetch reviews from the API
-  const { data = {}, isLoading, error } = useGetAllReviewsQuery({
+  const { data = {}, isLoading, error } = useGetAdminReviewsQuery({
     status: selectedStatus,
     page: currentPage,
     limit,

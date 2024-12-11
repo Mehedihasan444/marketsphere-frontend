@@ -2,9 +2,9 @@ import { HomeOutlined, ProductFilled } from "@ant-design/icons";
 import DynamicBreadcrumb from "../../../Components/Shared/DynamicBreadcrumb";
 import ProductImages from "./ProductImages/ProductImages";
 import ProductInfo from "./ProductInfo/ProductInfo";
-import DetailsTab from "./DetailsTab/DetailsTab";
 import { useParams } from "react-router-dom";
 import { useGetProductByIdQuery } from "../../../Redux/Features/Product/productApi";
+import ProductDetailsTabs from "./Product_Details_Tabs";
 
 const ProductDetails = () => {
   const productId = useParams<{ id: string }>().id;
@@ -59,7 +59,7 @@ const ProductDetails = () => {
 
         {/* Tabs Section */}
         <div className="mt-8">
-          <DetailsTab />
+          <ProductDetailsTabs id={product.id} />
         </div>
       </div>
     </div>

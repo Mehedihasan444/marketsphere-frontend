@@ -2,7 +2,7 @@ import { baseApi } from "../../Api/baseApi";
 
 const reviewApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllReviews: builder.query({
+    getAdminReviews: builder.query({
       query: ({ status, page, limit }: { status: string; page: number; limit: number }) => {
         let queryString = "/reviews?";
         if (status) queryString += `status=${status}&`;
@@ -29,7 +29,16 @@ const reviewApi = baseApi.injectEndpoints({
       },
       providesTags: ["review"],
     }),
+    getProductReviews: builder.query({
+      query: ({ productId, page, limit }: { productId: string; page: number; limit: number }) => {
+      let queryString = `/reviews/product/${productId}?`;
+      if (page) queryString += `page=${page}&`;
+      if (limit) queryString += `limit=${limit}&`;
+      return { url: queryString, method: "GET" };
+      },
+      providesTags: ["review"],
+    })
   }),
 });
 
-export const { useGetAllReviewsQuery, useUpdateReviewStatusMutation,useGetVendorReviewsQuery } = reviewApi;
+export const { useGetAdminReviewsQuery,useGetProductReviewsQuery, useUpdateReviewStatusMutation,useGetVendorReviewsQuery } = reviewApi;

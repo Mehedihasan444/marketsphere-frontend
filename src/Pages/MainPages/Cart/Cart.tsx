@@ -111,9 +111,8 @@ import { useGetCartItemsQuery } from "../../../Redux/Features/Cart/cartApi";
 const Cart: React.FC = () => {
   const [open, setOpen] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(true);
-  const { data = {},isLoading,error } = useGetCartItemsQuery("");
+  const { data = {}, isLoading, error } = useGetCartItemsQuery("");
   const { data: cartItems = [] } = data || {};
-
 
   const showLoading = () => {
     setOpen(true);
@@ -130,7 +129,7 @@ const Cart: React.FC = () => {
       <div className="relative cursor-pointer" onClick={showLoading}>
         <IoCartOutline size={30} className="hover:text-blue-500" />
         <div className="absolute -top-2 -right-2 p-1 h-4  w-4 flex items-center justify-center bg-red-500 rounded-full text-white text-xs">
-          <span>0</span>
+          <span>{cartItems.length}</span>
         </div>
       </div>
       <Drawer
@@ -143,7 +142,7 @@ const Cart: React.FC = () => {
         onClose={() => setOpen(false)}
       >
         <div className="mb-28">
-          {cartItems.map((product:any, idx:number) => (
+          {cartItems.map((product: any, idx: number) => (
             <div className="relative" key={idx}>
               <CartCard product={product.product} />
               <div className="absolute top-0 right-0 cursor-pointer">
