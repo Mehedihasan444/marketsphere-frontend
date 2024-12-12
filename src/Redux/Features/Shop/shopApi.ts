@@ -43,12 +43,20 @@ const shopApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["vendor"],
     }),
+    updateShop: builder.mutation({
+      query: ({id,formData}) => ({
+        url:  `/shops/${id}`,
+        method: "PATCH",
+        body: formData,
+      }),
+      invalidatesTags: ["vendor","shop"],
+    }),
     deleteShop: builder.mutation({
       query: (id: string) => ({
         url: `/shops/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["shop"],
+      invalidatesTags: ["vendor","shop"],
     }),
   }),
 });
@@ -58,4 +66,5 @@ export const {
   useUpdateShopStatusMutation,
   useAddShopMutation,
   useDeleteShopMutation,
+  useUpdateShopMutation
 } = shopApi;

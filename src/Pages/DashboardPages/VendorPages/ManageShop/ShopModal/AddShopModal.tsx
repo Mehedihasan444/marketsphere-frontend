@@ -78,6 +78,7 @@ const AddShopModal: React.FC<{ vendorId: string }> = ({ vendorId }) => {
           </Form.Item>
 
           <Form.Item name="logo" label="Shop Logo">
+            <img src={logoFile?URL.createObjectURL(logoFile):""} alt="logo" className="w-16 h-auto mb-2" />
             <Input
               type="file"
               variant="outlined"
@@ -88,6 +89,8 @@ const AddShopModal: React.FC<{ vendorId: string }> = ({ vendorId }) => {
           </Form.Item>
 
           <Form.Item name="banner" label="Shop Banner">
+          <img src={bannerFile?URL.createObjectURL(bannerFile):""} alt="logo" className="w-16 h-auto mb-2" />
+
             <Input
               type="file"
               name="logo"

@@ -12,11 +12,12 @@ import {
   Alert,
   Spin,
 } from "antd";
-import { useUpdateShopStatusMutation } from "../../../../Redux/Features/Shop/shopApi";
+import { useDeleteShopMutation, useUpdateShopStatusMutation } from "../../../../Redux/Features/Shop/shopApi";
 import { useAppSelector } from "../../../../Redux/hook";
 import { useGetVendorQuery } from "../../../../Redux/Features/Vendor/vendorApi";
-import AddShopModal from "./AddShopModal/AddShopModal";
 import { TShop } from "../../../../Interface";
+import AddShopModal from "./ShopModal/AddShopModal";
+import UpdateShopModal from "./ShopModal/UpdateShopModal";
 
 const ManageShop: React.FC = () => {
   const vendor = useAppSelector((state) => state.auth.user);
@@ -29,8 +30,8 @@ const ManageShop: React.FC = () => {
 
   const { id, shop = [], name } = data.data || {};
 
-  const [updateShopStatus, { isLoading: updating }] =
-    useUpdateShopStatusMutation();
+  const [deleteShop, { isLoading: updating }] =
+  useDeleteShopMutation()
 
   if (isLoading) {
     return (
@@ -52,19 +53,19 @@ const ManageShop: React.FC = () => {
   }
 
   // Handle status updates
-  const handleStatusUpdate = async (shopId: string, newStatus: string) => {
+  const handleDeleteShop = async (shopId: string) => {
     try {
-      const response = await updateShopStatus({ shopId, status: newStatus });
+      const response = await deleteShop(shopId);
       if (response?.data?.success) {
-        message.success("Shop status updated successfully!");
+        message.success("Shop deleted successfully!");
       } else {
         message.error(
-          response?.error?.data?.message || "Failed to update shop status."
+          response?.error?.data?.message || "Failed to delete shop."
         );
       }
     } catch (err) {
       console.error(err);
-      message.error("An error occurred while updating the shop status.");
+      message.error("An error occurred while deleting the shop.");
     }
   };
 
@@ -83,7 +84,7 @@ const ManageShop: React.FC = () => {
     {
       title: "Number of products",
       key: "noOfProducts",
-      render: (record:TShop) => {
+      render: (record: TShop) => {
         return record.products?.length || 0;
       },
     },
@@ -96,8 +97,8 @@ const ManageShop: React.FC = () => {
           status === "ACTIVE"
             ? "green"
             : status === "PENDING"
-            ? "orange"
-            : "red";
+              ? "orange"
+              : "red";
         return <Tag color={color}>{status}</Tag>;
       },
     },
@@ -106,28 +107,16 @@ const ManageShop: React.FC = () => {
       key: "actions",
       render: (_: any, record: any) => (
         <Space size="middle">
-          <Popconfirm
-            title="Are you sure you want to blacklist this shop?"
-            onConfirm={() => handleStatusUpdate(record.id, "BLACKLISTED")}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button
-              type="default"
-              variant="outlined"
-           
-              disabled={record.status === "BLACKLISTED"}
-            >
-              Edit
-            </Button>
-          </Popconfirm>
+
+          <UpdateShopModal shop={record} />
+
           <Popconfirm
             title="Are you sure you want to activate this shop?"
-            onConfirm={() => handleStatusUpdate(record.id, "ACTIVE")}
+            onConfirm={() => handleDeleteShop(record.id)}
             okText="Yes"
             cancelText="No"
           >
-            <Button type="primary" danger disabled={record.status === "ACTIVE"}>
+            <Button type="primary" danger >
               Delete
             </Button>
           </Popconfirm>
