@@ -45,7 +45,12 @@ const AddShopModal: React.FC<{ vendorId: string }> = ({ vendorId }) => {
   };
 
   const showModal = () => setIsModalOpen(true);
-  const handleCancel = () => setIsModalOpen(false);
+  const handleCancel = () => {
+    form.resetFields();
+    setIsModalOpen(false)
+    setLogoFile(null);
+    setBannerFile(null);
+  };
 
   return (
     <>

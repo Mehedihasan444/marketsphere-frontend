@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Modal, Form, Input, message } from "antd";
-import { useAddCategoryMutation } from "../../../../Redux/Features/Category/categoryApi";
-import { TCategory } from "../../../../Interface";
+import { useAddCategoryMutation } from "../../../../../Redux/Features/Category/categoryApi";
 
 // const { Option } = Select;
 const { TextArea } = Input;
-const CategoryModal: React.FC<{ initialData?: TCategory | null }> = ({
-  initialData,
-}) => {
+const AddCategoryModal: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>();
   const [form] = Form.useForm();
   const [addCategory, { isLoading }] = useAddCategoryMutation();
+
 
   const handleSubmit = async (values: {
     name: string;
@@ -29,8 +27,6 @@ const CategoryModal: React.FC<{ initialData?: TCategory | null }> = ({
         formData.append("image", file);
       }
       const response = await addCategory(formData);
-      console.log(response);
-      console.log(values);
       if (response?.data?.success) {
         message.success("Category added successfully!");
         form.resetFields(); // Reset the form
@@ -55,22 +51,14 @@ const CategoryModal: React.FC<{ initialData?: TCategory | null }> = ({
     setOpen(false);
     setFile(null);
   };
-  // Pre-fill form when editing
-  useEffect(() => {
-    if (initialData) {
-      form.setFieldsValue(initialData);
-    } else {
-      form.resetFields();
-    }
-  }, [initialData, form]);
 
   return (
     <>
       <Button type="primary" onClick={showModal}>
-        {initialData ? "Edit Category" : "Add Category"}
+        Add Category
       </Button>
       <Modal
-        title={initialData ? "Edit Category" : "Add Category"}
+        title="Add Category"
         open={open}
         onCancel={handleCancel}
         footer={null} // Remove default OK and Cancel buttons
@@ -102,10 +90,14 @@ const CategoryModal: React.FC<{ initialData?: TCategory | null }> = ({
           <Form.Item
             name="image"
             label="Category Image"
-            rules={[
-              { required: true, message: "Please select a category image!" },
-            ]}
+          // rules={[
+          //   { required: true, message: "Please select a category image!" },
+          // ]}
           >
+            {
+              file &&
+              <img src={file ? URL.createObjectURL(file) : ""} alt="category" className="w-16 h-auto mb-2" />
+            }
             <Input
               type="file"
               variant="outlined"
@@ -117,7 +109,7 @@ const CategoryModal: React.FC<{ initialData?: TCategory | null }> = ({
           <Form.Item className="flex justify-end items-center gap-4">
             <Button onClick={handleCancel} className="mr-4">Cancel</Button>
             <Button type="primary" htmlType="submit" loading={isLoading}>
-              {initialData ? "Update Product" : "Add Product"}
+              Add Product
             </Button>
           </Form.Item>
         </Form>
@@ -126,4 +118,4 @@ const CategoryModal: React.FC<{ initialData?: TCategory | null }> = ({
   );
 };
 
-export default CategoryModal;
+export default AddCategoryModal;

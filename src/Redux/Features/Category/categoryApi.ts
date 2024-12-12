@@ -4,19 +4,16 @@ const categoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllCategories: builder.query({
       query: ({
-        name,
-        status,
+        searchTerm,
         limit,
         page,
       }: {
-        name?: string;
-        status?: string;
+        searchTerm?: string;
         limit?: number;
         page?: number;
       }) => {
         let queryString = "/categories?";
-        if (name) queryString += `name=${name}&`;
-        if (status && status !== " ") queryString += `status=${status}&`;
+        if (searchTerm) queryString += `searchTerm=${searchTerm}&`;
         if (limit) queryString += `limit=${limit}&`;
         if (page) queryString += `page=${page}&`;
         return {
@@ -42,10 +39,10 @@ const categoryApi = baseApi.injectEndpoints({
       providesTags: ["category"],
     }),
     updateCategory: builder.mutation({
-      query: ({ CategoryId, ...data }) => ({
+      query: ({ CategoryId,formData }) => ({
         url: `/categories/${CategoryId}`,
         method: "PATCH",
-        body: data,
+        body: formData,
       }),
       invalidatesTags: ["category"],
     }),

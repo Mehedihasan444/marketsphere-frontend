@@ -10,21 +10,16 @@ import {
   message,
   Space,
   Button,
+  Popconfirm,
 } from "antd";
 import type { TableProps } from "antd";
 import { useDeleteCategoryMutation, useGetAllCategoriesQuery } from "../../../../Redux/Features/Category/categoryApi";
-import CategoryModal from "./CategoryModal";
+import UpdateCategoryModal from "./CategoryModal/UpdateCategoryModal";
+import { TCategory } from "../../../../Interface";
+import AddCategoryModal from "./CategoryModal/AddCategoryModal";
 
 
 
-interface CategoryType {
-  id: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  description: string;
-  image: string;
-}
 
 const CategoryManagement: React.FC = () => {
   const [searchName, setSearchName] = useState("");
@@ -36,7 +31,7 @@ const CategoryManagement: React.FC = () => {
     isLoading,
     error,
   } = useGetAllCategoriesQuery({
-    name: searchName,
+    searchTerm: searchName,
     page: currentPage,
     limit,
   });
@@ -49,7 +44,6 @@ const CategoryManagement: React.FC = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
 
 
 
@@ -77,7 +71,7 @@ const CategoryManagement: React.FC = () => {
     }
   };
 
-  const columns: TableProps<CategoryType>["columns"] = [
+  const columns: TableProps<TCategory>["columns"] = [
     {
       title: "Name",
       dataIndex: "name",
@@ -87,8 +81,8 @@ const CategoryManagement: React.FC = () => {
       title: "NO. of Products",
       dataIndex: "noOfProducts",
       key: "noOfProducts",
-      render: ( record) => (
-        <span>{record?.products?.length||0}</span>
+      render: (record) => (
+        <span>{record?.products?.length || 0}</span>
       ),
     },
     {
@@ -104,12 +98,20 @@ const CategoryManagement: React.FC = () => {
     {
       title: "Action",
       key: "action",
-      render: (_, record) => (
+      render: (record: TCategory) => (
         <Space size="middle">
-           <CategoryModal initialData={record}/>
-          <Button danger onClick={() => handleDelete(record.id)} loading={isDeleting}>
+          <UpdateCategoryModal category={record} />
+          <Popconfirm
+            title="Are you sure you want to activate this shop?"
+            onConfirm={() => handleDelete(record.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+
+          <Button danger loading={isDeleting}>
             Delete
           </Button>
+          </Popconfirm>
         </Space>
       ),
     },
@@ -117,8 +119,8 @@ const CategoryManagement: React.FC = () => {
 
   if (isLoading) {
     return <div className="flex justify-center items-center h-screen w-full">
-        <Spin tip="Loading..." />
-        </div>;
+      <Spin tip="Loading..." />
+    </div>;
   }
 
   if (error) {
@@ -135,6 +137,7 @@ const CategoryManagement: React.FC = () => {
   return (
     <div className="p-5 rounded-lg">
       <div className="bg-white p-4">
+        <h1 className="text-2xl font-semibold mb-3">Category Management</h1>
         {/* Filters Section */}
         <Row gutter={16} className="mb-4">
           <Col span={8}>
@@ -143,8 +146,8 @@ const CategoryManagement: React.FC = () => {
               Total Categories: <strong>{total || 0}</strong>
             </div>
           </Col>
-          <Col span={4}></Col>
-          <Col span={8}>
+          <Col span={2}></Col>
+          <Col span={6}>
             <Input
               type="text"
               placeholder="Search by Name"
@@ -153,13 +156,13 @@ const CategoryManagement: React.FC = () => {
               allowClear
             />
           </Col>
-          <Col span={4}>
-            <CategoryModal initialData={null}/>
+          <Col span={8} className="flex justify-end">
+            <AddCategoryModal />
           </Col>
         </Row>
 
         {/* Categories Table */}
-        <Table<CategoryType>
+        <Table<TCategory>
           columns={columns}
           rowKey="id"
           dataSource={categories}
