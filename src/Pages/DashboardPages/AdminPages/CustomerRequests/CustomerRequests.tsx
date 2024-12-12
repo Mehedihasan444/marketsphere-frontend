@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import { Table, Button, Modal, message, Tag, Alert, Spin } from "antd";
+import { Table, Button, Modal, message, Tag, Alert, Spin, Popconfirm } from "antd";
 import {
   useGetAllBecomeVendorRequestsQuery,
   useUpdateBecomeVendorRequestMutation,
 } from "../../../../Redux/Features/BecomeSeller/becomeSellerApi";
+import { BecomeVendorRequestStatus } from "../../../../Interface";
 
 const CustomerRequests: React.FC = () => {
   const {
     data = {},
     isLoading,
     error,
-  } = useGetAllBecomeVendorRequestsQuery(""); 
+  } = useGetAllBecomeVendorRequestsQuery("");
   const requests = data.data || {};
 
   const [updateBecomeVendorRequest, { isLoading: isUpdating }] =
@@ -22,8 +23,8 @@ const CustomerRequests: React.FC = () => {
 
   const handleApprove = async (id: string) => {
     try {
-      await updateBecomeVendorRequest({ id, status: "APPROVED" }).unwrap();
-
+      const res = await updateBecomeVendorRequest({ id, status: "APPROVED" }).unwrap();
+      console.log(res)
       message.success("Request approved successfully!");
     } catch (error) {
       console.log(error);
@@ -33,7 +34,7 @@ const CustomerRequests: React.FC = () => {
 
   const handleReject = async (id: string) => {
     try {
-      const res=await updateBecomeVendorRequest({ id, status: "REJECTED" }).unwrap();
+      const res = await updateBecomeVendorRequest({ id, status: BecomeVendorRequestStatus.REJECTED }).unwrap();
       console.log(res)
       message.success("Request rejected successfully!");
     } catch (error) {
@@ -72,8 +73,8 @@ const CustomerRequests: React.FC = () => {
           status === "pending"
             ? "orange"
             : status === "approved"
-            ? "green"
-            : "red";
+              ? "green"
+              : "red";
         return <Tag color={color}>{status.toUpperCase()}</Tag>;
       },
     },
@@ -90,14 +91,22 @@ const CustomerRequests: React.FC = () => {
           >
             Approve
           </Button>
-          <Button
-            danger
-            loading={isUpdating}
-            onClick={() => handleReject(record.id)}
-            disabled={record.status !== "PENDING"}
+          <Popconfirm
+            title="Are you sure you want to reject this request?"
+            onConfirm={() => handleReject(record.id)}
+            okText="Yes"
+            cancelText="No"
+
           >
-            Reject
-          </Button>
+
+
+            <Button
+              danger
+              disabled={record.status !== "PENDING"}
+            >
+              Reject
+            </Button>
+          </Popconfirm>
           <Button onClick={() => openDetailsModal(record)}>View Details</Button>
         </div>
       ),

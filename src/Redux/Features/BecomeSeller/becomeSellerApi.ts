@@ -26,10 +26,12 @@ export const becomeSellerApi = baseApi.injectEndpoints({
     }),
     updateBecomeVendorRequest: builder.mutation({
       query: ({ id, status }) => {
+
+        console.log(status)
         return {
         url: `/become-a-vendor/${id}/status`,
         method: "PATCH",
-        body:  {status: status} ,
+        body:  {status} ,
       }},
       invalidatesTags: ["BecomeVendorRequest"],
     }),

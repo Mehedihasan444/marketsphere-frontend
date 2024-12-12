@@ -32,7 +32,7 @@ type TJwtPayload = {
 };
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [login] = useLoginMutation();
+  const [login,{isLoading}] = useLoginMutation();
   const navigate = useNavigate();
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
@@ -132,6 +132,7 @@ const Login: React.FC = () => {
               htmlType="submit"
               block
               className="font-semibold"
+              loading={isLoading}
             >
               Log In
             </Button>

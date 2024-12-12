@@ -14,7 +14,7 @@ type FieldType = {
 };
 
 const Register: React.FC = () => {
-  const [register] = useRegisterMutation();
+  const [register,{isLoading}] = useRegisterMutation();
   const navigate = useNavigate();
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
   
@@ -133,6 +133,7 @@ const Register: React.FC = () => {
               htmlType="submit"
               block
               className="font-semibold"
+              loading={isLoading}
             >
               Register
             </Button>
