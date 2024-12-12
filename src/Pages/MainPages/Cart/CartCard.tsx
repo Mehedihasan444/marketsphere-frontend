@@ -1,12 +1,10 @@
 import { Button, Divider, Input, message } from "antd";
-import { useState } from "react";
 import { TProduct } from "../../../Interface";
 import { useUpdateQuantityMutation } from "../../../Redux/Features/Cart/cartApi";
 
-const CartCard = ({ product, quantity: qnty, id, refetch }: { product: TProduct, quantity: number, id: string, refetch: any }) => {
+const CartCard = ({ product, quantity, id, refetch }: { product: TProduct, quantity: number, id: string, refetch: any }) => {
   const { name, price, images } = product;
 
-  const [quantity, setQuantity] = useState(qnty);
   const [updateQuantity,] = useUpdateQuantityMutation()
   // Increase quantity
   const increaseQuantity = async () => {
@@ -16,13 +14,12 @@ const CartCard = ({ product, quantity: qnty, id, refetch }: { product: TProduct,
         return
         
       }
-      setQuantity(quantity + 1);
-      const res = await updateQuantity({ id: id, quantity: quantity })
+      const res = await updateQuantity({ id: id, quantity: quantity +1})
       if (res?.data?.success) {
         message.success("Quantity updated")
         refetch()
       }
-      else if (res.error) message.error(res.error.data.message)
+      else if (res.error) message.error(res?.error?.data.message)
     } catch (error) {
       console.log(error)
       message.error("Failed to update quantity")
@@ -34,9 +31,8 @@ const CartCard = ({ product, quantity: qnty, id, refetch }: { product: TProduct,
 
     if (quantity > 1) {
       try {
-        setQuantity(quantity - 1);
 
-        const res = await updateQuantity({ id: id, quantity: quantity })
+        const res = await updateQuantity({ id: id, quantity: quantity-1 })
         if (res?.data?.success) {
           message.success("Quantity updated")
           refetch()

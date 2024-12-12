@@ -18,7 +18,7 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
   const handleAddToCart = async (productId: string) => {
     try {
       const res = await addToCart({ userEmail: user?.email, productId });
-      console.log(res)
+     
       if (res?.data?.success) {
         message.success("Product added to cart");
       } else if (res.error) {
@@ -115,13 +115,7 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
         )}
       </div>
 
-      {/* <style>
-        {`
-          .ant-card:hover .hover-icons {
-            opacity: 1;
-          }
-        `}
-      </style> */}
+ 
     </Card>
   );
 };

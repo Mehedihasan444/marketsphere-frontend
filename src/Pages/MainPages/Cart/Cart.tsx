@@ -10,7 +10,7 @@ import { TCartItem } from "../../../Interface";
 
 const Cart: React.FC = () => {
   const [open, setOpen] = React.useState<boolean>(false);
-  const { data = {}, isLoading, error,refetch } = useGetCartItemsQuery("");
+  const { data = {}, isLoading, error, refetch } = useGetCartItemsQuery("");
   const { data: cartItems = [] } = data || {};
   const [removeFromCart] = useRemoveFromCartMutation()
   const [clearCart] = useClearCartMutation()
@@ -18,8 +18,11 @@ const Cart: React.FC = () => {
 
 
   useEffect(() => {
-    const total = cartItems?.reduce((acc: number, item: TCartItem) => acc + item.product.price * item.quantity, 0)
-    setTotalAmount(total)
+    const calculateTotal = async () => {
+      const total = await cartItems?.reduce((acc: number, item: TCartItem) => acc + item.product.price * item.quantity, 0);
+      setTotalAmount(total);
+    };
+    calculateTotal();
   }, [cartItems])
 
   const handleDelete = async (id: string) => {
@@ -91,7 +94,8 @@ const Cart: React.FC = () => {
             <span className="font-semibold">SUBTOTAL:</span>
             <span className="text-red-500 font-bold">${totalAmount || 0}</span>
           </div>
-          <div className="">  <Link to={"/cart"}>
+          {/* <div className=""> 
+             <Link to={"/cart"}>
             <Button
               shape={"round"}
               className="w-full"
@@ -99,7 +103,8 @@ const Cart: React.FC = () => {
             >
               VIEW CART
             </Button>
-          </Link></div>
+          </Link>
+          </div> */}
           <div className=""> <Link to={"/checkout"}>
             <Button shape="round" type="primary" className="w-full" onClick={() => setOpen(false)}>
               CHECK OUT
