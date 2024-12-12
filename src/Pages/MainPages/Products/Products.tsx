@@ -10,9 +10,9 @@ const Products = () => {
     priceRange: [0, 500000],
     categories: [],
   });
-const {data={},isLoading,error}=useGetProductsQuery({brand:"",category:"",page:1,limit:10,searchTerm:""});
-const {data:products}=data?.data||{};
-
+  const { data = {}, isLoading, error } = useGetProductsQuery({ brand: "", category: "", page: 1, limit: 10, searchTerm: "" });
+  const { data: products, meta } = data?.data || {};
+  const { total, page } = meta || {};
 
 
   // const allProducts = [
@@ -149,7 +149,7 @@ const {data:products}=data?.data||{};
     );
   }
   return (
-    <div className="max-w-8xl mx-auto bg-neutral-100 ">
+    <div className="max-w-8xl mx-auto bg-neutral-100 min-h-screen">
       <div className="flex  space-x-4  lg:mx-16">
         {/* Filters Sidebar */}
         <aside className="w-1/4 ">
@@ -188,10 +188,12 @@ const {data:products}=data?.data||{};
             </div>
           </div>
           {/* Product Grid */}
-          <div className="grid grid-cols-4 gap-6 ">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4  min-h-[70vh]">
             {products.length > 0 ? (
-              products.map((product:TProduct, index:number) => (
-                <ProductCard key={index} product={product} />
+              products.map((product: TProduct, index: number) => (
+                <div className="" key={index} >
+                  <ProductCard product={product} />
+                </div>
               ))
             ) : (
               <p className="text-gray-500 col-span-3">No products found.</p>
@@ -199,7 +201,7 @@ const {data:products}=data?.data||{};
           </div>
 
           {/* pagination */}
-          <Pagination align="end" defaultCurrent={1} total={50} />
+          <Pagination align="end" defaultCurrent={page} total={total} className="mt-auto" />
         </div>
       </div>
     </div>

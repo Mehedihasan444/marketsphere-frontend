@@ -1,19 +1,42 @@
-import { Button, Divider, Input } from "antd";
+import { Button, Divider, Input, message } from "antd";
 import { useState } from "react";
 import { TProduct } from "../../../Interface";
+import { useUpdateQuantityMutation } from "../../../Redux/Features/Cart/cartApi";
 
-const CartCard = ({ product }:{product:TProduct}) => {
+const CartCard = ({ product,quantity:qnty,id }: { product: TProduct,quantity:number ,id:string}) => {
   const { name, price, images } = product;
-  const [quantity, setQuantity] = useState(1);
+
+  const [quantity, setQuantity] = useState(qnty);
+  const [updateQuantity, ] = useUpdateQuantityMutation()
   // Increase quantity
-  const increaseQuantity = () => {
+  const increaseQuantity = async () => {
     setQuantity(quantity + 1);
+    try {
+
+      const res = await updateQuantity({ id: id, quantity: quantity })
+      if (res?.data?.success) message.success("Quantity updated")
+      else if (res.error) message.error(res.error.data.message)
+    } catch (error) {
+      console.log(error)
+      message.error("Failed to update quantity")
+    }
   };
 
   // Decrease quantity
-  const decreaseQuantity = () => {
+  const decreaseQuantity =async () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
+      try {
+
+        const res = await updateQuantity({ id: id, quantity: quantity })
+        if (res?.data?.success) message.success("Quantity updated")
+        else if (res.error) message.error(res?.error?.data.message)
+      } catch (error) {
+        console.log(error)
+        message.error("Failed to update quantity")
+      }
+    }else{
+      message.error("Quantity cannot be less than 1")
     }
   };
 

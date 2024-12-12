@@ -22,7 +22,7 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
       if (res?.data?.success) {
         message.success("Product added to cart");
       } else if (res.error) {
-        message.error("Failed to add product to cart");
+        message.error(res?.error?.data?.message);
       }
     } catch (error) {
       console.log(error);

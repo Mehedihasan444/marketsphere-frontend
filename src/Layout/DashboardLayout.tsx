@@ -5,10 +5,13 @@ import { useState } from "react";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
+import { useGetMyProfileQuery } from "../Redux/Features/User/userApi";
 const DashboardLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const { data = {} } = useGetMyProfileQuery("")
+  const user = data.data || {}
+
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -33,7 +36,11 @@ const DashboardLayout = () => {
           </div>
 
           <div className="flex justify-between items-center gap-2">
-            <Avatar size="large" icon={<UserOutlined />} />
+            <div className="">
+              <strong className="text-xs">Login as </strong>
+              <p className="">{user?.email}</p>
+            </div>
+            <Avatar size="large" icon={<img src={user.profilePhoto} alt={user.name} />} />
           </div>
         </div>
         <hr />

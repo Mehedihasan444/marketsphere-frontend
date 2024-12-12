@@ -1,4 +1,4 @@
-import { Avatar, Dropdown, Input, MenuProps, Space } from "antd";
+import { Avatar, Divider, Dropdown, Input, MenuProps, Space } from "antd";
 
 import Cart from "../../../Pages/MainPages/Cart/Cart";
 import Wishlist from "../../Wishlist";
@@ -11,14 +11,21 @@ import {
 } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "../../../Redux/hook";
 import { logout } from "../../../Redux/Features/Auth/authSlice";
+import { useGetMyProfileQuery } from "../../../Redux/Features/User/userApi";
 const { Search } = Input;
 const TopHeader = () => {
   const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
+  const { data = {} } = useGetMyProfileQuery("")
+  const profiledata = data.data || {}
+
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: "My Account",
+      label: <div>
+        <strong>My Account</strong>
+        <p>{user?.email}</p>
+      </div>,
       disabled: true,
     },
     {
@@ -96,10 +103,10 @@ const TopHeader = () => {
           </div>
           {user && (
             <div className="flex justify-between items-center gap-2">
-              <Dropdown menu={{ items }}>
+              <Dropdown menu={{ items }} trigger={["click"]}>
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
-                    <Avatar size="large" icon={<UserOutlined />} />
+                    <Avatar size="large" icon={<img src={profiledata?.profilePhoto} alt={profiledata?.name} />} />
                     <DownOutlined />
                   </Space>
                 </a>

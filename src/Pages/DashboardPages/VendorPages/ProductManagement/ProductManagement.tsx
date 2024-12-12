@@ -22,7 +22,8 @@ const ProductManagement = () => {
     limit,
     searchTerm,
   }); // Fetch all products
-  const { data: products } = data?.data || {};
+  const { data: products ,meta} = data?.data || {};
+  const { total } = meta || {};
   const [deleteProduct] = useDeleteProductMutation(); // Mutation for deleting products
 
   // Delete product handler
@@ -93,9 +94,12 @@ const ProductManagement = () => {
 
   return (
     <div>
+          <h2 className="text-2xl font-semibold">Manage Products</h2>
       <div className="flex justify-between items-center gap-5 my-4">
-        <h2>Manage Products</h2>
-
+        {/* Total Count */}
+        <div className="">
+          Total products: <strong>{total || 0}</strong>
+        </div>
         <ProductModal initialData={null} />
       </div>
       <Table
