@@ -42,6 +42,18 @@ const Shops: React.FC = () => {
 
   const columns = [
     {
+      title: "Logo",
+      dataIndex: "logo",
+      key: "logo",
+      render: (logo: string) => (
+        <img
+          src={logo}
+          alt="Shop Logo"
+          style={{ width: 50, height: 50, borderRadius: "50%" }}
+        />
+      ),
+    },
+    {
       title: "Shop Name",
       dataIndex: "name",
       key: "name",
@@ -57,6 +69,11 @@ const Shops: React.FC = () => {
           <p>{shop?.vendor?.email}</p>
         </>
       ),
+    },
+    {
+      title: "Vendor ID",
+      dataIndex: "vendorId",
+      key: "vendorId",
     },
     {
       title: "Status",

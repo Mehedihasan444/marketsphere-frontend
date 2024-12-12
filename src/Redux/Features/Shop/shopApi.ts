@@ -9,8 +9,8 @@ const shopApi = baseApi.injectEndpoints({
         page,
         limit,
       }: {
-        searchTerm: string;
-        status: string;
+        searchTerm?: string;
+        status?: string;
         page: number;
         limit: number;
       }) => {

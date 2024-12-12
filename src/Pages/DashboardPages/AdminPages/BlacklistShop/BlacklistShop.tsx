@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   Table,
   Button,
@@ -14,22 +14,12 @@ import {
   useGetAllShopsQuery,
   useUpdateShopStatusMutation,
 } from "../../../../Redux/Features/Shop/shopApi";
+import { ShopStatus, TShop } from "../../../../Interface";
 
-const { Option } = Select;
 
-interface Shop {
-  id: string;
-  name: string;
-  logo: string;
-  banner: string;
-  status: string;
-  isActive: boolean;
-  vendorId: string;
-  createdAt: string;
-}
+
 
 const BlacklistShop = () => {
-  const [selectedStatus, setSelectedStatus] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
 
@@ -39,7 +29,7 @@ const BlacklistShop = () => {
     isLoading,
     error,
   } = useGetAllShopsQuery({
-    status: selectedStatus,
+    status: "RESTRICTED",
     page: currentPage,
     limit,
   });
@@ -47,13 +37,10 @@ const BlacklistShop = () => {
   const [updateShopStatus, { isLoading: isUpdating }] =
     useUpdateShopStatusMutation();
 
-  const { shops = [], meta } = data?.data || {};
+  const { data:shops = [], meta } = data?.data || {};
   const { total } = meta || {};
 
-  const handleStatusChange = (value: string) => {
-    setSelectedStatus(value);
-    setCurrentPage(1); // Reset to the first page when filter changes
-  };
+
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -61,7 +48,7 @@ const BlacklistShop = () => {
 
   const handleUpdateStatus = async (id: string, newStatus: string) => {
     try {
-      const response = await updateShopStatus({ id, status: newStatus });
+      const response = await updateShopStatus({ id, shopStatus: newStatus });
       if (response?.data?.success) {
         message.success("Shop status updated successfully.");
       } else {
@@ -112,28 +99,18 @@ const BlacklistShop = () => {
     {
       title: "Actions",
       key: "actions",
-      render: (_: any, record: Shop) => (
+      render: (_: any, record: TShop) => (
         <Space>
-          {record.status !== "BLACKLISTED" ? (
-            <Button
-              type="default"
-              danger
-              size="small"
-              onClick={() => handleUpdateStatus(record.id, "BLACKLISTED")}
-              disabled={isUpdating}
-            >
-              Blacklist
-            </Button>
-          ) : (
+     
             <Button
               type="primary"
               size="small"
-              onClick={() => handleUpdateStatus(record.id, "APPROVED")}
+              onClick={() => handleUpdateStatus(record.id, ShopStatus.ACTIVE)}
               disabled={isUpdating}
             >
               Reinstate
             </Button>
-          )}
+        
         </Space>
       ),
     },
@@ -165,20 +142,8 @@ const BlacklistShop = () => {
   }
   return (
     <div className="p-5 bg-white rounded-lg">
-      {/* Filters */}
-      <Space className="mb-4" size="large">
-        <Select
-          placeholder="Filter by Status"
-          value={selectedStatus}
-          onChange={handleStatusChange}
-          allowClear
-          style={{ width: 200 }}
-        >
-          <Option value="APPROVED">Approved</Option>
-          <Option value="PENDING">Pending</Option>
-          <Option value="BLACKLISTED">Blacklisted</Option>
-        </Select>
-      </Space>
+      <h1 className="text-2xl font-semibold mb-3">Blacklisted Shops</h1>
+  
 
       {/* Shops Table */}
       <Table
