@@ -6,12 +6,19 @@ import { useGetProductReviewsQuery } from "../../../Redux/Features/Review/review
 const { Title } = Typography;
 
 const Reviews = ({ id }: { id: string }) => {
-  const { data = {}, error, isLoading } = useGetProductReviewsQuery({productId:id,page:1,limit:10});
-  const reviews = data.data || [];
+  const { data = {}, error, isLoading } = useGetProductReviewsQuery({ productId: id }, { skip: !id });
+  const { reviewItems: reviews = [] } = data?.data || {};
 
   if (isLoading) {
-    return <Spin tip="Loading..." />;
+    return (
+      <div className="flex justify-center items-center h-screen w-full">
+        <Spin tip="Loading..." />
+      </div>
+    );
   }
+
+
+
 
   if (error) {
     return <Alert message="Error" description="Error loading reviews." type="error" showIcon />;
@@ -25,7 +32,7 @@ const Reviews = ({ id }: { id: string }) => {
         <Title level={2} className="mb-4">
           Average Rating:
           <span>
-          <Rate allowHalf defaultValue={3.5} />
+            <Rate allowHalf defaultValue={3.5} />
           </span>
         </Title>
       </div>
@@ -34,7 +41,7 @@ const Reviews = ({ id }: { id: string }) => {
 
       <div className="mb-8">
         <Title level={2} className="mb-4">User Reviews</Title>
-        {reviews.map((review: any) => (
+        {reviews?.map((review: any) => (
           <Review key={review._id} review={review} />
         ))}
       </div>

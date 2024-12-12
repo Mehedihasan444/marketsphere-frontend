@@ -3,7 +3,7 @@ import { baseApi } from "../../Api/baseApi";
 const reviewApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAdminReviews: builder.query({
-      query: ({ status, page, limit }: { status: string; page: number; limit: number }) => {
+      query: ({ status, page, limit }: { status?: string; page?: number; limit?: number }) => {
         let queryString = "/reviews?";
         if (status) queryString += `status=${status}&`;
         if (page) queryString += `page=${page}&`;
@@ -30,7 +30,7 @@ const reviewApi = baseApi.injectEndpoints({
       providesTags: ["review"],
     }),
     getProductReviews: builder.query({
-      query: ({ productId, page, limit }: { productId: string; page: number; limit: number }) => {
+      query: ({ productId, page, limit }: { productId: string; page?: number; limit?: number }) => {
       let queryString = `/reviews/product/${productId}?`;
       if (page) queryString += `page=${page}&`;
       if (limit) queryString += `limit=${limit}&`;
