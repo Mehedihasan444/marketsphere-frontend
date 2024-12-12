@@ -30,6 +30,7 @@ import FollowedShops from "../Pages/DashboardPages/CustomerPages/FollowedShops/F
 import CartPage from "../Pages/MainPages/Cart/CartPage";
 import AdminHome from "../Pages/DashboardPages/AdminPages/AdminHome/AdminHome";
 import ProtectedRoute from "./ProtectedRole";
+import Checkout from "../Pages/MainPages/Checkout/Checkout";
 
 // Router configuration
 const router = createBrowserRouter([
@@ -59,9 +60,13 @@ const router = createBrowserRouter([
         element: <ProductDetails />,
       },
       {
-        path: "/compare-products",
+        path: "/compare-products/:id",
         element: <CompareProducts />,
       },
+      {
+        path: "/checkout",
+        element: <ProtectedRoute role="CUSTOMER"><Checkout /></ProtectedRoute> ,
+      }
     ],
   },
   {

@@ -1,32 +1,18 @@
+import { TProduct } from "../../../Interface";
 import { baseApi } from "../../Api/baseApi";
 
-type Product = {
-  name: string;
-  description: string;
-  price: number;
-  discount: number;
-  id: string;
-  images: string[];
-  quantity: number;
-  rating: number;
-  categoryId: string;
-  flashSaleId: string;
-  shopId: string;
-  isDeleted: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-};
+
 
 export const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query<
-      Product[],
+      TProduct[],
       {
-        brand: string;
-        searchTerm: string;
-        category: string;
-        page: number;
-        limit: number;
+        brand?: string;
+        searchTerm?: string;
+        category?: string;
+        page?: number;
+        limit?: number;
       }
     >({
       query: ({

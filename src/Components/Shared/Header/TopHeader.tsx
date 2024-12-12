@@ -1,8 +1,8 @@
-import { Avatar, Divider, Dropdown, Input, MenuProps, Space } from "antd";
+import { Avatar, Button, Dropdown, Input, MenuProps, Rate, Space } from "antd";
 
 import Cart from "../../../Pages/MainPages/Cart/Cart";
 import Wishlist from "../../Wishlist";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   DownOutlined,
   LogoutOutlined,
@@ -12,13 +12,20 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../Redux/hook";
 import { logout } from "../../../Redux/Features/Auth/authSlice";
 import { useGetMyProfileQuery } from "../../../Redux/Features/User/userApi";
+import { useState } from "react";
+import { useGetProductsQuery } from "../../../Redux/Features/Product/productApi";
+import { TProduct } from "../../../Interface";
 const { Search } = Input;
 const TopHeader = () => {
   const user = useAppSelector((state) => state.auth.user);
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { data = {} } = useGetMyProfileQuery("")
   const profiledata = data.data || {}
 
+  const { data: productsData = {}, isLoading, error } = useGetProductsQuery({ searchTerm }, { skip: !searchTerm });
+  const { data: products } = productsData?.data || {};
   const items: MenuProps["items"] = [
     {
       key: "1",
@@ -70,14 +77,38 @@ const TopHeader = () => {
             <h1 className="text-3xl font-bold">MarketSphere</h1>
           </div>
         </Link>
-        <div className="col-span-3 flex justify-center items-center">
+        <div className="col-span-3 flex justify-center items-center relative">
           <Search
+          type="search"
+          value={searchTerm}
             placeholder="input search text"
             enterButton="Search"
             size="large"
-            loading
-            className="w-2/3"
+            loading={isLoading}
+            className="w-2/3 h-10"
+          
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
+          {products&&searchTerm&&<div className="absolute space-y-1 top-14 bg-blue-50 rounded-md z-50 p-3 w-2/3 shadow ">
+            {
+              products?.slice(0, 6)?.map((product: TProduct) => <div onClick={()=>{navigate(`/products/${product.id}`); setSearchTerm(""); }} className="cursor-pointer hover:bg-neutral-100 flex gap-3 justify-between border p-4 bg-white">
+                <div className="">
+                  <img src={product?.images[0]} alt={product.name} className="w-20 h-auto " />
+                </div>
+                <div className="flex-1 space-y-1">
+
+                  <h4 className=" font-semibold text-sm text-gray-500">{product.category.name}</h4>
+                  <h4 className=" font-semibold text-xl">{product.name}</h4>
+                  <Rate value={product.rating} disabled/>
+                  <h4 className="font-semibold text-lg text-blue-500">${product.price}</h4>
+
+                </div>
+              </div>)
+            }
+            <div className="py-2">
+              <Button  size="large" variant="solid" className="w-full " onClick={() => { navigate(`/products?searchTerm=${searchTerm}`); setSearchTerm(""); }}>See All</Button>
+            </div>
+          </div>}
         </div>
         <div className="col-span-1 flex gap-4 justify-end items-center">
           <Link to="/login">

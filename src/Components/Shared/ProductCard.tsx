@@ -3,7 +3,7 @@ import { Card, Rate, Typography, Tooltip, message } from "antd";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { FaRegHeart } from "react-icons/fa";
 import { IoCartOutline, IoEyeOutline, IoLayersOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TProduct } from "../../Interface";
 import { useAddToCartMutation } from "../../Redux/Features/Cart/cartApi";
 import { useAppSelector } from "../../Redux/hook";
@@ -14,7 +14,7 @@ const { Text } = Typography;
 const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
   const user = useAppSelector((state) => state.auth.user);
   const [addToCart] = useAddToCartMutation();
-
+  const navigate = useNavigate();
   const handleAddToCart = async (productId: string) => {
     try {
       const res = await addToCart({ userEmail: user?.email, productId });
@@ -36,9 +36,10 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
   };
 
   const addToCompare = () => {
-    console.log(`Added ${product.name} to compare`);
-    // Add your logic to add the product to the compare list
+    navigate(`/compare-products/${product.id}`);
   };
+
+
   return (
     <Card
       hoverable
@@ -78,7 +79,7 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
           </Link>
         </Tooltip>
         <Tooltip title="Compare">
-          <IoLayersOutline style={{ fontSize: 18, color: "#1890ff" }} />
+          <IoLayersOutline style={{ fontSize: 18, color: "#1890ff" }} onClick={addToCompare} />
         </Tooltip>
         <Tooltip title="Cart">
           <IoCartOutline

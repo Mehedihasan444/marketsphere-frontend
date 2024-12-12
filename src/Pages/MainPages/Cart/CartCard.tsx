@@ -3,18 +3,25 @@ import { useState } from "react";
 import { TProduct } from "../../../Interface";
 import { useUpdateQuantityMutation } from "../../../Redux/Features/Cart/cartApi";
 
-const CartCard = ({ product,quantity:qnty,id }: { product: TProduct,quantity:number ,id:string}) => {
+const CartCard = ({ product, quantity: qnty, id, refetch }: { product: TProduct, quantity: number, id: string, refetch: any }) => {
   const { name, price, images } = product;
 
   const [quantity, setQuantity] = useState(qnty);
-  const [updateQuantity, ] = useUpdateQuantityMutation()
+  const [updateQuantity,] = useUpdateQuantityMutation()
   // Increase quantity
   const increaseQuantity = async () => {
-    setQuantity(quantity + 1);
     try {
-
+      if (product.quantity < quantity) {
+        message.error("Quantity exceeds stock")
+        return
+        
+      }
+      setQuantity(quantity + 1);
       const res = await updateQuantity({ id: id, quantity: quantity })
-      if (res?.data?.success) message.success("Quantity updated")
+      if (res?.data?.success) {
+        message.success("Quantity updated")
+        refetch()
+      }
       else if (res.error) message.error(res.error.data.message)
     } catch (error) {
       console.log(error)
@@ -23,19 +30,23 @@ const CartCard = ({ product,quantity:qnty,id }: { product: TProduct,quantity:num
   };
 
   // Decrease quantity
-  const decreaseQuantity =async () => {
+  const decreaseQuantity = async () => {
+
     if (quantity > 1) {
-      setQuantity(quantity - 1);
       try {
+        setQuantity(quantity - 1);
 
         const res = await updateQuantity({ id: id, quantity: quantity })
-        if (res?.data?.success) message.success("Quantity updated")
+        if (res?.data?.success) {
+          message.success("Quantity updated")
+          refetch()
+        }
         else if (res.error) message.error(res?.error?.data.message)
       } catch (error) {
         console.log(error)
         message.error("Failed to update quantity")
       }
-    }else{
+    } else {
       message.error("Quantity cannot be less than 1")
     }
   };
@@ -66,6 +77,7 @@ const CartCard = ({ product,quantity:qnty,id }: { product: TProduct,quantity:num
               className="w-10 bg-neutral-100 text-center"
               value={quantity}
               size="small"
+              readOnly
             />
             <Button onClick={increaseQuantity} icon="+" size="small" />
           </div>
