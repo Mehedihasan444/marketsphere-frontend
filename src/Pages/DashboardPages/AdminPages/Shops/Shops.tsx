@@ -1,33 +1,28 @@
-// ! have to be fixed
-import React, { useEffect, useState } from "react";
-import { Table, Button, Tag, Modal, Input, message } from "antd";
+import React, { useState } from "react";
+import { Table, Button, Modal, Input, message, Select, Row, Col } from "antd";
 import { useDeleteShopMutation, useGetAllShopsQuery, useUpdateShopStatusMutation } from "../../../../Redux/Features/Shop/shopApi";
-// import { useGetShopsQuery, useUpdateShopMutation, useDeleteShopMutation } from "../../Redux/Features/Shops/shopsApi";
+import { TShop } from "../../../../Interface";
 
-const { Search } = Input;
 
 const Shops: React.FC = () => {
-  const [status, setStatus] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
-  const [selectedShop, setSelectedShop] = useState(null);
+  const [status, setStatus] = useState<string>("");
+  const [selectedShop, setSelectedShop] = useState<TShop | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Fetch shops data using Redux Query
-  const { data={}, isLoading } = useGetAllShopsQuery({status,limit,page});
-  const {data:shops}=data?.data||{}
-  const [updateShop, { isLoading: updating }] = useUpdateShopStatusMutation();
+  const { data = {}, isLoading } = useGetAllShopsQuery({ searchTerm, status, limit, page });
+  const { data: shops = [], meta } = data?.data || {}
+  const { total } = meta || {};
+  const [updateShopStatus, { isLoading: updating }] = useUpdateShopStatusMutation()
   const [deleteShop, { isLoading: deleting }] = useDeleteShopMutation();
 
-  useEffect(() => {
-    if (shops && status) {
-      message.success(`Found ${shops.length} shop(s) matching "${status}"`);
-    }
-  }, [shops, status]);
 
-  const handleStatusChange = async (shopId: string, status: string) => {
+  const handleStatusChange = async (shopId: string, shopStatus: string) => {
     try {
-      await updateShop({ shopId, data: { status } });
+      await updateShopStatus({ id: shopId, shopStatus });
       message.success("Shop status updated successfully!");
     } catch (error) {
       message.error("Failed to update shop status.");
@@ -43,9 +38,7 @@ const Shops: React.FC = () => {
     }
   };
 
-  const handleSearch = (value: string) => {
-    setStatus(value);
-  };
+
 
   const columns = [
     {
@@ -57,10 +50,11 @@ const Shops: React.FC = () => {
       title: "Owner",
       dataIndex: "owner",
       key: "owner",
-      render: (owner: { name: string; email: string }) => (
+      render: (_, shop: TShop) => (
+        console.log(shop),
         <>
-          <p>{owner.name}</p>
-          <p>{owner.email}</p>
+          <p>{shop?.vendor?.name}</p>
+          <p>{shop?.vendor?.email}</p>
         </>
       ),
     },
@@ -68,30 +62,30 @@ const Shops: React.FC = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (status: string) => (
-        <Tag color={status === "approved" ? "green" : "red"}>
-          {status.toUpperCase()}
-        </Tag>
+      render: (_: any, record: TShop) => (
+        <Select
+          defaultValue={record.status}
+          style={{ width: 120 }}
+
+          onChange={(value) => handleStatusChange(record.id, value)}
+          loading={updating}
+        >
+          <Select.Option value="ACTIVE">ACTIVE</Select.Option>
+          <Select.Option value="RESTRICTED">RESTRICTED</Select.Option>
+          <Select.Option value="SUSPENDED">SUSPENDED</Select.Option>
+        </Select>
       ),
     },
     {
       title: "Actions",
       key: "actions",
-      render: (record: any) => (
+      render: (_: any, record: TShop) => (
         <div className="flex gap-2">
-          <Button
-            type="primary"
-            onClick={() =>
-              handleStatusChange(record.id, record.status === "approved" ? "pending" : "approved")
-            }
-            loading={updating}
-          >
-            {record.status === "approved" ? "Revoke" : "Approve"}
-          </Button>
-          <Button type="link" danger onClick={() => handleDelete(record.id)} loading={deleting}>
+
+          <Button type="primary" danger onClick={() => handleDelete(record.id)} loading={deleting}>
             Delete
           </Button>
-          <Button type="link" onClick={() => handleViewDetails(record)}>
+          <Button type="default" variant="outlined" onClick={() => handleViewDetails(record)}>
             View Details
           </Button>
         </div>
@@ -107,13 +101,39 @@ const Shops: React.FC = () => {
   return (
     <div className="p-6 bg-white shadow-md rounded-lg">
       <h2 className="text-xl font-bold mb-4">Manage Shops</h2>
-      <Search
-        placeholder="Search shops by name or owner"
-        onSearch={handleSearch}
-        allowClear
-        enterButton
-        className="mb-4"
-      />
+
+      {/* Filters Section */}
+      <Row gutter={16} className="mb-4">
+        <Col span={8}>
+          {/* Total Count */}
+          <div className="text-gray-600">
+            Total Categories: <strong>{total || 0}</strong>
+          </div>
+        </Col>
+        <Col span={2}></Col>
+        <Col span={6}>
+          <Input
+            type="text"
+            placeholder="Search by Name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            allowClear
+          />
+        </Col>
+        <Col span={8} className="flex justify-end">
+          <Select
+            style={{ width: 180 }}
+            defaultValue={"All"}
+            onChange={(value) => setStatus(value)}
+            loading={updating}
+          >
+            <Select.Option value=" ">All</Select.Option>
+            <Select.Option value="ACTIVE">ACTIVE</Select.Option>
+            <Select.Option value="RESTRICTED">RESTRICTED</Select.Option>
+            <Select.Option value="SUSPENDED">SUSPENDED</Select.Option>
+          </Select>
+        </Col>
+      </Row>
       <Table
         dataSource={shops}
         columns={columns}
@@ -126,15 +146,16 @@ const Shops: React.FC = () => {
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer={null}
+        centered
       >
         {selectedShop && (
           <div>
-            <p><strong>Name:</strong> {selectedShop.name}</p>
-            <p><strong>Owner:</strong> {selectedShop.owner.name} ({selectedShop.owner.email})</p>
+            <p><strong>Name:</strong> {selectedShop?.name}</p>
+            <p><strong>Owner:</strong> {selectedShop.vendor.name} ({selectedShop.vendor.email})</p>
             <p><strong>Status:</strong> {selectedShop.status}</p>
             <p><strong>Description:</strong> {selectedShop.description}</p>
-            <p><strong>Products:</strong> {selectedShop.totalProducts}</p>
-            <p><strong>Followers:</strong> {selectedShop.followersCount}</p>
+            <p><strong>Products:</strong> {selectedShop?.products?.length || 0}</p>
+            <p><strong>Followers:</strong> {selectedShop?.followers?.length || 0}</p>
           </div>
         )}
       </Modal>

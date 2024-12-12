@@ -4,16 +4,20 @@ const shopApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllShops: builder.query({
       query: ({
+        searchTerm,
         status,
         page,
         limit,
       }: {
+        searchTerm: string;
         status: string;
         page: number;
         limit: number;
       }) => {
+
         let queryString = "/shops?";
-        if (status) queryString += `status=${status}&`;
+        if (searchTerm) queryString += `searchTerm=${searchTerm}&`;
+        if (status && status!=" ") queryString += `status=${status}&`;
         if (page) queryString += `page=${page}&`;
         if (limit) queryString += `limit=${limit}&`;
         return { url: queryString, method: "GET" };
@@ -28,10 +32,10 @@ const shopApi = baseApi.injectEndpoints({
       providesTags: ["shop"],
     }),
     updateShopStatus: builder.mutation({
-      query: ({ id, status }: { id: string; status: string }) => ({
+      query: ({ id, shopStatus }: { id: string; shopStatus: string }) => ({
         url: `/shops/${id}/status`,
         method: "PATCH",
-        body: { status },
+        body:  {shopStatus} ,
       }),
       invalidatesTags: ["shop"],
     }),
