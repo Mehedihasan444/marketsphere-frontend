@@ -71,7 +71,7 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
         className="hover:block hidden"
       >
         <Tooltip title="Add to Wishlist">
-          <FaRegHeart className="" style={{ fontSize: 16, color: "#1890ff" }} />
+          <FaRegHeart onClick={()=>addToWishlist(product.id)} className="" style={{ fontSize: 16, color: "#1890ff" }} />
         </Tooltip>
         <Tooltip title="View Details">
           <Link to={`/products/${product.id}`} style={{ color: "#1890ff" }}>

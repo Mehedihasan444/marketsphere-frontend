@@ -1,5 +1,5 @@
 import { Tabs, Typography } from "antd";
-import Reviews from "./Reviews";
+import Reviews from "../Reviews/Reviews";
 
 const { Title, Paragraph } = Typography;
 

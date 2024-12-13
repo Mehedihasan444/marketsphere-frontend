@@ -11,10 +11,10 @@ const cartApi = baseApi.injectEndpoints({
       providesTags: ["cart"],
     }),
     addToCart: builder.mutation({
-      query: ({userEmail,productId}) => ({
+      query: ({userEmail,productId,quantity=1}) => ({
         url: "/cart",
         method: "POST",
-        body: {email:userEmail,productId},
+        body: {email:userEmail,productId,quantity},
       }),
       invalidatesTags: ["cart"],
     }),

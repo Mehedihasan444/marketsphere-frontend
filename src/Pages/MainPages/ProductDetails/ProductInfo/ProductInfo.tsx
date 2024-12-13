@@ -1,12 +1,21 @@
-import { Button, Divider, Rate, Select } from "antd";
+import { Button, Divider, message, Rate, Select } from "antd";
 import { useState } from "react";
 import { TProduct } from "../../../../Interface";
 import { FacebookOutlined, TwitterOutlined, WhatsAppOutlined } from "@ant-design/icons";
+import { useAppSelector } from "../../../../Redux/hook";
+import { useAddToCartMutation } from "../../../../Redux/Features/Cart/cartApi";
 
 const ProductInfo = ({ product }: { product: TProduct & { colors: string[], sizes: string[] } }) => {
   const [quantity, setQuantity] = useState(1);
+  const user = useAppSelector((state) => state.auth.user);
+  const [addToCart] = useAddToCartMutation();
   // Increase quantity
   const increaseQuantity = () => {
+    if (product.quantity < quantity) {
+      message.error("Quantity exceeds stock");
+      return;
+
+    }
     setQuantity(quantity + 1);
   };
 
@@ -16,21 +25,38 @@ const ProductInfo = ({ product }: { product: TProduct & { colors: string[], size
       setQuantity(quantity - 1);
     }
   };
+  const handleAddToCart = async (productId: string) => {
+    try {
+      const res = await addToCart({ userEmail: user?.email, productId, quantity });
 
+      if (res?.data?.success) {
+        message.success("Product added to cart");
+      } else if (res.error) {
+        message.error(res?.error?.data?.message);
+      }
+    } catch (error) {
+      console.log(error);
+      message.error("Failed to add product to cart");
+    }
+  };
+  const addToWishlist = (id: string) => {
+    console.log(`Added ${product.name} to wishlist`);
+    // Add your logic to add the product to the wishlist
+  };
 
   return (
     <div>
       <h3 className="text-blue-400 italic">{product?.category?.name as string}</h3>
       <h2 className="text-3xl font-bold mb-2 mt-3">{product.name}</h2>
       <div className="flex items-center space-x-2">
-        <Rate allowHalf defaultValue={product.rating} disabled className="text-2xl"/>
+        <Rate allowHalf defaultValue={product.rating} disabled className="text-2xl" />
         <span className="text-gray-600">
           ({product.reviews?.length || 0} reviews)
         </span>
       </div>
       <p className="text-3xl font-semibold mt-4 text-blue-500">${product.price}</p>
       {/* features */}
-      <div className="mt-4">
+      <div className="mt-4 text-gray-600 ">
         <p className="text-gray-600 font-medium mb-2">Features:</p>
         <ul className="list-disc list-inside ml-4 ">
           <li>High quality material</li>
@@ -75,35 +101,35 @@ const ProductInfo = ({ product }: { product: TProduct & { colors: string[], size
 
       <div className="mt-4 flex gap-5">
 
-      {/* Quantity Control */}
-      <div className="mt-4 flex items-center space-x-4">
-        <Button onClick={decreaseQuantity} disabled={quantity <= 1} icon="-" size="large" />
-        <span className="text-xl">{quantity}</span>
-        <Button onClick={increaseQuantity} icon="+"  size="large"/>
-      </div>
+        {/* Quantity Control */}
+        <div className="mt-4 flex items-center space-x-4">
+          <Button onClick={decreaseQuantity} disabled={quantity <= 1} icon="-" size="large" />
+          <span className="text-xl">{quantity}</span>
+          <Button onClick={increaseQuantity} icon="+" size="large" />
+        </div>
 
-      {/* Add to Cart Button */}
-      <div className="mt-6 flex gap-5 flex-1">
-        <Button type="default" variant="outlined" size="large" className="flex-1">
-          Add to Wishlist
-        </Button>
-        <Button type="primary" size="large" color="primary" className="flex-1">
-          Add to cart
-        </Button>
+        {/* Add to Cart Button */}
+        <div className="mt-6 flex gap-5 flex-1">
+          <Button onClick={() => addToWishlist(product?.id)} type="default" variant="outlined" size="large" className="flex-1">
+            Add to Wishlist
+          </Button>
+          <Button onClick={() => handleAddToCart(product?.id)} type="primary" size="large" color="primary" className="flex-1">
+            Add to cart
+          </Button>
+        </div>
       </div>
-      </div>
-      <Divider/>
+      <Divider />
       <div className="">
 
-      <p className="text-gray-500 mt-2">Free delivery on orders over $30.00</p>
-      {/* Share Options */}
-      <div className="mt-6 flex space-x-4">
-              <Button icon={<FacebookOutlined />}  />
-              <Button icon={<TwitterOutlined />} />
-              <Button icon={<WhatsAppOutlined />} />
-            </div>
-    </div>
+        <p className="text-gray-500 mt-2">Free delivery on orders over $30.00</p>
+        {/* Share Options */}
+        <div className="mt-6 flex space-x-4">
+          <Button icon={<FacebookOutlined />} />
+          <Button icon={<TwitterOutlined />} />
+          <Button icon={<WhatsAppOutlined />} />
+        </div>
       </div>
+    </div>
   );
 };
 

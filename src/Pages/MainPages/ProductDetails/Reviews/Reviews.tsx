@@ -1,9 +1,9 @@
 import { Spin, Alert, Divider, Dropdown, Menu, Button, Avatar, Tooltip } from "antd";
 // import Review from "./Review";
 // import ReviewForm from "./ReviewForm";
-import { useGetProductReviewsQuery } from "../../../Redux/Features/Review/reviewApi";
-import ReviewCard from "./ReviewCard/ReviewCard";
-import ReviewSummary from "./ReviewSummary/ReviewSummary";
+import { useGetProductReviewsQuery } from "../../../../Redux/Features/Review/reviewApi";
+import ReviewCard from "../ReviewCard/ReviewCard";
+import ReviewSummary from "../ReviewSummary/ReviewSummary";
 import { FiFilter } from "react-icons/fi";
 import { AntDesignOutlined, UserOutlined } from '@ant-design/icons';
 
