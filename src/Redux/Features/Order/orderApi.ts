@@ -5,11 +5,43 @@ export const orderApi = baseApi.injectEndpoints({
 
     endpoints: (builder) => ({
         getOrders: builder.query({
-            query: () => '/orders',
+            query: ({ paymentStatus, status, page, limit }) => {
+                let queryString = '/orders?';
+                if (paymentStatus) {
+                    queryString += `paymentStatus=${paymentStatus}&`;
+
+                }
+                if (status) {
+                    queryString += `status=${status}&`;
+                }
+                if (page) {
+                    queryString += `page=${page}&`;
+                }
+                if (limit) {
+                    queryString += `limit=${limit}&`;
+                }
+                return { url: queryString, method: 'GET' }
+            },
             providesTags: ['order'],
         }),
         getOrderHistory: builder.query({
-            query: () => '/orders',
+            query: ({ paymentStatus, status, page, limit }) => {
+                let queryString = '/orders?';
+                if (paymentStatus) {
+                    queryString += `paymentStatus=${paymentStatus}&`;
+
+                }
+                if (status) {
+                    queryString += `status=${status}&`;
+                }
+                if (page) {
+                    queryString += `page=${page}&`;
+                }
+                if (limit) {
+                    queryString += `limit=${limit}&`;
+                }
+                return { url: queryString, method: 'GET' }
+            },
             providesTags: ['order'],
         }),
         getOrderById: builder.query({

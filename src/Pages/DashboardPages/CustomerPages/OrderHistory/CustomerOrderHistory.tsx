@@ -4,7 +4,7 @@ import { useState } from "react";
 import { TOrder } from "../../../../Interface";
 
 const CustomerOrderHistory = () => {
-  const { data = {}, isLoading, error } = useGetOrderHistoryQuery("")
+  const { data = {}, isLoading, error } = useGetOrderHistoryQuery({ paymentStatus: "PAID" });
   const { data: orders, meta } = data.data || {}
   const { total } = meta || {};
   const [currentPage, setCurrentPage] = useState(1);
