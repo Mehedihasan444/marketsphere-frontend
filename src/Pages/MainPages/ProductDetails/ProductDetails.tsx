@@ -34,16 +34,16 @@ const ProductDetails = () => {
       ),
     },
     {
-      href: `/products/${product.category.name}`,
+      href: `/products/${product?.category?.name}`,
       title: (
         <>
           {/* <ProductFilled /> */}
-          <span>{product.category.name}</span>
+          <span>{product?.category?.name}</span>
         </>
       ),
     },
     {
-      title: product.name,
+      title: product?.name,
     },
   ];
 

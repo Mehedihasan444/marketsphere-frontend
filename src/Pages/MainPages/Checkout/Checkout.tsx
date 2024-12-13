@@ -1,4 +1,4 @@
-import { Alert, Button, Col, Divider, div, Spin } from "antd";
+import { Alert, Button, Divider, Spin } from "antd";
 import { useGetCartItemsQuery } from "../../../Redux/Features/Cart/cartApi";
 import { useEffect, useMemo, useState } from "react";
 import { TCartItem } from "../../../Interface";
@@ -20,7 +20,7 @@ const Checkout = () => {
     const { data = {}, isLoading, error } = useGetCartItemsQuery("");
     const { data: cartItems = [] } = data || {};
     const [createOrder, { isLoading: orderIsPlacing }] = useCreateOrderMutation()
-    const { data :profileData= {}} = useGetMyProfileQuery("");
+    const { data: profileData = {} } = useGetMyProfileQuery("");
     const userProfile = useMemo(() => profileData.data || {}, [profileData]);
     const [form] = Form.useForm();
 
@@ -30,24 +30,23 @@ const Checkout = () => {
         setTotalAmount(subTotal + shipping - discount)
     }, [cartItems])
 
-    
+
 
     const handleSubmit = async (values: any) => {
         const quantity = cartItems?.reduce((acc: number, item: TCartItem) => acc + item.quantity, 0)
-const newOrder = {
-    ...values,
-    customerId: userProfile.id,
-    shopId:"68ecb332-5e05-4dc3-91b8-f9894e6f99e0",
-    quantity,
-    totalAmount,
-    discount,
-    orderNumber: `ORD-${Math.floor(Math.random() * 1000000)}`,
-    note:"",
-    orderItems: cartItems?.map((item: TCartItem) => ({
-        productId: item.product.id,
-        quantity: item.quantity,
-    })),
-}
+        const newOrder = {
+            ...values,
+            quantity,
+            totalAmount,
+            discount,
+            customerId: userProfile.id,
+            orderNumber: `ORD-${Math.floor(Math.random() * 1000000)}`,
+            note: "",
+            orderItems: cartItems?.map((item: TCartItem) => ({
+                productId: item.product.id,
+                quantity: item.quantity,
+            })),
+        }
         try {
             const res = await createOrder(newOrder)
             console.log(res)

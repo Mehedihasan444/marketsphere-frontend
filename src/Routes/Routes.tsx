@@ -30,6 +30,8 @@ import FollowedShops from "../Pages/DashboardPages/CustomerPages/FollowedShops/F
 import AdminHome from "../Pages/DashboardPages/AdminPages/AdminHome/AdminHome";
 import ProtectedRoute from "./ProtectedRole";
 import Checkout from "../Pages/MainPages/Checkout/Checkout";
+import CustomerOrderHistory from "../Pages/DashboardPages/CustomerPages/OrderHistory/CustomerOrderHistory";
+import Orders from "../Pages/DashboardPages/CustomerPages/Orders/Orders";
 
 // Router configuration
 const router = createBrowserRouter([
@@ -77,6 +79,14 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/customer/home",
         element: <CustomerHome />,
+      },
+      {
+        path: "/dashboard/customer/orders",
+        element: <Orders />,
+      },
+      {
+        path: "/dashboard/customer/order-history",
+        element: <CustomerOrderHistory />,
       },
       {
         path: "/dashboard/customer/be-a-vendor",

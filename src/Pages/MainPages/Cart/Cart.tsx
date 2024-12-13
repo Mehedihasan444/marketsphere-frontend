@@ -15,7 +15,7 @@ const Cart: React.FC = () => {
   const [removeFromCart] = useRemoveFromCartMutation()
   const [clearCart] = useClearCartMutation()
   const [totalAmount, setTotalAmount] = React.useState<number>(0)
-
+console.log(cartItems, "cartItems")
 
   useEffect(() => {
     const calculateTotal = async () => {
@@ -46,16 +46,7 @@ const Cart: React.FC = () => {
       message.error("Failed to clear cart")
     }
   }
-  if (error) {
-    return (
-      <Alert
-        message="Error"
-        description="Failed to load users."
-        type="error"
-        showIcon
-      />
-    );
-  }
+
 
   return (
     <div className="relative">

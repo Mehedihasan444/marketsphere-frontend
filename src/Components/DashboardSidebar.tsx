@@ -1,14 +1,11 @@
 import React from "react";
 import {
   HomeOutlined,
-  ShoppingCartOutlined,
-  SearchOutlined,
-  HeartOutlined,
   FileTextOutlined,
   UserOutlined,
   ShopOutlined,
   HistoryOutlined,
-  BarsOutlined,
+
   QuestionCircleOutlined,
   ProfileOutlined,
   LogoutOutlined,
@@ -55,7 +52,8 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
       icon: <FileTextOutlined />,
       label: "Orders",
       children: [
-        { key: "3", label: "Order History", icon: <HistoryOutlined /> },
+        { key: "13", label:  <button onClick={() => navigate("/dashboard/customer/orders")}>Orders</button>, icon: <FileTextOutlined /> },
+        { key: "3", label:  <button onClick={() => navigate("/dashboard/customer/order-history")}>Order History</button>, icon: <HistoryOutlined /> },
         { key: "4", label: "Leave Reviews", icon: <FileTextOutlined /> },
       ],
     },
