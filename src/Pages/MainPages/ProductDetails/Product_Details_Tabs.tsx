@@ -5,8 +5,8 @@ const { Title, Paragraph } = Typography;
 
 const ProductDetailsTabs = ({ id }: { id: string }) => {
   return (
-    <Tabs defaultActiveKey="description" className="mt-16">
-      <Tabs.TabPane tab="Description" key="description">
+    <Tabs defaultActiveKey="description" className="mt-16" size="large" animated style={{fontSize:"20px" ,fontWeight:600}}>
+      <Tabs.TabPane tab="Description" key="description" >
         <div>
           <Title level={2} className="mb-2 mt-10">
             Product Description
@@ -43,6 +43,9 @@ const ProductDetailsTabs = ({ id }: { id: string }) => {
       </Tabs.TabPane>
       <Tabs.TabPane tab="Reviews" key="reviews">
         <Reviews id={id} />
+      </Tabs.TabPane>
+      <Tabs.TabPane tab="Disscusion" key="disscusion">
+       <h3 className="">This features available soon.</h3>
       </Tabs.TabPane>
     </Tabs>
   );
