@@ -1,39 +1,33 @@
 import { baseApi } from '../../Api/baseApi';
 
-interface Order {
-    id: string;
-    product: string;
-    quantity: number;
-    price: number;
-}
 
 export const orderApi = baseApi.injectEndpoints({
 
     endpoints: (builder) => ({
-        getOrders: builder.query<Order[], void>({
+        getOrders: builder.query({
             query: () => '/orders',
         }),
-        getOrderHistory: builder.query<Order[], void>({
+        getOrderHistory: builder.query({
             query: () => '/orders',
         }),
-        getOrderById: builder.query<Order, string>({
+        getOrderById: builder.query({
             query: (id) => `/orders/${id}`,
         }),
-        createOrder: builder.mutation<Order, Partial<Order>>({
+        createOrder: builder.mutation({
             query: (newOrder) => ({
                 url: '/orders',
                 method: 'POST',
                 body: newOrder,
             }),
         }),
-        updateOrder: builder.mutation<Order, Partial<Order>>({
+        updateOrder: builder.mutation({
             query: ({ id, ...patch }) => ({
                 url: `/orders/${id}`,
                 method: 'PATCH',
                 body: patch,
             }),
         }),
-        deleteOrder: builder.mutation<{ success: boolean; id: string }, string>({
+        deleteOrder: builder.mutation({
             query: (id) => ({
                 url: `/orders/${id}`,
                 method: 'DELETE',

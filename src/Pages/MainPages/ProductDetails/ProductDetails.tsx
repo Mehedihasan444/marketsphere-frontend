@@ -34,6 +34,15 @@ const ProductDetails = () => {
       ),
     },
     {
+      href: `/products/${product.category.name}`,
+      title: (
+        <>
+          {/* <ProductFilled /> */}
+          <span>{product.category.name}</span>
+        </>
+      ),
+    },
+    {
       title: product.name,
     },
   ];
