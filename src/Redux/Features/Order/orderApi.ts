@@ -71,6 +71,14 @@ export const orderApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ['order'],
         }),
+        makePayment: builder.mutation({
+            query: (paymentData) => ({
+                url: '/payment',
+                method: 'POST',
+                body: paymentData,
+            }),
+            invalidatesTags: ['order',"transaction"],
+        })
     }),
 });
 
@@ -80,5 +88,6 @@ export const {
     useCreateOrderMutation,
     useUpdateOrderMutation,
     useDeleteOrderMutation,
-    useGetOrderHistoryQuery
+    useGetOrderHistoryQuery,
+    useMakePaymentMutation,
 } = orderApi;

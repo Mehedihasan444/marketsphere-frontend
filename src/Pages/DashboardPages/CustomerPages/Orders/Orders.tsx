@@ -1,5 +1,5 @@
 import { Table, Button, Spin, message, Alert, Pagination, Space } from "antd";
-import {  useGetOrdersQuery } from "../../../../Redux/Features/Order/orderApi";
+import { useGetOrdersQuery, useMakePaymentMutation } from "../../../../Redux/Features/Order/orderApi";
 import { useState } from "react";
 import { TOrder } from "../../../../Interface";
 
@@ -9,10 +9,33 @@ const Orders = () => {
     const { total } = meta || {};
     const [currentPage, setCurrentPage] = useState(1);
     const limit = 8;
+    const [makePayment, { isLoading: isPaying }] = useMakePaymentMutation()
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
+    const handlePayment = async (orderId: string, amount: number) => {
+        try {
+            const payemntData = {
+                orderId,
+                amount
+            }
+            const res = await makePayment(payemntData)
+            console.log(res?.data?.data.payment_url)
+            if (res?.data?.data.payment_url) {
+                window.location.href = res.data.data.payment_url;
+                return;
 
+            }else if(res?.error){
+                message.error(res?.error.data.message)
+            }
+        } catch (error) {
+            console.log(error)
+            message.error("Failed to initiate payment")
+        }
+    }
+    const handleDelete = (orderId: string) => {
+
+    }
     // Columns for Ant Design table
     const columns = [
         {
@@ -74,7 +97,8 @@ const Orders = () => {
 
                     <Button
                         type="primary"
-                        onClick={() => viewOrderDetails(record.id)}
+                        loading={isPaying}
+                        onClick={() => handlePayment(record.id, record.totalAmount)}
                         className=""
                     >
                         Pay Now
@@ -82,7 +106,7 @@ const Orders = () => {
                     <Button
                         type="primary"
                         danger
-                        onClick={() => viewOrderDetails(record.id)}
+                        onClick={() => handleDelete(record.id)}
                         className=""
                     >
                         Cancel
