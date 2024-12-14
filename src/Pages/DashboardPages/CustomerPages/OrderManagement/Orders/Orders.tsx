@@ -1,7 +1,7 @@
 import { Table, Button, Spin, message, Alert, Pagination, Space } from "antd";
-import { useCancelOrderMutation, useGetOrdersQuery, useMakePaymentMutation } from "../../../../Redux/Features/Order/orderApi";
 import { useState } from "react";
-import { OrderStatus, TOrder } from "../../../../Interface";
+import { OrderStatus, TOrder } from "../../../../../Interface";
+import { useCancelOrderMutation, useGetOrdersQuery, useMakePaymentMutation } from "../../../../../Redux/Features/Order/orderApi";
 
 const Orders = () => {
     const [currentPage, setCurrentPage] = useState(1);

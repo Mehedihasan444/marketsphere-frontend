@@ -1,7 +1,8 @@
 import { Table, Button, Spin, message, Alert, Pagination } from "antd";
-import { useGetOrderHistoryQuery } from "../../../../Redux/Features/Order/orderApi";
 import { useState } from "react";
-import { OrderStatus, TOrder } from "../../../../Interface";
+import { OrderStatus, TOrder } from "../../../../../Interface";
+import { useGetOrderHistoryQuery } from "../../../../../Redux/Features/Order/orderApi";
+
 
 const CustomerOrderHistory = () => {
   const { data = {}, isLoading, error } = useGetOrderHistoryQuery({  status:  OrderStatus.DELIVERED });

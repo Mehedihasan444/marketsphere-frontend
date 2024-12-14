@@ -18,8 +18,6 @@ import BlacklistShop from "../Pages/DashboardPages/AdminPages/BlacklistShop/Blac
 import VendorHome from "../Pages/DashboardPages/VendorPages/VendorHome/VendorHome";
 import ManageShop from "../Pages/DashboardPages/VendorPages/ManageShop/ManageShop";
 import ProductManagement from "../Pages/DashboardPages/VendorPages/ProductManagement/ProductManagement";
-import ManageOrder from "../Pages/DashboardPages/VendorPages/ManageOrder/ManageOrder";
-import OrderHistory from "../Pages/DashboardPages/VendorPages/OrderHistory/OrderHistory";
 import CustomerReviews from "../Pages/DashboardPages/VendorPages/CustomerReviews/CustomerReviews";
 import Shops from "../Pages/DashboardPages/AdminPages/Shops/Shops";
 import BecomeSeller from "../Pages/DashboardPages/CustomerPages/BecomeSeller/BecomeSeller";
@@ -30,13 +28,16 @@ import FollowedShops from "../Pages/DashboardPages/CustomerPages/FollowedShops/F
 import AdminHome from "../Pages/DashboardPages/AdminPages/AdminHome/AdminHome";
 import ProtectedRoute from "./ProtectedRole";
 import Checkout from "../Pages/MainPages/Checkout/Checkout";
-import CustomerOrderHistory from "../Pages/DashboardPages/CustomerPages/OrderHistory/CustomerOrderHistory";
-import Orders from "../Pages/DashboardPages/CustomerPages/Orders/Orders";
 import CancelledOrders from "../Pages/DashboardPages/CustomerPages/CancelledOrders/CancelledOrders";
-import ConfirmedOrders from "../Pages/DashboardPages/VendorPages/ManageOrder/ConfirmedOrders";
-import ShiftedOrders from "../Pages/DashboardPages/VendorPages/ManageOrder/ShiftedOrders";
 import AdminOrders from "../Pages/DashboardPages/AdminPages/OrdersManagement/AdminOrders";
 import AdminOrderHistory from "../Pages/DashboardPages/AdminPages/OrdersManagement/AdminOrderHistory";
+import Orders from "../Pages/DashboardPages/CustomerPages/OrderManagement/Orders/Orders";
+import CustomerOrderHistory from "../Pages/DashboardPages/CustomerPages/OrderManagement/OrderHistory/CustomerOrderHistory";
+import ConfirmedOrders from "../Pages/DashboardPages/VendorPages/OrderManagement/ManageOrder/ConfirmedOrders";
+import ShiftedOrders from "../Pages/DashboardPages/VendorPages/OrderManagement/ManageOrder/ShiftedOrders";
+import ManageOrder from "../Pages/DashboardPages/VendorPages/OrderManagement/ManageOrder/ManageOrder";
+import OrderHistory from "../Pages/DashboardPages/VendorPages/OrderManagement/OrderHistory/OrderHistory";
+import LeaveReviews from "../Pages/DashboardPages/CustomerPages/LeaveReviews/LeaveReviews";
 
 // Router configuration
 const router = createBrowserRouter([
@@ -109,6 +110,9 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/customer/followed-shops",
         element: <FollowedShops />,
+      },{
+        path: "/dashboard/customer/leave-reviews",
+        element: <LeaveReviews />,
       },
     ],
   },

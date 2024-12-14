@@ -1,7 +1,8 @@
 import {  Rate } from "antd";
 import { UserOutlined, LikeOutlined, CommentOutlined, DislikeOutlined } from "@ant-design/icons";
+import {  TReviewItem } from "../../../../Interface";
 
-const ReviewCard = ({ review }: { review: any }) => {
+const ReviewCard = ({ review }: { review: TReviewItem }) => {
 
     return (  <div className="p-4 bg-white  rounded-md mb-4">
       <div className="flex items-center">
@@ -9,24 +10,24 @@ const ReviewCard = ({ review }: { review: any }) => {
           <UserOutlined />
         </div>
         <div className="ml-3">
-          <h4 className="font-bold">{review.name}</h4>
-          <p className="text-sm text-gray-500">{review.date}</p>
+          <h4 className="font-bold">{review.customer.name}</h4>
+          <p className="text-sm text-gray-500">{new Date(review.createdAt).toDateString()}</p>
         </div>
       </div>
       <Rate allowHalf value={review.rating} disabled className="mt-2" />
-      <p className="mt-2 text-gray-700">{review.review}</p>
+      <p className="mt-2 text-gray-700">{review.comment}</p>
       <div className="flex items-center mt-3 gap-4">
         <button className="flex items-center gap-1 text-gray-600 hover:text-gray-800">
           <LikeOutlined />
-          <span>{review.likes}</span>
+          <span>{review?.likes ||32}</span>
         </button>
         <button className="flex items-center gap-1 text-gray-600 hover:text-gray-800">
           <DislikeOutlined />
-          <span>{review.likes}</span>
+          <span>{review?.likes|| 56}</span>
         </button>
         <button className="flex items-center gap-1 text-gray-600 hover:text-gray-800">
           <CommentOutlined />
-          <span>{review.replies}</span>
+          <span>{review?.replies || 65}</span>
         </button>
       </div>
     

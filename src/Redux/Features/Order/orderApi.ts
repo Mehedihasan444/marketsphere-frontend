@@ -26,11 +26,13 @@ export const orderApi = baseApi.injectEndpoints({
             providesTags: ['order'],
         }),
         getOrderHistory: builder.query({
-            query: ({ paymentStatus, status, page, limit }) => {
+            query: ({ paymentStatus, status, isReview, page, limit }) => {
                 let queryString = '/orders?';
                 if (paymentStatus) {
                     queryString += `paymentStatus=${paymentStatus}&`;
-
+                }
+                if (isReview) {
+                    queryString += `isReview=${isReview}&`;
                 }
                 if (status) {
                     queryString += `status=${status}&`;
@@ -55,13 +57,13 @@ export const orderApi = baseApi.injectEndpoints({
                 method: 'POST',
                 body: newOrder,
             }),
-            invalidatesTags: ['order',"user","cart"],
+            invalidatesTags: ['order', "user", "cart"],
         }),
         updateOrder: builder.mutation({
             query: ({ orderId, status }) => ({
                 url: `/orders/${orderId}`,
                 method: 'PUT',
-                body: {status},
+                body: { status },
             }),
             invalidatesTags: ['order'],
         }),
@@ -86,7 +88,7 @@ export const orderApi = baseApi.injectEndpoints({
                 method: 'POST',
                 body: paymentData,
             }),
-            invalidatesTags: ['order',"transaction"],
+            invalidatesTags: ['order', "transaction"],
         })
     }),
 });

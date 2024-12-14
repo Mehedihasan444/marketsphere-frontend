@@ -1,37 +1,22 @@
-import { useEffect, useState } from "react";
-import { Table, Select, message, Tag, Alert, Spin } from "antd";
-import { OrderStatus, TCustomer, TOrder } from "../../../../Interface";
-import {
-  useGetOrdersQuery,
-  useUpdateOrderMutation,
-} from "../../../../Redux/Features/Order/orderApi";
+import  { useEffect, useState } from "react";
+import { Table, Tag, Alert, Spin, message, Select } from "antd";
+import { useGetOrderHistoryQuery, useUpdateOrderMutation } from "../../../../../Redux/Features/Order/orderApi";
+import { OrderStatus, TCustomer, TOrder } from "../../../../../Interface";
 
 const { Option } = Select;
-
-const ManageOrder = () => {
-  const [filterStatus, setFilterStatus] = useState<string | null>(null); // Filter by order status
-  const { data = {}, isLoading, isError } = useGetOrdersQuery({ status: OrderStatus.PENDING, paymentStatus: "PAID" }); // Fetch all orders
-  const { data: orders, } = data.data || {}
+const ConfirmedOrders = () => {
+  const { data={}, isLoading, isError } = useGetOrderHistoryQuery({status: OrderStatus.CONFIRMED,paymentStatus: "PAID"}); // Fetch order 
+  const {data: orders} = data.data || {};
+  const [orderHistory, setOrderHistory] = useState<TOrder[]>([]);
   const [updateOrder, { isLoading: isUpdating }] =
     useUpdateOrderMutation(); // Mutation to update order status
 
 
-  console.log(orders)
-
-
-  const [filteredOrders, setFilteredOrders] = useState<TOrder[]>([]);
-
-  // Apply filters when orders or filterStatus changes
   useEffect(() => {
     if (orders) {
-      setFilteredOrders(
-        filterStatus
-          ? orders.filter((order: TOrder) => order.status === filterStatus)
-          : orders
-      );
+      setOrderHistory(orders);
     }
-  }, [orders, filterStatus]);
-
+  }, [orders]);
   // Handle status update
   const handleStatusUpdate = async (orderId: string, status: string) => {
     console.log(orderId, status)
@@ -47,7 +32,7 @@ const ManageOrder = () => {
       message.error("An error occurred while updating order status.");
     }
   };
-
+  // Table columns for order history
   // Table columns
   const columns = [
     {
@@ -101,23 +86,25 @@ const ManageOrder = () => {
         return <Tag color={color}>{status}</Tag>;
       },
     },
+    
+    
     {
-      title: "Action",
-      key: "action",
-      render: (_: any, record: TOrder) => (
-        <Select
-          defaultValue={record.status}
-          onChange={(value) => handleStatusUpdate(record.id, value)}
-          style={{ width: 150 }}
-          loading={isUpdating}
-        >
-          <Option value="PENDING">PENDING</Option>
-          <Option value="CONFIRMED"> CONFIRMED</Option>
-          <Option value="SHIPPED">SHIPPED</Option>
-          <Option value="DELIVERED">DELIVERED</Option>
-        </Select>
-      ),
-    },
+        title: "Action",
+        key: "action",
+        render: (_: any, record: TOrder) => (
+          <Select
+            defaultValue={record.status}
+            onChange={(value) => handleStatusUpdate(record.id, value)}
+            style={{ width: 150 }}
+            loading={isUpdating}
+          >
+            <Option value="PENDING">PENDING</Option>
+            <Option value="CONFIRMED"> CONFIRMED</Option>
+            <Option value="SHIPPED">SHIPPED</Option>
+            <Option value="DELIVERED">DELIVERED</Option>
+          </Select>
+        ),
+      },
   ];
 
   if (isLoading) {
@@ -140,30 +127,18 @@ const ManageOrder = () => {
   }
   return (
     <div className="p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Manage Orders</h2>
-        <Select
-          placeholder="Filter by Status"
-          onChange={(value) => setFilterStatus(value)}
-          allowClear
-          style={{ width: 200 }}
-        >
-          <Option value="Pending">Pending</Option>
-          <Option value="Shipped">Shipped</Option>
-          <Option value="Delivered">Delivered</Option>
-        </Select>
-      </div>
+      <h2 className="text-xl font-semibold mb-4">Confirmed Orders</h2>
       <Table
         columns={columns}
-        dataSource={filteredOrders}
-        rowKey="_id"
+        dataSource={orderHistory}
+        rowKey="id"
         loading={isLoading}
         pagination={{ pageSize: 5 }}
         bordered
       />
-
+   
     </div>
   );
 };
 
-export default ManageOrder;
+export default ConfirmedOrders;

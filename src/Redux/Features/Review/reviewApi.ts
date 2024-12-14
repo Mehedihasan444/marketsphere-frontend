@@ -3,9 +3,19 @@ import { baseApi } from "../../Api/baseApi";
 const reviewApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAdminReviews: builder.query({
-      query: ({ status, page, limit }: { status?: string; page?: number; limit?: number }) => {
+      query: ({ status, page, limit }: {status:string; page?: number; limit?: number }) => {
         let queryString = "/reviews?";
         if (status) queryString += `status=${status}&`;
+        if (page) queryString += `page=${page}&`;
+        if (limit) queryString += `limit=${limit}&`;
+        return { url: queryString, method: "GET" };
+      },
+      providesTags: ["review"],
+    }),
+    getCustomerReviews: builder.query({
+      query: ({  page, limit }: {  page?: number; limit?: number }) => {
+        let queryString = "/reviews?";
+  
         if (page) queryString += `page=${page}&`;
         if (limit) queryString += `limit=${limit}&`;
         return { url: queryString, method: "GET" };
@@ -37,8 +47,19 @@ const reviewApi = baseApi.injectEndpoints({
       return { url: queryString, method: "GET" };
       },
       providesTags: ["review"],
+    }),
+    addReviews: builder.mutation({
+      query: ( review ) => ({
+        url: `/reviews`,
+        method: "POST",
+        body:  review ,
+      }),
+      invalidatesTags: ["review","order"],
     })
   }),
 });
 
-export const { useGetAdminReviewsQuery,useGetProductReviewsQuery, useUpdateReviewStatusMutation,useGetVendorReviewsQuery } = reviewApi;
+export const { useGetAdminReviewsQuery,useGetProductReviewsQuery, useGetCustomerReviewsQuery,useGetVendorReviewsQuery,
+  useUpdateReviewStatusMutation,
+  useAddReviewsMutation
+ } = reviewApi;

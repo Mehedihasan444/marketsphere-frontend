@@ -1,7 +1,8 @@
 import  { useEffect, useState } from "react";
 import { Table, Tag, Button, Alert, Spin } from "antd";
-import { TCustomer, TOrder } from "../../../../Interface";
-import { useGetOrderHistoryQuery } from "../../../../Redux/Features/Order/orderApi";
+import { useGetOrderHistoryQuery } from "../../../../../Redux/Features/Order/orderApi";
+import { TCustomer, TOrder } from "../../../../../Interface";
+
 
 const OrderHistory = () => {
   const { data={}, isLoading, isError } = useGetOrderHistoryQuery(""); // Fetch order 

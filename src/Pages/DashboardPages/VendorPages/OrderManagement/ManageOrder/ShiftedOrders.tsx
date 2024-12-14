@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Table, Tag, Button, Alert, Spin } from "antd";
-import { OrderStatus, TCustomer, TOrder } from "../../../../Interface";
-import { useGetOrderHistoryQuery } from "../../../../Redux/Features/Order/orderApi";
+import { useGetOrderHistoryQuery } from "../../../../../Redux/Features/Order/orderApi";
+import { OrderStatus, TCustomer, TOrder } from "../../../../../Interface";
+
 
 const ShiftedOrders = () => {
     const { data = {}, isLoading, isError } = useGetOrderHistoryQuery({ status: OrderStatus.SHIPPED, paymentStatus: "PAID" }); // Fetch order 

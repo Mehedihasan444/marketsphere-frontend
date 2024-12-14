@@ -214,7 +214,7 @@ export type TProduct = {
   updatedAt: Date;
   cartItems: TCartItem[];
   orderItems: TOrderItem[];
-  reviews: TReview[];
+  reviews: TReview;
   wishlistItem: TWishlistItem[];
 };
 
@@ -333,6 +333,7 @@ export type TOrder = {
   note?: string;
   appliedCoupon?: string;
   terms: boolean;
+  isReview: boolean;
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
