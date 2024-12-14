@@ -33,6 +33,8 @@ import Checkout from "../Pages/MainPages/Checkout/Checkout";
 import CustomerOrderHistory from "../Pages/DashboardPages/CustomerPages/OrderHistory/CustomerOrderHistory";
 import Orders from "../Pages/DashboardPages/CustomerPages/Orders/Orders";
 import CancelledOrders from "../Pages/DashboardPages/CustomerPages/CancelledOrders/CancelledOrders";
+import ConfirmedOrders from "../Pages/DashboardPages/VendorPages/ManageOrder/ConfirmedOrders";
+import ShiftedOrders from "../Pages/DashboardPages/VendorPages/ManageOrder/ShiftedOrders";
 
 // Router configuration
 const router = createBrowserRouter([
@@ -130,7 +132,15 @@ const router = createBrowserRouter([
         element: <ProductManagement />,
       },
       {
-        path: "/dashboard/vendor/manage-order",
+        path: "/dashboard/vendor/confirmed-order",
+        element: <ConfirmedOrders />,
+      },
+      {
+        path: "/dashboard/vendor/shifted-order",
+        element: <ShiftedOrders />,
+      },
+      {
+        path: "/dashboard/vendor/orders",
         element: <ManageOrder />,
       },
       {

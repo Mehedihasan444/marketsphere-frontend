@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Table, Select, message, Tag, Alert, Spin } from "antd";
-import { TOrder } from "../../../../Interface";
+import { OrderStatus, TCustomer, TOrder } from "../../../../Interface";
 import {
   useGetOrdersQuery,
   useUpdateOrderMutation,
@@ -10,9 +10,14 @@ const { Option } = Select;
 
 const ManageOrder = () => {
   const [filterStatus, setFilterStatus] = useState<string | null>(null); // Filter by order status
-  const { data: orders, isLoading, isError } = useGetOrdersQuery(); // Fetch all orders
-  const [updateOrder, { isLoading: isUpdating, error }] =
+  const { data = {}, isLoading, isError } = useGetOrdersQuery({ status: OrderStatus.PENDING, paymentStatus: "PAID" }); // Fetch all orders
+  const { data: orders, } = data.data || {}
+  const [updateOrder, { isLoading: isUpdating }] =
     useUpdateOrderMutation(); // Mutation to update order status
+
+
+  console.log(orders)
+
 
   const [filteredOrders, setFilteredOrders] = useState<TOrder[]>([]);
 
@@ -29,6 +34,7 @@ const ManageOrder = () => {
 
   // Handle status update
   const handleStatusUpdate = async (orderId: string, status: string) => {
+    console.log(orderId, status)
     try {
       const response = await updateOrder({ orderId, status });
       if (response?.data?.success) {
@@ -45,31 +51,41 @@ const ManageOrder = () => {
   // Table columns
   const columns = [
     {
-      title: "Order ID",
-      dataIndex: "_id",
-      key: "_id",
+      title: "Order Number",
+      dataIndex: "orderNumber",
+      key: "orderNumber",
       render: (text: string) => <span>{text}</span>,
     },
     {
       title: "Customer Name",
-      dataIndex: "customerName",
-      key: "customerName",
+      dataIndex: "customer",
+      key: "customer",
+      render: (customer: TCustomer) => <span>{customer?.name}</span>,
     },
     {
       title: "Product",
-      dataIndex: "productName",
-      key: "productName",
+      dataIndex: "orderItems",
+      key: "orderItems",
+      render: (orderItems: any) => <>
+        {orderItems?.map((item: any) => (
+          <div key={item.id}>
+            <h3 > <strong>Name:</strong> {item.product.name}</h3>
+            <h3 > <strong>Quantity:</strong> {item.quantity}</h3>
+          </div>
+        ))}
+      </>
+
     },
     {
-      title: "Quantity",
+      title: "Total Quantity",
       dataIndex: "quantity",
       key: "quantity",
     },
     {
-      title: "Total Price",
-      dataIndex: "totalPrice",
-      key: "totalPrice",
-      render: (price: number) => `৳${price.toFixed(2)}`,
+      title: "Total Amount",
+      dataIndex: "totalAmount",
+      key: "totalAmount",
+      render: (totalAmount: number) => `$${totalAmount.toFixed(2)}`,
     },
     {
       title: "Status",
@@ -80,8 +96,8 @@ const ManageOrder = () => {
           status === "Pending"
             ? "orange"
             : status === "Shipped"
-            ? "blue"
-            : "green";
+              ? "blue"
+              : "green";
         return <Tag color={color}>{status}</Tag>;
       },
     },
@@ -91,13 +107,14 @@ const ManageOrder = () => {
       render: (_: any, record: TOrder) => (
         <Select
           defaultValue={record.status}
-          onChange={(value) => handleStatusUpdate(record._id, value)}
+          onChange={(value) => handleStatusUpdate(record.id, value)}
           style={{ width: 150 }}
           loading={isUpdating}
         >
-          <Option value="Pending">Pending</Option>
-          <Option value="Shipped">Shipped</Option>
-          <Option value="Delivered">Delivered</Option>
+          <Option value="PENDING">PENDING</Option>
+          <Option value="CONFIRMED"> CONFIRMED</Option>
+          <Option value="SHIPPED">SHIPPED</Option>
+          <Option value="DELIVERED">DELIVERED</Option>
         </Select>
       ),
     },
@@ -144,7 +161,7 @@ const ManageOrder = () => {
         pagination={{ pageSize: 5 }}
         bordered
       />
-   
+
     </div>
   );
 };

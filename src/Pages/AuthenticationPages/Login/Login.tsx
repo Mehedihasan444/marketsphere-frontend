@@ -32,7 +32,7 @@ type TJwtPayload = {
 };
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [login,{isLoading}] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
@@ -49,7 +49,12 @@ const Login: React.FC = () => {
           type: "success",
           content: `Logged in as ${user?.name}`,
         });
-        navigate(`/`);
+        if (user.role === "ADMIN" || user.role === "VENDOR" || user.role === "SUPER_ADMIN") {
+          navigate(`/dashboard/${user.role.toLowerCase()}/home`);
+        } else {
+
+          navigate(`/`);
+        }
       } else if (res && res?.error) {
         message.open({
           type: "error",

@@ -58,10 +58,10 @@ export const orderApi = baseApi.injectEndpoints({
             invalidatesTags: ['order',"user","cart"],
         }),
         updateOrder: builder.mutation({
-            query: ({ id, ...patch }) => ({
-                url: `/orders/${id}`,
-                method: 'PATCH',
-                body: patch,
+            query: ({ orderId, status }) => ({
+                url: `/orders/${orderId}`,
+                method: 'PUT',
+                body: {status},
             }),
             invalidatesTags: ['order'],
         }),

@@ -1,19 +1,36 @@
 import  { useEffect, useState } from "react";
-import { Table, Tag, Button, Alert, Spin } from "antd";
-import { TCustomer, TOrder } from "../../../../Interface";
-import { useGetOrderHistoryQuery } from "../../../../Redux/Features/Order/orderApi";
-
-const OrderHistory = () => {
-  const { data={}, isLoading, isError } = useGetOrderHistoryQuery(""); // Fetch order 
+import { Table, Tag, Alert, Spin, message, Select } from "antd";
+import { OrderStatus, TCustomer, TOrder } from "../../../../Interface";
+import { useGetOrderHistoryQuery, useUpdateOrderMutation } from "../../../../Redux/Features/Order/orderApi";
+const { Option } = Select;
+const ConfirmedOrders = () => {
+  const { data={}, isLoading, isError } = useGetOrderHistoryQuery({status: OrderStatus.CONFIRMED,paymentStatus: "PAID"}); // Fetch order 
   const {data: orders} = data.data || {};
   const [orderHistory, setOrderHistory] = useState<TOrder[]>([]);
+  const [updateOrder, { isLoading: isUpdating }] =
+    useUpdateOrderMutation(); // Mutation to update order status
+
 
   useEffect(() => {
     if (orders) {
       setOrderHistory(orders);
     }
   }, [orders]);
-
+  // Handle status update
+  const handleStatusUpdate = async (orderId: string, status: string) => {
+    console.log(orderId, status)
+    try {
+      const response = await updateOrder({ orderId, status });
+      if (response?.data?.success) {
+        message.success("Order status updated successfully!");
+      } else {
+        message.error("Failed to update order status.");
+      }
+    } catch (error) {
+      console.error(error);
+      message.error("An error occurred while updating order status.");
+    }
+  };
   // Table columns for order history
   // Table columns
   const columns = [
@@ -70,25 +87,25 @@ const OrderHistory = () => {
     },
     
     
-      {
+    {
         title: "Action",
         key: "action",
         render: (_: any, record: TOrder) => (
-          <Button
-            type="link"
-            onClick={() => viewOrderDetails(record.id)}
-            className="text-blue-500"
+          <Select
+            defaultValue={record.status}
+            onChange={(value) => handleStatusUpdate(record.id, value)}
+            style={{ width: 150 }}
+            loading={isUpdating}
           >
-            View Details
-          </Button>
+            <Option value="PENDING">PENDING</Option>
+            <Option value="CONFIRMED"> CONFIRMED</Option>
+            <Option value="SHIPPED">SHIPPED</Option>
+            <Option value="DELIVERED">DELIVERED</Option>
+          </Select>
         ),
       },
   ];
-  // Handle viewing details of a specific order
-  const viewOrderDetails = (orderId: string) => {
-    // Navigate to a detailed order view page or show a modal
-    console.log(`Viewing details for order ID: ${orderId}`);
-  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen w-full">
@@ -109,7 +126,7 @@ const OrderHistory = () => {
   }
   return (
     <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">Order History</h2>
+      <h2 className="text-xl font-semibold mb-4">Confirmed Orders</h2>
       <Table
         columns={columns}
         dataSource={orderHistory}
@@ -123,4 +140,4 @@ const OrderHistory = () => {
   );
 };
 
-export default OrderHistory;
+export default ConfirmedOrders;

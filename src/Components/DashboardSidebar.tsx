@@ -53,11 +53,11 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
       icon: <FileTextOutlined />,
       label: "Orders",
       children: [
-        { key: "13", label:  <button onClick={() => navigate("/dashboard/customer/orders")}>Orders</button>, icon: <FileTextOutlined /> },
-        { key: "14", label:  <button onClick={() => navigate("/dashboard/customer/order-history")}>Order History</button>, icon: <HistoryOutlined /> },
-        
+        { key: "13", label: <button onClick={() => navigate("/dashboard/customer/orders")}>Orders</button>, icon: <FileTextOutlined /> },
+        { key: "14", label: <button onClick={() => navigate("/dashboard/customer/order-history")}>Order History</button>, icon: <HistoryOutlined /> },
+
         { key: "4", label: "Leave Reviews", icon: <FileTextOutlined /> },
-        { key: "3", label:  <button onClick={() => navigate("/dashboard/customer/cancelled-orders")}>Cancelled Orders </button>, icon: <TiCancelOutline /> },
+        { key: "3", label: <button onClick={() => navigate("/dashboard/customer/cancelled-orders")}>Cancelled Orders </button>, icon: <TiCancelOutline /> },
       ],
     },
     {
@@ -135,11 +135,36 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
     {
       key: "4",
       icon: <BoxPlotFilled />,
-      label: (
-        <button onClick={() => navigate("/dashboard/vendor/manage-order")}>
-          Manage Order
-        </button>
-      ),
+      label:
+        "Manage Order"
+
+      ,
+      children: [
+        {
+          key: "17",
+          label: (
+            <button onClick={() => navigate("/dashboard/vendor/orders")}>
+              Orders
+            </button>
+          ),
+        },
+        {
+          key: "15",
+          label: (
+            <button onClick={() => navigate("/dashboard/vendor/confirmed-order")}>
+              Confirmed Orders
+            </button>
+          ),
+        },
+        {
+          key: "16",
+          label: (
+            <button onClick={() => navigate("/dashboard/vendor/shifted-order")}>
+              Shifted Orders
+            </button>
+          ),
+        },
+      ]
     },
     {
       key: "5",
@@ -266,10 +291,10 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
     user?.role === "CUSTOMER"
       ? Customers
       : user?.role === "VENDOR"
-      ? Vendors
-      : user?.role === "ADMIN"
-      ? Admins
-      : [];
+        ? Vendors
+        : user?.role === "ADMIN"
+          ? Admins
+          : [];
 
   return (
     <div
@@ -290,7 +315,7 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
       />
 
       <Button
-      icon={<HomeOutlined />}
+        icon={<HomeOutlined />}
         size="large"
         type="default"
         className="w-full text-lg  rounded-none mt-auto absolute bottom-0 left-0 right-0 flex-grow"
