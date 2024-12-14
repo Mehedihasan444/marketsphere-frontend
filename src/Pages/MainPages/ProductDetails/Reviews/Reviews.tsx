@@ -6,40 +6,11 @@ import ReviewCard from "../ReviewCard/ReviewCard";
 import ReviewSummary from "../ReviewSummary/ReviewSummary";
 import { FiFilter } from "react-icons/fi";
 import { AntDesignOutlined, UserOutlined } from '@ant-design/icons';
+import { TReviewItem } from "../../../../Interface";
 
 const Reviews = ({ id }: { id: string }) => {
   const { data = {}, error, isLoading } = useGetProductReviewsQuery({ productId: id }, { skip: !id });
   const { reviewItems = [] } = data?.data || {};
-
-  const reviews = [
-    {
-      id: 1,
-      name: "Helen M.",
-      date: "Yesterday",
-      rating: 5,
-      review: "Excellent running shoes. It turns very sharply on the foot.",
-      likes: 42,
-      replies: 0,
-    },
-    {
-      id: 2,
-      name: "Ann D.",
-      date: "2 days ago",
-      rating: 5,
-      review: "Good shoes",
-      likes: 35,
-      replies: 2,
-    },
-    {
-      id: 3,
-      name: "Andrew G.",
-      date: "2 days ago",
-      rating: 4,
-      review: "Is it suitable for running?",
-      likes: 10,
-      replies: 0,
-    },
-  ];
 
   if (isLoading) {
     return (
@@ -72,7 +43,7 @@ const Reviews = ({ id }: { id: string }) => {
               <Button icon={<FiFilter />} iconPosition="end" className="p-2 bg-gray-200 rounded-md">Newest</Button>
             </Dropdown>
           </div>
-          {reviews?.map((review) => (
+          {reviewItems?.map((review:TReviewItem) => (
             <>
               <ReviewCard key={review.id} review={review} />
               <Divider />

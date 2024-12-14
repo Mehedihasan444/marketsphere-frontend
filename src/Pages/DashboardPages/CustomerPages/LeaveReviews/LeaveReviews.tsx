@@ -146,7 +146,7 @@ const LeaveReviews = () => {
             {/* reviews */}
             <div className="mt-4">
                 <h1 className="text-2xl font-semibold mb-4">Your reviews</h1>
-                {reviewLoading ? <div className="">
+                {reviewLoading ? <div className="flex justify-center items-center h-screen w-full">
                     <Spin size="large" tip="Loading reviews..." />
                 </div> : reviews?.map((review: TReviewItem) => (
                     <>

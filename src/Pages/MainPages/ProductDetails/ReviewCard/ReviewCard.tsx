@@ -10,7 +10,7 @@ const ReviewCard = ({ review }: { review: TReviewItem }) => {
           <UserOutlined />
         </div>
         <div className="ml-3">
-          <h4 className="font-bold">{review.customer.name}</h4>
+          <h4 className="font-bold">{review?.customer?.name}</h4>
           <p className="text-sm text-gray-500">{new Date(review.createdAt).toDateString()}</p>
         </div>
       </div>
