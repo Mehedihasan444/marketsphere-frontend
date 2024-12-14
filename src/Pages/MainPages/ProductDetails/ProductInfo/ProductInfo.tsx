@@ -129,6 +129,8 @@ const ProductInfo = ({ product }: { product: TProduct & { colors: string[], size
           <Button icon={<WhatsAppOutlined />} />
         </div>
       </div>
+
+      
     </div>
   );
 };

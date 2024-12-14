@@ -20,12 +20,11 @@ const Orders = () => {
                 amount
             }
             const res = await makePayment(payemntData)
-            console.log(res?.data?.data.payment_url)
             if (res?.data?.data.payment_url) {
                 window.location.href = res.data.data.payment_url;
                 return;
 
-            }else if(res?.error){
+            } else if (res?.error) {
                 message.error(res?.error.data.message)
             }
         } catch (error) {
