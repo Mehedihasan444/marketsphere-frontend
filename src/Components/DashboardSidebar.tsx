@@ -25,6 +25,7 @@ import { useAppDispatch, useAppSelector } from "../Redux/hook";
 import { logout } from "../Redux/Features/Auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { MdRequestPage } from "react-icons/md";
+import { TiCancelOutline } from "react-icons/ti";
 
 type MenuItem = Required<MenuProps>["items"][number];
 const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
@@ -53,8 +54,10 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
       label: "Orders",
       children: [
         { key: "13", label:  <button onClick={() => navigate("/dashboard/customer/orders")}>Orders</button>, icon: <FileTextOutlined /> },
-        { key: "3", label:  <button onClick={() => navigate("/dashboard/customer/order-history")}>Order History</button>, icon: <HistoryOutlined /> },
+        { key: "14", label:  <button onClick={() => navigate("/dashboard/customer/order-history")}>Order History</button>, icon: <HistoryOutlined /> },
+        
         { key: "4", label: "Leave Reviews", icon: <FileTextOutlined /> },
+        { key: "3", label:  <button onClick={() => navigate("/dashboard/customer/cancelled-orders")}>Cancelled Orders </button>, icon: <TiCancelOutline /> },
       ],
     },
     {

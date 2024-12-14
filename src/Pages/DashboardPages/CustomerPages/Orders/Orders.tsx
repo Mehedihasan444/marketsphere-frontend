@@ -1,15 +1,18 @@
 import { Table, Button, Spin, message, Alert, Pagination, Space } from "antd";
-import { useGetOrdersQuery, useMakePaymentMutation } from "../../../../Redux/Features/Order/orderApi";
+import { useCancelOrderMutation, useGetOrdersQuery, useMakePaymentMutation } from "../../../../Redux/Features/Order/orderApi";
 import { useState } from "react";
-import { TOrder } from "../../../../Interface";
+import { OrderStatus, TOrder } from "../../../../Interface";
 
 const Orders = () => {
-    const { data = {}, isLoading, error } = useGetOrdersQuery({ paymentStatus: "UNPAID" })
-    const { data: orders, meta } = data.data || {}
-    const { total } = meta || {};
     const [currentPage, setCurrentPage] = useState(1);
     const limit = 8;
+    const { data = {}, isLoading, error } = useGetOrdersQuery({ status:OrderStatus.PENDING })
+    const { data: orders, meta } = data.data || {}
+    const { total } = meta || {};
     const [makePayment, { isLoading: isPaying }] = useMakePaymentMutation()
+    const [cancelOrder] = useCancelOrderMutation()
+
+
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
@@ -32,8 +35,21 @@ const Orders = () => {
             message.error("Failed to initiate payment")
         }
     }
-    const handleDelete = (orderId: string) => {
+    const handleCancel = (orderId: string) => {
+        try {
+            const res = cancelOrder(orderId)
+            console.log(res)
+            if (res?.data?.success) {
+                message.success("Order cancelled successfully")
+            }
+            else if (res?.error) {
+                message.error(res.error.data.message)
+            }
+        } catch (error) {
+            console.log(error)
+            message.error("Failed to cancel order")
 
+        }
     }
     // Columns for Ant Design table
     const columns = [
@@ -99,14 +115,16 @@ const Orders = () => {
                         loading={isPaying}
                         onClick={() => handlePayment(record.id, record.totalAmount)}
                         className=""
+                        disabled={record.status === OrderStatus.CANCELLED||record.paymentStatus==="PAID"}
                     >
                         Pay Now
                     </Button>
                     <Button
                         type="primary"
                         danger
-                        onClick={() => handleDelete(record.id)}
+                        onClick={() => handleCancel(record.id)}
                         className=""
+                        disabled={record.status === OrderStatus.CONFIRMED || record.status === OrderStatus.CANCELLED||record.status === OrderStatus.SHIPPED||record.status === OrderStatus.DELIVERED}
                     >
                         Cancel
                     </Button>

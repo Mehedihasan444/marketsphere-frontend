@@ -3,8 +3,8 @@ import { useGetOrderHistoryQuery } from "../../../../Redux/Features/Order/orderA
 import { useState } from "react";
 import { OrderStatus, TOrder } from "../../../../Interface";
 
-const CustomerOrderHistory = () => {
-  const { data = {}, isLoading, error } = useGetOrderHistoryQuery({  status:  OrderStatus.DELIVERED });
+const CancelledOrders = () => {
+  const { data = {}, isLoading, error } = useGetOrderHistoryQuery({  status:  OrderStatus.CANCELLED });
   const { data: orders, meta } = data.data || {}
   const { total } = meta || {};
   const [currentPage, setCurrentPage] = useState(1);
@@ -107,7 +107,7 @@ const CustomerOrderHistory = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Order History</h2>
+      <h2 className="text-2xl font-bold mb-4">Cancelled Orders</h2>
 
       {/* {orders?.length === 0 ? (
         <p className="text-gray-600">No orders found.</p>
@@ -134,4 +134,6 @@ const CustomerOrderHistory = () => {
   );
 };
 
-export default CustomerOrderHistory;
+
+
+export default CancelledOrders;

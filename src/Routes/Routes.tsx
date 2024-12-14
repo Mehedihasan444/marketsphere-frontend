@@ -32,6 +32,7 @@ import ProtectedRoute from "./ProtectedRole";
 import Checkout from "../Pages/MainPages/Checkout/Checkout";
 import CustomerOrderHistory from "../Pages/DashboardPages/CustomerPages/OrderHistory/CustomerOrderHistory";
 import Orders from "../Pages/DashboardPages/CustomerPages/Orders/Orders";
+import CancelledOrders from "../Pages/DashboardPages/CustomerPages/CancelledOrders/CancelledOrders";
 
 // Router configuration
 const router = createBrowserRouter([
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/customer/order-history",
         element: <CustomerOrderHistory />,
+      },
+      {
+        path: "/dashboard/customer/cancelled-orders",
+        element: <CancelledOrders />,
       },
       {
         path: "/dashboard/customer/be-a-vendor",

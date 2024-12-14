@@ -289,6 +289,7 @@ export type TOrder = {
   shop: TShop;
   quantity: number;
   totalAmount: number;
+  paymentStatus: string;
   discount: number;
   orderNumber: string;
   status: OrderStatus;

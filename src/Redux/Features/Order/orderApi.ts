@@ -1,3 +1,4 @@
+import { OrderStatus } from '../../../Interface';
 import { baseApi } from '../../Api/baseApi';
 
 
@@ -54,7 +55,7 @@ export const orderApi = baseApi.injectEndpoints({
                 method: 'POST',
                 body: newOrder,
             }),
-            invalidatesTags: ['order'],
+            invalidatesTags: ['order',"user","cart"],
         }),
         updateOrder: builder.mutation({
             query: ({ id, ...patch }) => ({
@@ -68,6 +69,14 @@ export const orderApi = baseApi.injectEndpoints({
             query: (id) => ({
                 url: `/orders/${id}`,
                 method: 'DELETE',
+            }),
+            invalidatesTags: ['order'],
+        }),
+        cancelOrder: builder.mutation({
+            query: (id) => ({
+                url: `/orders/${id}`,
+                method: 'PUT',
+                body: { status: OrderStatus.CANCELLED }
             }),
             invalidatesTags: ['order'],
         }),
@@ -90,4 +99,5 @@ export const {
     useDeleteOrderMutation,
     useGetOrderHistoryQuery,
     useMakePaymentMutation,
+    useCancelOrderMutation
 } = orderApi;
