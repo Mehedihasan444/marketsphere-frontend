@@ -1,26 +1,33 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Card, List, Avatar, Button, Spin, message } from "antd";
+import { TFollow, TShop } from "../../../../Interface";
+import { useNavigate } from "react-router-dom";
 import { useFollowedShopsQuery, useUnfollowMutation } from "../../../../Redux/Features/Follow/followApi";
 
 const FollowedShops: React.FC = () => {
+  const navigate = useNavigate();
   const { data = {}, isLoading: loadingShops } = useFollowedShopsQuery("");
-  const [unfollowShop, { isLoading: unfollowing }] = useUnfollowMutation();
-  const followedShops = data?.shops || [];
-
+  const [unfollow, { isLoading: unfollowing }] = useUnfollowMutation();
+  const followedShops = data?.data?.map((item: TFollow) => item.shop) || [];
+  // Unfollow shop
   const handleUnfollow = async (shopId: string) => {
+    const customerId = data?.data[0]?.customerId;
+    const followInfo = {
+      customerId,
+      shopId
+    }
     try {
-      const response = await unfollowShop(shopId).unwrap();
-      if (response.success) {
-        message.success("You have unfollowed the shop successfully!");
-      } else {
-        message.error("Failed to unfollow the shop.");
+      const res = await unfollow(followInfo);
+      if (res?.data?.success) {
+        message.success("Unfollowed the shop!");
+      } else if (res?.error) {
+        message.error(res?.error.data?.message)
       }
     } catch (error) {
-        console.log(error);
+      console.log(error);
       message.error("An error occurred while unfollowing the shop.");
     }
-  };
+  }
 
   return (
     <div className="p-4 bg-white rounded shadow-md max-w-3xl mx-auto">
@@ -35,7 +42,7 @@ const FollowedShops: React.FC = () => {
         <List
           itemLayout="horizontal"
           dataSource={followedShops}
-          renderItem={(shop: any) => (
+          renderItem={(shop: TShop) => (
             <Card className="mb-4">
               <List.Item
                 actions={[
@@ -46,6 +53,12 @@ const FollowedShops: React.FC = () => {
                     loading={unfollowing}
                   >
                     Unfollow
+                  </Button>,
+                  <Button
+                    type="primary"
+                    onClick={() => navigate(`/shops/${shop.id}`)}
+                  >
+                    Go To Shop
                   </Button>,
                 ]}
               >
