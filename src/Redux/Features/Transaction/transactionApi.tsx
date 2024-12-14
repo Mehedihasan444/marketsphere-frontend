@@ -6,24 +6,24 @@ const transactionApi = baseApi.injectEndpoints({
       query: ({
         status,
         type,
-        search,
+        searchTerm,
         page,
         limit,
         startDate,
         endDate,
       }: {
-        status: string;
-        type: string;
-        search: string;
-        page: number;
-        limit: number;
-        startDate: string;
-        endDate: string;
+        status?: string;
+        type?: string;
+        searchTerm?: string;
+        page?: number;
+        limit?: number;
+        startDate?: string;
+        endDate?: string;
       }) => {
         let queryString = "/transactions?";
         if (status) queryString += `status=${status}&`;
         if (type) queryString += `type=${type}&`;
-        if (search) queryString += `search=${search}&`;
+        if (searchTerm) queryString += `searchTerm=${searchTerm}&`;
         if (startDate) queryString += `startDate=${startDate}&`;
         if (endDate) queryString += `endDate=${endDate}&`;
         if (page) queryString += `page=${page}&`;

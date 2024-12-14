@@ -10,22 +10,14 @@ import {
   Modal,
   Pagination,
   Spin,
-  message,
   Alert,
 } from "antd";
 import { useGetAllTransactionsQuery } from "../../../../Redux/Features/Transaction/transactionApi";
+import { TOrder, TTransaction } from "../../../../Interface";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-interface Transaction {
-  id: string;
-  user: string;
-  amount: number;
-  status: string;
-  date: string;
-  type: string;
-}
 
 const MonitorTransactions: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -35,7 +27,7 @@ const MonitorTransactions: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTransaction, setSelectedTransaction] =
-    useState<Transaction | null>(null);
+      useState<TTransaction | null>(null);
 
   const limit = 10;
 
@@ -46,7 +38,7 @@ const MonitorTransactions: React.FC = () => {
   } = useGetAllTransactionsQuery({
     status: selectedStatus,
     type: selectedType,
-    search: searchQuery,
+    searchTerm: searchQuery,
     page: currentPage,
     limit,
     startDate: dateRange[0],
@@ -55,6 +47,8 @@ const MonitorTransactions: React.FC = () => {
 
   const { data:transactions = [], meta } = data?.data || {};
   const { total } = meta || {};
+
+
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -75,7 +69,7 @@ const MonitorTransactions: React.FC = () => {
     setCurrentPage(1);
   };
 
-  const openTransactionModal = (transaction: Transaction) => {
+  const openTransactionModal = (transaction: TTransaction) => {
     setSelectedTransaction(transaction);
     setModalVisible(true);
   };
@@ -93,8 +87,14 @@ const MonitorTransactions: React.FC = () => {
     },
     {
       title: "User",
-      dataIndex: "user",
-      key: "user",
+      dataIndex: "order",
+      key: "order",
+      render: (order: TOrder) => <div className="">
+        <p><strong>Name:</strong> {order.name}</p>
+        <p><strong>Email:</strong> {order.email}</p>
+        <p><strong>Phone:</strong> {order.phone}</p>
+      </div>
+       ,
     },
     {
       title: "Amount",
@@ -112,18 +112,18 @@ const MonitorTransactions: React.FC = () => {
     },
     {
       title: "Date",
-      dataIndex: "date",
-      key: "date",
+      dataIndex: "createdAt",
+      key: "createdAt",
     },
     {
       title: "Type",
-      dataIndex: "type",
-      key: "type",
+      dataIndex: "method",
+      key: "method",
     },
     {
       title: "Actions",
       key: "action",
-      render: (_: any, record: Transaction) => (
+      render: (_: any, record: TTransaction) => (
         <Button onClick={() => openTransactionModal(record)}>View</Button>
       ),
     },
@@ -213,10 +213,10 @@ const MonitorTransactions: React.FC = () => {
         {selectedTransaction && (
           <div>
             <p>
-              <strong>ID:</strong> {selectedTransaction.id}
+              <strong>ID:</strong> {selectedTransaction?.id}
             </p>
             <p>
-              <strong>User:</strong> {selectedTransaction.user}
+              <strong>User:</strong> {selectedTransaction?.order?.name}
             </p>
             <p>
               <strong>Amount:</strong> ${selectedTransaction.amount.toFixed(2)}
@@ -225,10 +225,10 @@ const MonitorTransactions: React.FC = () => {
               <strong>Status:</strong> {selectedTransaction.status}
             </p>
             <p>
-              <strong>Date:</strong> {selectedTransaction.date}
+              {/* <strong>Date:</strong> {selectedTransaction.createdAt.toDateString()} */}
             </p>
             <p>
-              <strong>Type:</strong> {selectedTransaction.type}
+              <strong>Type:</strong> {selectedTransaction.method}
             </p>
           </div>
         )}

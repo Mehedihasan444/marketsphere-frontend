@@ -35,6 +35,32 @@ export enum ShopStatus {
 }
 
 // Types for models
+export enum TransactionMethod {
+  CASH_ON_DELIVERY='CASH_ON_DELIVERY',
+  CREDIT_CARD='CREDIT_CARD',
+  DEBIT_CARD='DEBIT_CARD',
+  NET_BANKING='NET_BANKING',
+  UPI='UPI',
+}
+
+enum TransactionStatus {
+  PENDING="PENDING",
+  SUCCESS="SUCCESS",
+  FAILED="FAILED",
+}
+
+export type TTransaction= {
+  id:            string            
+  orderId:       string
+  order:         TOrder            
+  amount:        number
+  transactionId: string
+  status:        TransactionStatus 
+  method:        TransactionMethod 
+  createdAt:     Date         
+  updatedAt:     Date         
+
+}
 
 export type TUser = {
   id: string;
@@ -287,17 +313,32 @@ export type TOrder = {
   customer: TCustomer;
   shopId: string;
   shop: TShop;
+  vendorId: string;
+  vendor: TVendor;
   quantity: number;
   totalAmount: number;
-  paymentStatus: string;
   discount: number;
   orderNumber: string;
   status: OrderStatus;
+  paymentStatus: string;
+  orderShippingType: string;
+  name: string;
+  phone: string;
+  email: string;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  zipCode: string;
+  note?: string;
+  appliedCoupon?: string;
+  terms: boolean;
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
   orderItems: TOrderItem[];
   couponItem?: TCouponItem;
+  transaction?: TTransaction;
 };
 
 export type TOrderItem = {
