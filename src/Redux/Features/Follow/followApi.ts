@@ -4,18 +4,20 @@ const followApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
    
     follow: builder.mutation({
-      query: (id:string) => ({
-      url: `/follow-shop/${id}/follow`,
-      method: "PATCH",
+      query: (followInfo) => ({
+      url: `/follow-shop/${followInfo?.shopId}/follow`,
+      method: "POST",
+      body: followInfo,
       }),
-      invalidatesTags: ["follow"],
+      invalidatesTags: ["follow","shop","user"],
     }),
     unfollow: builder.mutation({
-      query: (id: string) => ({
-        url: `/follow-shop/${id}/unfollow`,
-        method: "PATCH",
+      query: (followInfo) => ({
+        url: `/follow-shop/${followInfo.shopId}/unfollow`,
+        method: "POST",
+        body: followInfo,
       }),
-      invalidatesTags: ["follow"],
+      invalidatesTags: ["follow","shop","user"],
     }),
     followedShops: builder.query({
       query: () => "/follow-shop/followed-shops",
