@@ -35,6 +35,8 @@ import Orders from "../Pages/DashboardPages/CustomerPages/Orders/Orders";
 import CancelledOrders from "../Pages/DashboardPages/CustomerPages/CancelledOrders/CancelledOrders";
 import ConfirmedOrders from "../Pages/DashboardPages/VendorPages/ManageOrder/ConfirmedOrders";
 import ShiftedOrders from "../Pages/DashboardPages/VendorPages/ManageOrder/ShiftedOrders";
+import AdminOrders from "../Pages/DashboardPages/AdminPages/OrdersManagement/AdminOrders";
+import AdminOrderHistory from "../Pages/DashboardPages/AdminPages/OrdersManagement/AdminOrderHistory";
 
 // Router configuration
 const router = createBrowserRouter([
@@ -197,6 +199,14 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/admin/blacklist-shop",
         element: <BlacklistShop />,
+      },
+      {
+        path: "/dashboard/admin/orders",
+        element: <AdminOrders />,
+      },
+      {
+        path: "/dashboard/admin/order-history",
+        element: <AdminOrderHistory />,
       },
     ],
   },
