@@ -133,7 +133,7 @@ const Login: React.FC = () => {
             >
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
-            <a href="/forgot-password" className="text-blue-500">
+            <a href="/forget-password" className="text-blue-500">
               Forgot Password?
             </a>
           </div>

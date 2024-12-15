@@ -38,6 +38,8 @@ import ShiftedOrders from "../Pages/DashboardPages/VendorPages/OrderManagement/M
 import ManageOrder from "../Pages/DashboardPages/VendorPages/OrderManagement/ManageOrder/ManageOrder";
 import OrderHistory from "../Pages/DashboardPages/VendorPages/OrderManagement/OrderHistory/OrderHistory";
 import LeaveReviews from "../Pages/DashboardPages/CustomerPages/LeaveReviews/LeaveReviews";
+import ForgetPassword from "../Pages/AuthenticationPages/ForgetPassword/ForgetPassword";
+import ResetPassword from "../Pages/AuthenticationPages/ResetPassword/ResetPassword";
 
 // Router configuration
 const router = createBrowserRouter([
@@ -222,6 +224,16 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Register />,
+    errorElement: <NotFound />,
+  },
+  {
+    path: "/forget-password",
+    element: <ForgetPassword />,
+    errorElement: <NotFound />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword />,
     errorElement: <NotFound />,
   },
 ]);
