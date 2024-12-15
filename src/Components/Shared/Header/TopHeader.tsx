@@ -28,6 +28,7 @@ const TopHeader = () => {
 
   const { data: productsData = {}, isLoading,  } = useGetProductsQuery({ searchTerm }, { skip: !searchTerm });
   const { data: products } = productsData?.data || {};
+
   const items: MenuProps["items"] = [
     {
       key: "1",

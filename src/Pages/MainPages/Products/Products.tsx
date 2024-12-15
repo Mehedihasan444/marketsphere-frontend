@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Filters from "./FilterSideber/FilterSideber";
 import ProductCard from "../../../Components/Shared/ProductCard";
 import { Alert, Pagination, Select, Spin } from "antd";
 import { useGetProductsQuery } from "../../../Redux/Features/Product/productApi";
 import { TProduct } from "../../../Interface";
+import { useLocation } from "react-router-dom";
 
 const Products = () => {
   // const [filters, setFilters] = useState<{
@@ -13,6 +14,7 @@ const Products = () => {
   //   priceRange: [0, 500000],
   //   categories: [],
   // });
+ 
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -23,7 +25,16 @@ const Products = () => {
   const { data = {}, isLoading, error } = useGetProductsQuery({ brand, category,sortOrder, page:currentPage, limit, searchTerm,sortBy });
   const { data: products, meta } = data?.data || {};
   const { total } = meta || {};
+  
+  const location = useLocation();
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const search = params.get('searchTerm');
+    if (search) {
+      setSearchTerm(search);
+    }
+  }, [location.search]);
 
   if (isLoading) {
     return (
