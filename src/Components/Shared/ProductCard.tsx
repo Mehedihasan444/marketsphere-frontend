@@ -18,7 +18,7 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
   const handleAddToCart = async (productId: string) => {
     try {
       const res = await addToCart({ userEmail: user?.email, productId });
-     
+
       if (res?.data?.success) {
         message.success("Product added to cart");
       } else if (res.error) {
@@ -26,13 +26,13 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
           // For FetchBaseQueryError, safely access the `data` property
           const errorMessage = (res.error.data as { message?: string })?.message || "Product add to cart error occurred.";
           message.error(errorMessage);
-      } else if ('message' in res.error) {
+        } else if ('message' in res.error) {
           // For SerializedError, handle the `message` property
           message.error(res.error.message || "Product add to cart error occurred.");
-      } else {
+        } else {
           // Handle unknown error types
           message.error("An unknown error occurred.");
-      }
+        }
       }
     } catch (error) {
       console.log(error);
@@ -41,7 +41,7 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
   };
 
   const addToWishlist = (id: string) => {
-    console.log(`Added ${product.name,id} to wishlist`);
+    console.log(`Added ${product.name, id} to wishlist`);
     // Add your logic to add the product to the wishlist
   };
 
@@ -81,7 +81,7 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
         className="hover:block hidden"
       >
         <Tooltip title="Add to Wishlist">
-          <FaRegHeart onClick={()=>addToWishlist(product.id)} className="" style={{ fontSize: 16, color: "#1890ff" }} />
+          <FaRegHeart onClick={() => addToWishlist(product.id)} className="" style={{ fontSize: 16, color: "#1890ff" }} />
         </Tooltip>
         <Tooltip title="View Details">
           <Link to={`/products/${product.id}`} style={{ color: "#1890ff" }}>
@@ -98,6 +98,8 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
           />
         </Tooltip>
       </div>
+     
+      <div className=""  onClick={() => navigate(`/products/${product.id}`)}>
 
       <Meta title={product.name} />
       <div style={{ marginTop: 10 }}>
@@ -110,7 +112,8 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
       </div>
       {/* Price */}
       <Text strong style={{ display: "block", marginTop: 8, fontSize: 16 }}>
-        ${product.price.toFixed(2)}
+        ${(Number(product.price.toFixed(2)) - product.discount).toFixed(2)}
+        {product.discount > 0 && <span className="ml-2" style={{ textDecoration: "line-through", color: "gray" }}>{`$${product.price.toFixed(2)}`}</span>}
       </Text>
       {/* Stock Status */}
       <div style={{ marginTop: 5 }}>
@@ -124,8 +127,9 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
           </Text>
         )}
       </div>
+</div>
 
- 
+
     </Card>
   );
 };

@@ -1,6 +1,7 @@
 import { Col, Row } from "antd";
 import BannerCarousal from "./BannerCarousal";
 import BannerCategoryMenu from "./BannerCategoryMenu";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -8,7 +9,7 @@ const items = [
   {
     src: "https://demo-uminex.myshopify.com/cdn/shop/files/col_3_1.png?v=1681548716&width=2000",
     alt: "Tablets/Ipad",
-    title: "Tablets/Ipad",
+    title: "Tablet",
   },
   {
     src: "https://demo-uminex.myshopify.com/cdn/shop/files/col_3_2.png?v=1681548716&width=2000",
@@ -37,8 +38,8 @@ const items = [
   },
 ];
 const Banner = () => {
+  const navigate = useNavigate();
   return (
-
 
     <div className="max-w-8xl lg:mx-16 mx-auto ">
       <Row gutter={16} >
@@ -65,7 +66,7 @@ const Banner = () => {
                 <div className="flex gap-4">
                   <div className="col-span-5 row-span-1 flex justify-center items-center gap-4 w-full">
                     {items?.map((item, index) => (
-                      <div key={index} className="bg-white h-full p-4" style={{ width: '100%' }}>
+                      <div key={index} className="bg-white h-full p-4 cursor-pointer" style={{ width: '100%' }} onClick={() => navigate(`/products?category=${item.title}`)}>
                         <img src={item.src} alt={item.alt} className="w-32 h-auto mb-2" />
                         <h3 className="font-semibold text-sm text-center">{item.title}</h3>
                       </div>
