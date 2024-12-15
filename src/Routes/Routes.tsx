@@ -70,6 +70,10 @@ const router = createBrowserRouter([
         element: <CompareProducts />,
       },
       {
+        path: "/compare-products",
+        element: <CompareProducts />,
+      },
+      {
         path: "/checkout",
         element: <ProtectedRoute role="CUSTOMER"><Checkout /></ProtectedRoute> ,
       }
