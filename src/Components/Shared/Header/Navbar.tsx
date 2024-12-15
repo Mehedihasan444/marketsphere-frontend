@@ -62,22 +62,22 @@ const items: MenuItem[] = [
       label: (<a href="/compare-products" >Compare</a>) ,
       key: "compare",
     },
-    {
-      label: (<a href="/about" >About Us</a>) ,
-      key: "about",
-    },
-    {
-      label: "Contact",
-      key: "contact",
-    },
-    {
-      key: "external-link",
-      label: (
-        <a href="https://example.com" target="_blank" rel="noopener noreferrer">
-          Visit Our Blog
-        </a>
-      ),
-    },
+    // {
+    //   label: (<a href="/about" >About Us</a>) ,
+    //   key: "about",
+    // },
+    // {
+    //   label: "Contact",
+    //   key: "contact",
+    // },
+    // {
+    //   key: "external-link",
+    //   label: (
+    //     <a href="https://example.com" target="_blank" rel="noopener noreferrer">
+    //       Visit Our Blog
+    //     </a>
+    //   ),
+    // },
   ];
   
 const Navbar: React.FC = () => {
@@ -97,7 +97,7 @@ const Navbar: React.FC = () => {
             <h1 className="text-lg font-bold">Browse All Categories</h1>
           </div>
         </div>
-        <div className="col-span-3 ">
+        <div className="col-span-3 flex justify-center items-center">
           <Menu
             onClick={onClick}
             selectedKeys={[current]}

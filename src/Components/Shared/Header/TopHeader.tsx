@@ -43,14 +43,11 @@ const TopHeader = () => {
     },
     {
       key: "2",
+      icon: <UserOutlined />,
       label: <a href="/dashboard/customer/profile">Profile</a>,
       extra: "⌘P",
     },
-    {
-      key: "3",
-      label: "Billing",
-      extra: "⌘B",
-    },
+  
     {
       key: "4",
       label: (
@@ -61,6 +58,7 @@ const TopHeader = () => {
     },
     {
       key: "5",
+      onClick: () => dispatch(logout()),
       label: <button onClick={() => dispatch(logout())}>Logout</button>,
       icon: <LogoutOutlined />,
       extra: "⌘S",

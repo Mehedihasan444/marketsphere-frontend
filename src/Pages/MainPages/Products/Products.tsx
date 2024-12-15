@@ -31,8 +31,12 @@ const Products = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const search = params.get('searchTerm');
+    const filterBycategory = params.get('category');
     if (search) {
       setSearchTerm(search);
+    }
+    if(filterBycategory){
+      setCategory(filterBycategory);
     }
   }, [location.search]);
 
