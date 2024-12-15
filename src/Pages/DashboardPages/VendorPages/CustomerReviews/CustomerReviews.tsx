@@ -9,6 +9,7 @@ const CustomerReviews = () => {
   const { data = {}, isLoading, error } = useGetVendorReviewsQuery({ page:1, limit:10 });
   const { data: reviews, } = data?.data || {};
 
+
   // Fetch reviews for vendor's products
   const [reviewList, setReviewList] = useState<TReview[]>([]);
 
@@ -21,14 +22,14 @@ const CustomerReviews = () => {
   // Table columns for reviews
   const columns = [
     {
-      title: "Customer Name",
-      dataIndex: "customerName",
-      key: "customerName",
-    },
-    {
-      title: "Product",
-      dataIndex: "productName",
-      key: "productName",
+      title: "User",
+      dataIndex: "customer",
+      key: "customer",
+      render: (customer: any) =>
+        <div className="">
+          <h3>{customer?.name}</h3>
+          <h3>{customer?.email}</h3>
+        </div>,
     },
     {
       title: "Rating",
