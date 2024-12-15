@@ -3,9 +3,8 @@ import { baseApi } from "../../Api/baseApi";
 const reviewApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAdminReviews: builder.query({
-      query: ({ status, page, limit }: {status:string; page?: number; limit?: number }) => {
+      query: ({  page, limit }: { page?: number; limit?: number }) => {
         let queryString = "/reviews?";
-        if (status) queryString += `status=${status}&`;
         if (page) queryString += `page=${page}&`;
         if (limit) queryString += `limit=${limit}&`;
         return { url: queryString, method: "GET" };
@@ -31,8 +30,8 @@ const reviewApi = baseApi.injectEndpoints({
       invalidatesTags: ["review"],
     }),
     getVendorReviews: builder.query({
-      query: ({ vendorId, page, limit }: { vendorId: string; page: number; limit: number }) => {
-      let queryString = `/vendors/${vendorId}/reviews?`;
+      query: ({ page, limit }: { page?: number; limit?: number }) => {
+      let queryString = `/reviews?`;
       if (page) queryString += `page=${page}&`;
       if (limit) queryString += `limit=${limit}&`;
       return { url: queryString, method: "GET" };
@@ -55,11 +54,19 @@ const reviewApi = baseApi.injectEndpoints({
         body:  review ,
       }),
       invalidatesTags: ["review","order"],
+    }),
+    deleteReview: builder.mutation({
+      query: (id: string) => ({
+        url: `/reviews/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["review","product","order"],
     })
   }),
 });
 
 export const { useGetAdminReviewsQuery,useGetProductReviewsQuery, useGetCustomerReviewsQuery,useGetVendorReviewsQuery,
   useUpdateReviewStatusMutation,
-  useAddReviewsMutation
+  useAddReviewsMutation,
+  useDeleteReviewMutation
  } = reviewApi;

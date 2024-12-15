@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import  { useEffect, useState } from "react";
 import { Table, Tag, Alert, Spin, message, Select } from "antd";
 import { useGetOrderHistoryQuery, useUpdateOrderMutation } from "../../../../../Redux/Features/Order/orderApi";
-import { OrderStatus, TCustomer, TOrder } from "../../../../../Interface";
+import { OrderStatus, TCustomer, TOrder, TOrderItem } from "../../../../../Interface";
 
 const { Option } = Select;
 const ConfirmedOrders = () => {
@@ -51,8 +52,8 @@ const ConfirmedOrders = () => {
       title: "Product",
       dataIndex: "orderItems",
       key: "orderItems",
-      render: (orderItems: any) => <>
-        {orderItems?.map((item: any) => (
+      render: (orderItems: TOrderItem[]) => <>
+        {orderItems?.map((item: TOrderItem) => (
           <div key={item.id}>
             <h3 > <strong>Name:</strong> {item.product.name}</h3>
             <h3 > <strong>Quantity:</strong> {item.quantity}</h3>

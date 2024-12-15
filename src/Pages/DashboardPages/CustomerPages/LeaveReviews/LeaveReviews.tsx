@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Table, Spin, Alert, Pagination, Divider } from "antd";
 import { useState } from "react";
 import { useGetOrderHistoryQuery } from "../../../../Redux/Features/Order/orderApi";
@@ -7,35 +8,6 @@ import ReviewModal from "./ReviewModal";
 import { useGetCustomerReviewsQuery } from "../../../../Redux/Features/Review/reviewApi";
 
 
-// const reviews = [
-//     {
-//         id: 1,
-//         name: "Helen M.",
-//         date: "Yesterday",
-//         rating: 5,
-//         review: "Excellent running shoes. It turns very sharply on the foot.",
-//         likes: 42,
-//         replies: 0,
-//     },
-//     {
-//         id: 2,
-//         name: "Ann D.",
-//         date: "2 days ago",
-//         rating: 5,
-//         review: "Good shoes",
-//         likes: 35,
-//         replies: 2,
-//     },
-//     {
-//         id: 3,
-//         name: "Andrew G.",
-//         date: "2 days ago",
-//         rating: 4,
-//         review: "Is it suitable for running?",
-//         likes: 10,
-//         replies: 0,
-//     },
-// ];
 
 
 const LeaveReviews = () => {
@@ -108,7 +80,7 @@ const LeaveReviews = () => {
         {
             title: "Actions",
             key: "actions",
-            render: (_, record: TOrder) => (
+            render: (_:any, record: TOrder) => (
                 <ReviewModal order={record} />
             ),
         },

@@ -19,15 +19,15 @@ const ReviewCard = ({ review }: { review: TReviewItem }) => {
       <div className="flex items-center mt-3 gap-4">
         <button className="flex items-center gap-1 text-gray-600 hover:text-gray-800">
           <LikeOutlined />
-          <span>{review?.likes ||32}</span>
+          <span>{32}</span>
         </button>
         <button className="flex items-center gap-1 text-gray-600 hover:text-gray-800">
           <DislikeOutlined />
-          <span>{review?.likes|| 56}</span>
+          <span>{56}</span>
         </button>
         <button className="flex items-center gap-1 text-gray-600 hover:text-gray-800">
           <CommentOutlined />
-          <span>{review?.replies || 65}</span>
+          <span>{65}</span>
         </button>
       </div>
     

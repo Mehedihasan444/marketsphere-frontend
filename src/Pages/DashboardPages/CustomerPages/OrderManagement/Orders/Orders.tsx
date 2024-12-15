@@ -1,12 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Table, Button, Spin, message, Alert, Pagination, Space } from "antd";
 import { useState } from "react";
 import { OrderStatus, TOrder } from "../../../../../Interface";
 import { useCancelOrderMutation, useGetOrdersQuery, useMakePaymentMutation } from "../../../../../Redux/Features/Order/orderApi";
-
 const Orders = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const limit = 8;
-    const { data = {}, isLoading, error } = useGetOrdersQuery({ status:OrderStatus.PENDING })
+    const { data = {}, isLoading, error } = useGetOrdersQuery({ status: OrderStatus.PENDING })
     const { data: orders, meta } = data.data || {}
     const { total } = meta || {};
     const [makePayment, { isLoading: isPaying }] = useMakePaymentMutation()
@@ -28,22 +28,41 @@ const Orders = () => {
                 return;
 
             } else if (res?.error) {
-                message.error(res?.error.data.message)
+                if ('data' in res.error) {
+                    // For FetchBaseQueryError, safely access the `data` property
+                    const errorMessage = (res.error.data as { message?: string })?.message || "Payment error occurred.";
+                    message.error(errorMessage);
+                } else if ('message' in res.error) {
+                    // For SerializedError, handle the `message` property
+                    message.error(res.error.message || "Payment error occurred.");
+                } else {
+                    // Handle unknown error types
+                    message.error("An unknown error occurred.");
+                }
             }
         } catch (error) {
             console.log(error)
             message.error("Failed to initiate payment")
         }
     }
-    const handleCancel = (orderId: string) => {
+    const handleCancel = async (orderId: string) => {
         try {
-            const res = cancelOrder(orderId)
-            console.log(res)
+            const res = await cancelOrder(orderId)
             if (res?.data?.success) {
                 message.success("Order cancelled successfully")
             }
             else if (res?.error) {
-                message.error(res.error.data.message)
+                // Check if the error is a FetchBaseQueryError
+                if ("data" in res.error) {
+                    const errorMessage = (res.error.data as { message?: string })?.message || "Failed to cancel order.";
+                    message.error(errorMessage);
+                }
+                // Check if the error is a SerializedError
+                else if ("message" in res.error) {
+                    message.error(res.error.message || "Failed to cancel order.");
+                } else {
+                    message.error("An unknown error occurred.");
+                }
             }
         } catch (error) {
             console.log(error)
@@ -107,7 +126,7 @@ const Orders = () => {
         {
             title: "Actions",
             key: "actions",
-            render: (_, record: TOrder) => (
+            render: (_: any, record: TOrder) => (
                 <Space>
 
                     <Button
@@ -115,7 +134,7 @@ const Orders = () => {
                         loading={isPaying}
                         onClick={() => handlePayment(record.id, record.totalAmount)}
                         className=""
-                        disabled={record.status === OrderStatus.CANCELLED||record.paymentStatus==="PAID"}
+                        disabled={record.status === OrderStatus.CANCELLED || record.paymentStatus === "PAID"}
                     >
                         Pay Now
                     </Button>
@@ -124,7 +143,7 @@ const Orders = () => {
                         danger
                         onClick={() => handleCancel(record.id)}
                         className=""
-                        disabled={record.status === OrderStatus.CONFIRMED || record.status === OrderStatus.CANCELLED||record.status === OrderStatus.SHIPPED||record.status === OrderStatus.DELIVERED}
+                        disabled={record.status === OrderStatus.CONFIRMED || record.status === OrderStatus.CANCELLED || record.status === OrderStatus.SHIPPED || record.status === OrderStatus.DELIVERED}
                     >
                         Cancel
                     </Button>
@@ -134,12 +153,7 @@ const Orders = () => {
         },
     ];
 
-    // Helper function to view order details
-    const viewOrderDetails = (orderId: string) => {
-        message.info(`Viewing details for order #${orderId}`);
-        // Navigate to detailed order page if needed
-        // e.g., use React Router: navigate(`/order/${orderId}`);
-    };
+
 
     if (isLoading)
         return (

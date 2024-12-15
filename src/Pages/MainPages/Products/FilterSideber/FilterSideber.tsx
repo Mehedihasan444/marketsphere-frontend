@@ -1,12 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Slider, Checkbox } from "antd";
 
-const Filters = ({ filters, setFilters }) => {
-  const handlePriceChange = (value) => {
+
+
+
+interface FiltersProps {
+  filters: {
+    priceRange: [number, number];
+    categories: string[];
+  };
+  setFilters: (filters: { priceRange: [number, number]; categories: string[] }) => void;
+}
+
+const Filters = ({ filters, setFilters }: FiltersProps) => {
+  const handlePriceChange = (value:any) => {
     setFilters({ ...filters, priceRange: value });
   };
 
-  const handleCheckboxChange = (category) => {
+  const handleCheckboxChange = (category :any) => {
     const updatedCategories = filters.categories.includes(category)
       ? filters.categories.filter((c) => c !== category)
       : [...filters.categories, category];

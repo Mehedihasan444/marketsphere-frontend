@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Table, Button, Spin, message, Alert, Pagination } from "antd";
 import { useState } from "react";
 import { OrderStatus, TOrder } from "../../../../../Interface";
@@ -70,7 +71,7 @@ const CustomerOrderHistory = () => {
     {
       title: "Actions",
       key: "actions",
-      render: (_, record: TOrder) => (
+      render: (_:any, record: TOrder) => (
         <Button
           type="link"
           onClick={() => viewOrderDetails(record.id)}

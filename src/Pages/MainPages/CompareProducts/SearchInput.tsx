@@ -7,10 +7,10 @@ const SearchInput: React.FC<{ onProductSelect: (id: string) => void }> = ({
   onProductSelect,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [category, setCategory] = useState("");
-  const [brand, setBrand] = useState("");
+  // const [category, setCategory] = useState("");
+  // const [brand, setBrand] = useState("");
   const { data: searchResults = [], isFetching } = useGetProductsQuery(
-    { searchTerm, brand, category, page: 1, limit: 10 },
+    { searchTerm, brand:"", category:"", page: 1, limit: 10 },
     {
       skip: !searchTerm, // Skip query execution when there's no input
     }

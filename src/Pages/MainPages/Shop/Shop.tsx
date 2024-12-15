@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import AllProducts from "./AllProducts/AllProducts";
-// import FeaturedProducts from "./FeaturedProducts/FeaturedProducts";
+import FeaturedProducts from "./FeaturedProducts/FeaturedProducts";
 import NewArrivalProducts from "./NewArrivalProducts/NewArrivalProducts";
-// import TopSellingProducts from "./TopSellingProducts/TopSellingProducts";
+import TopSellingProducts from "./TopSellingProducts/TopSellingProducts";
 import { useGetShopQuery } from "../../../Redux/Features/Shop/shopApi";
 import { useEffect, useState } from "react";
 import { TProduct } from "../../../Interface";
@@ -52,8 +52,8 @@ const Shop = () => {
         {/* Vendor Details */}
         <ShopDetails shop={shopData} />
         <NewArrivalProducts products={newArrival} />
-        {/* <TopSellingProducts />
-        <FeaturedProducts /> */}
+        <TopSellingProducts products={newArrival} />
+        <FeaturedProducts products={newArrival}/>
         {/* Product List */}
         <AllProducts products={shopData?.products} />
       </div>

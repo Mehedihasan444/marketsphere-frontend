@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 
@@ -7,6 +8,7 @@ import {
   FetchArgs,
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query";
+import { logout } from "../Features/Auth/authSlice";
 
 const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
@@ -29,11 +31,11 @@ const baseQueryWithReauth: BaseQueryFn<
   // Handle JWT expiration globally
   if (result.error && result.error.status === 500) {
     // Check if the error object has the expected structure
-    const errorData = result.error.data as { message?: string };
+    const errorData = result.error.data as { message?: string } | undefined;
     // !need to be fix
     if (errorData?.message === "jwt expired") {
       // Logout the user and clear the token
-      // api.dispatch(logout());
+      api.dispatch(logout());
 
       // Optionally redirect to login page
       window.location.href = "/login";

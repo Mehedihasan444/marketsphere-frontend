@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Table, Button, Spin, message, Alert, Pagination } from "antd";
 import { useGetOrderHistoryQuery } from "../../../../Redux/Features/Order/orderApi";
 import { useState } from "react";
@@ -69,7 +70,7 @@ const CancelledOrders = () => {
     {
       title: "Actions",
       key: "actions",
-      render: (_, record: TOrder) => (
+      render: (_:any, record: TOrder) => (
         <Button
           type="link"
           onClick={() => viewOrderDetails(record.id)}

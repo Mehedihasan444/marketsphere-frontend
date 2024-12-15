@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import  { useState } from "react";
 import {
   Table,
@@ -5,7 +6,6 @@ import {
   Space,
   Tag,
   message,
-  Select,
   Pagination,
   Spin,
   Alert,
@@ -55,6 +55,7 @@ const BlacklistShop = () => {
         message.error("Failed to update shop status.");
       }
     } catch (error) {
+      console.error(error);
       message.error("An error occurred while updating the shop status.");
     }
   };
@@ -143,7 +144,6 @@ const BlacklistShop = () => {
   return (
     <div className="p-5 bg-white rounded-lg">
       <h1 className="text-2xl font-semibold mb-3">Blacklisted Shops</h1>
-  
 
       {/* Shops Table */}
       <Table

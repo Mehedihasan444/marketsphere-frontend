@@ -1,7 +1,7 @@
 import React from "react";
 import type { FormProps } from "antd";
 import {
-  Alert,
+
   Button,
   Checkbox,
   Form,
@@ -56,10 +56,18 @@ const Login: React.FC = () => {
           navigate(`/`);
         }
       } else if (res && res?.error) {
-        message.open({
-          type: "error",
-          content: res?.error?.data?.message,
-        });
+
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Login error occurred.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Login error occurred.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (error) {
       console.log(error);

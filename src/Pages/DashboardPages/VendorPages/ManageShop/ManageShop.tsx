@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-// ! have implement edit functionality
 import React from "react";
 import {
   Table,
@@ -12,7 +10,7 @@ import {
   Alert,
   Spin,
 } from "antd";
-import { useDeleteShopMutation, useUpdateShopStatusMutation } from "../../../../Redux/Features/Shop/shopApi";
+import { useDeleteShopMutation } from "../../../../Redux/Features/Shop/shopApi";
 import { useAppSelector } from "../../../../Redux/hook";
 import { useGetVendorQuery } from "../../../../Redux/Features/Vendor/vendorApi";
 import { TShop } from "../../../../Interface";
@@ -55,13 +53,21 @@ const ManageShop: React.FC = () => {
   // Handle status updates
   const handleDeleteShop = async (shopId: string) => {
     try {
-      const response = await deleteShop(shopId);
-      if (response?.data?.success) {
+      const res = await deleteShop(shopId);
+      if (res?.data?.success) {
         message.success("Shop deleted successfully!");
+      } else if (res?.error) {
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Failed to delete shop.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Failed to delete shop.");
       } else {
-        message.error(
-          response?.error?.data?.message || "Failed to delete shop."
-        );
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (err) {
       console.error(err);

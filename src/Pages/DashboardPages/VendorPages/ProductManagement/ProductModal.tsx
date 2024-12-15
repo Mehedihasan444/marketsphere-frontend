@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Input, InputNumber, message, Modal, Select } from "antd";
 import { useAddProductMutation } from "../../../../Redux/Features/Product/productApi";
-import { TCategory, TProduct } from "../../../../Interface";
+import { TCategory, TProduct, TShop } from "../../../../Interface";
 import { useGetAllCategoriesQuery } from "../../../../Redux/Features/Category/categoryApi";
 import { useGetVendorQuery } from "../../../../Redux/Features/Vendor/vendorApi";
 import { useAppSelector } from "../../../../Redux/hook";
@@ -76,18 +76,27 @@ const ProductModal: React.FC<ProductModalProps> = ({ initialData }) => {
     imageFiles.forEach((file) => formData.append("images", file));
 
     try {
-      const response = await addProduct(formData);
-      if (response?.data?.success) {
+      const res = await addProduct(formData);
+      if (res?.data?.success) {
         message.success(
           initialData
             ? "Product updated successfully!"
             : "Product added successfully!"
         );
         onClose(); // Close modal on success
-      } else if (response?.error) {
-        message.error(
-          response?.error?.data?.message || "Failed to add/update product."
-        );
+      } else if (res?.error) {
+    
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Failed to add product.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Failed to add product.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (error) {
       console.error(error);
@@ -194,7 +203,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ initialData }) => {
               rules={[{ required: true, message: "Please select a shop!" }]}
             >
               <Select placeholder="Select shop">
-                {shops.map((shop: any) => (
+                {shops.map((shop: TShop) => (
                   <Option value={shop.id}>{shop.name}</Option>
                 ))}
               </Select>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { Modal, Form, Input, Button, message } from "antd";
 import { useAddShopMutation } from "../../../../../Redux/Features/Shop/shopApi";
@@ -27,16 +28,27 @@ const AddShopModal: React.FC<{ vendorId: string }> = ({ vendorId }) => {
 
     try {
       // Make the API request
-      const response = await addShop(formData);
+      const res = await addShop(formData);
 
-      if (response?.data?.success) {
+      if (res?.data?.success) {
         message.success("Shop added successfully!");
         form.resetFields();
         setLogoFile(null);
         setBannerFile(null);
         setIsModalOpen(false);
-      } else if(response?.error) {
-        message.error(response?.error?.data.message || "Failed to add shop.");
+      } else if(res?.error) {
+
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Failed to add shop.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Failed to add shop.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (error) {
       console.error(error);

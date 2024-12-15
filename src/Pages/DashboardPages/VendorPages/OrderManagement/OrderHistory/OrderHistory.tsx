@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import  { useEffect, useState } from "react";
 import { Table, Tag, Button, Alert, Spin } from "antd";
 import { useGetOrderHistoryQuery } from "../../../../../Redux/Features/Order/orderApi";
-import { TCustomer, TOrder } from "../../../../../Interface";
+import { TCustomer, TOrder, TOrderItem } from "../../../../../Interface";
 
 
 const OrderHistory = () => {
@@ -34,8 +35,8 @@ const OrderHistory = () => {
       title: "Product",
       dataIndex: "orderItems",
       key: "orderItems",
-      render: (orderItems: any) => <>
-        {orderItems?.map((item: any) => (
+      render: (orderItems: TOrderItem[]) => <>
+        {orderItems?.map((item: TOrderItem) => (
           <div key={item.id}>
             <h3 > <strong>Name:</strong> {item.product.name}</h3>
             <h3 > <strong>Quantity:</strong> {item.quantity}</h3>

@@ -26,15 +26,23 @@ const AddCategoryModal: React.FC = () => {
       if (file) {
         formData.append("image", file);
       }
-      const response = await addCategory(formData);
-      if (response?.data?.success) {
+      const res = await addCategory(formData);
+      if (res?.data?.success) {
         message.success("Category added successfully!");
         form.resetFields(); // Reset the form
         setOpen(false); // Close the modal
-      } else if (response?.error) {
-        message.error(
-          response?.error?.data?.message || "Failed to add category."
-        );
+      } else if (res?.error) {
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message ||  "Failed to add category.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message ||  "Failed to add category.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (error) {
       console.error(error);

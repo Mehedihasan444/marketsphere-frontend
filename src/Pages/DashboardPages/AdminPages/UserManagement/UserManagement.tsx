@@ -80,10 +80,18 @@ const UserManagement: React.FC = () => {
           content: `User status updated successfully!`,
         });
       } else if (res.error) {
-        message.open({
-          type: "error",
-          content: res.error.data.message,
-        });
+    
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "user status update error occurred.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Payment error occurred.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (error) {
       console.log(error);
@@ -104,10 +112,18 @@ const UserManagement: React.FC = () => {
           content: `User role updated successfully!`,
         });
       } else if (res?.error) {
-        message.open({
-          type: "error",
-          content: res?.error?.data.message,
-        });
+   
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "User role updated error occurred.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "User role updated error occurred.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (error) {
       console.log(error);
@@ -127,10 +143,18 @@ const UserManagement: React.FC = () => {
           content: `User deleted successfully!`,
         });
       } else if (res.error) {
-        message.open({
-          type: "error",
-          content: res.error.data.message,
-        });
+      
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "User deleted error occurred.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "User deleted error occurred.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (error) {
       console.log(error);

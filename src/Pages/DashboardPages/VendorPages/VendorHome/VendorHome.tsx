@@ -93,7 +93,7 @@ if (error) {
     {
       title: "Actions",
       key: "actions",
-      render: (_: any, record: any) => (
+      render: () => (
         <Space>
           <Button type="link" size="small">
             View

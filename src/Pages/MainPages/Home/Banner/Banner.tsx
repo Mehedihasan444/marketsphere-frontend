@@ -1,31 +1,9 @@
+import { Col, Row } from "antd";
 import BannerCarousal from "./BannerCarousal";
 import BannerCategoryMenu from "./BannerCategoryMenu";
 
 
-const Style1 = {
-  backgroundImage:
-    "url(https://demo-uminex.myshopify.com/cdn/shop/files/3_1.jpg?v=1681466981&width=2000)",
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat",
-  backgroundColor: "rgba(0,0,0,0.5)",
-};
-const Style2 = {
-  backgroundImage:
-    "url(https://demo-uminex.myshopify.com/cdn/shop/files/3_2.jpg?v=1681466999&width=2000)",
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat",
-  backgroundColor: "rgba(0,0,0,0.5)",
-};
-const Style3 = {
-  backgroundImage:
-    "url(https://demo-uminex.myshopify.com/cdn/shop/files/3_3.jpg?v=1681467017&width=2000)",
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat",
-  backgroundColor: "rgba(0,0,0,0.5)",
-};
+
 const items = [
   {
     src: "https://demo-uminex.myshopify.com/cdn/shop/files/col_3_1.png?v=1681548716&width=2000",
@@ -60,62 +38,113 @@ const items = [
 ];
 const Banner = () => {
   return (
-    <div className="grid grid-cols-5 grid-rows-3 gap-4 lg:mx-16 h-[75vh] ">
-      {/* Vertical Menu */}
-      <div className="col-span-1 row-span-3">
-        <BannerCategoryMenu />
-      </div>
 
-      {/* Slider */}
-      <div className="col-span-3 row-span-2">
-        <BannerCarousal />
-      </div>
 
-      {/* Offer and Category Section */}
-      <div className="col-span-1 row-span-3 flex flex-col space-y-4">
-        <div
-          className="p-8 flex flex-col justify-between h-full"
-          style={Style1}
-        >
-          <h3 className="font-semibold text-xl">
-            Over-Ear <br />
-            Headphones
-          </h3>
-          <p className="text-sm">20 Days Return Products</p>
-        </div>
-        <div
-          className="p-8 flex flex-col justify-between h-full"
-          style={Style2}
-        >
-          <h3 className="font-semibold text-xl">
-            AirPods <br />
-            Save 20% Off
-          </h3>
-          <p className="text-sm">20 Days Return Products</p>
-        </div>
-        <div
-          className="p-8 flex flex-col justify-between h-full"
-          style={Style3}
-        >
-          <h3 className="font-semibold text-xl">
-            Gamepad <br />
-            Optional Skins
-          </h3>
-          <p className="text-sm">20 Days Return Products</p>
-        </div>
-      </div>
-
-      {/* Featured Section */}
-      <div className="col-span-3 row-span-1 flex justify-center items-center gap-4">
-        {items.map((item, index) => (
-          <div key={index} className="text-center bg-white p-2">
-            <img src={item.src} alt={item.alt} className="w-32 h-auto mb-2" />
-            <h3 className="font-semibold text-sm">{item.title}</h3>
+    <div className="max-w-8xl lg:mx-16 mx-auto ">
+      <Row gutter={16} >
+        {/* Left Side Category Bar (Full Height, 1 Column) */}
+        <Col span={4} >
+          <div style={{ background: '#f0f2f5', height: '100%', }}>
+            <BannerCategoryMenu />
           </div>
-        ))}
-      </div>
+        </Col>
+
+        {/* Middle Content (Carousel + Small Categories) */}
+        <Col span={16}>
+          <div className="flex flex-col gap-4 ">
+            {/* Carousel (takes 4/5 of the width) */}
+            <Row gutter={10}>
+              <Col span={48}>
+                <BannerCarousal />
+              </Col>
+            </Row>
+
+            {/* Small Categories (takes 1/5 of the width) */}
+            <Row gutter={6}>
+              <Col span={24}>
+                <div className="flex gap-4">
+                  <div className="col-span-5 row-span-1 flex justify-center items-center gap-4 w-full">
+                    {items?.map((item, index) => (
+                      <div key={index} className="bg-white h-full p-4" style={{ width: '100%' }}>
+                        <img src={item.src} alt={item.alt} className="w-32 h-auto mb-2" />
+                        <h3 className="font-semibold text-sm text-center">{item.title}</h3>
+                      </div>
+                    ))}
+                  </div>
+                </div></Col>
+            </Row>
+          </div>
+        </Col>
+
+        {/* Right Side Promotional Card (1 Column) */}
+        <Col span={4}>
+          <div className="flex flex-col gap-4 h-full flex-grow">
+
+            <Row gutter={5} className="h-full">
+              <Col span={24}>
+
+                <div
+                  className="p-8 flex flex-col justify-between h-full"
+                  style={{
+                    background: '#fff', borderRadius: '8px', backgroundImage:
+                      "url(https://demo-uminex.myshopify.com/cdn/shop/files/3_1.jpg?v=1681466981&width=2000)",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                  }}
+                >
+                  <h3 className="font-semibold text-xl">Over-Ear <br /> Headphones</h3>
+                  <p className="text-sm">20 Days Return Products</p>
+                </div>
+              </Col>      </Row>
+            <Row gutter={5} className="h-full" >
+              <Col span={24}>
+                <div
+                  className="p-8 flex flex-col justify-between h-full"
+                  style={{
+                    background: '#fff', borderRadius: '8px', backgroundImage:
+                      "url(https://demo-uminex.myshopify.com/cdn/shop/files/3_2.jpg?v=1681466999&width=2000)",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                  }}
+                >
+                  <h3 className="font-semibold text-xl">AirPods <br /> Save 20% Off</h3>
+                  <p className="text-sm">20 Days Return Products</p>
+                </div>
+              </Col>      </Row>
+            <Row gutter={6} className="h-full">
+              <Col span={24} className="h-full">
+
+                <div
+                  className="p-8 flex flex-col justify-between h-full"
+                  style={{
+                    background: '#fff', borderRadius: ' 8px', backgroundImage:
+                      "url(https://demo-uminex.myshopify.com/cdn/shop/files/3_3.jpg?v=1681467017&width=2000)",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                  }}
+                >
+                  <h3 className="font-semibold text-xl">Gamepad <br /> Optional Skins</h3>
+                  <p className="text-sm">20 Days Return Products</p>
+                </div>
+              </Col>
+            </Row>
+          </div>
+        </Col>
+      </Row>
     </div>
+
   );
 };
 
 export default Banner;
+
+
+
+
+

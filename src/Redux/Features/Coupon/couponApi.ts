@@ -1,36 +1,31 @@
 import { baseApi } from '../../Api/baseApi';
 
-interface Coupon {
-    id: string;
-    code: string;
-    discount: number;
-    expirationDate: string;
-}
+
 
 export const couponApi = baseApi.injectEndpoints({
 
     endpoints: (builder) => ({
-        getCoupons: builder.query<Coupon[], void>({
+        getCoupons: builder.query({
             query: () => 'coupons',
         }),
-        getCouponById: builder.query<Coupon, string>({
+        getCouponById: builder.query({
             query: (id) => `coupons/${id}`,
         }),
-        addCoupon: builder.mutation<Coupon, Partial<Coupon>>({
+        addCoupon: builder.mutation({
             query: (coupon) => ({
                 url: 'coupons',
                 method: 'POST',
                 body: coupon,
             }),
         }),
-        updateCoupon: builder.mutation<Coupon, Partial<Coupon>>({
+        updateCoupon: builder.mutation({
             query: ({ id, ...patch }) => ({
                 url: `coupons/${id}`,
                 method: 'PATCH',
                 body: patch,
             }),
         }),
-        deleteCoupon: builder.mutation<{ success: boolean; id: string }, string>({
+        deleteCoupon: builder.mutation({
             query: (id) => ({
                 url: `coupons/${id}`,
                 method: 'DELETE',

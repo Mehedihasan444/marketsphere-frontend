@@ -5,21 +5,21 @@ const BannerCarousal: React.FC = () => (
   <Carousel autoplay arrows infinite={true} className="h-[362px]">
     <div className="h-[362px]">
       <img
-        src="https://img.freepik.com/free-psd/smartphone-camera-control-social-media-banner-design-template_47987-25416.jpg?semt=ais_hybrid"
+        src="https://i.ibb.co.com/vxd9HQh/1212-e1733902486349.jpg"
         alt=""
         className="object-cover h-full w-full "
       />
     </div>
     <div className="h-[362px]">
       <img
-        src="https://img.freepik.com/premium-psd/smartphone-sale-banner-template_185005-374.jpg?semt=ais_hybrid"
+        src="https://i.ibb.co.com/37x09cT/macbookprom3.jpg"
         alt=""
         className="object-cover h-full w-full"
       />
     </div>
     <div className="h-[362px]">
       <img
-        src="https://img.freepik.com/premium-psd/smartphone-sale-banner-template_185005-374.jpg?semt=ais_hybrid"
+        src="https://i.ibb.co.com/dW4Y3HJ/Iphone-16-searise-1.jpg"
         alt=""
         className="object-cover h-full w-full"
       />
@@ -35,3 +35,5 @@ const BannerCarousal: React.FC = () => (
 );
 
 export default BannerCarousal;
+
+

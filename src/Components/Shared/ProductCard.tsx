@@ -22,7 +22,17 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
       if (res?.data?.success) {
         message.success("Product added to cart");
       } else if (res.error) {
-        message.error(res?.error?.data?.message);
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Product add to cart error occurred.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Product add to cart error occurred.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (error) {
       console.log(error);
@@ -31,7 +41,7 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
   };
 
   const addToWishlist = (id: string) => {
-    console.log(`Added ${product.name} to wishlist`);
+    console.log(`Added ${product.name,id} to wishlist`);
     // Add your logic to add the product to the wishlist
   };
 
@@ -94,8 +104,8 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
         {/* Rating and Reviews */}
         <Rate disabled defaultValue={product.rating} style={{ fontSize: 14 }} />
         <Text type="secondary" style={{ marginLeft: 8 }}>
-          {product.reviews?.length || 0} review
-          {product.reviews?.length > 1 ? "s" : ""}
+          {product.reviews?.reviewItems?.length || 0} review
+          {product.reviews?.reviewItems?.length > 1 ? "s" : ""}
         </Text>
       </div>
       {/* Price */}

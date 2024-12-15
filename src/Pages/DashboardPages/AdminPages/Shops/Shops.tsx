@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { Table, Button, Modal, Input, message, Select, Row, Col } from "antd";
 import { useDeleteShopMutation, useGetAllShopsQuery, useUpdateShopStatusMutation } from "../../../../Redux/Features/Shop/shopApi";
@@ -6,14 +7,14 @@ import { TShop } from "../../../../Interface";
 
 const Shops: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(10);
+  // const [page, setPage] = useState<number>(1);
+  // const [limit, setLimit] = useState<number>(10);
   const [status, setStatus] = useState<string>("");
   const [selectedShop, setSelectedShop] = useState<TShop | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Fetch shops data using Redux Query
-  const { data = {}, isLoading } = useGetAllShopsQuery({ searchTerm, status, limit, page });
+  const { data = {}, isLoading } = useGetAllShopsQuery({ searchTerm, status, limit:10, page:1 });
   const { data: shops = [], meta } = data?.data || {}
   const { total } = meta || {};
   const [updateShopStatus, { isLoading: updating }] = useUpdateShopStatusMutation()
@@ -25,6 +26,7 @@ const Shops: React.FC = () => {
       await updateShopStatus({ id: shopId, shopStatus });
       message.success("Shop status updated successfully!");
     } catch (error) {
+      console.log(error);
       message.error("Failed to update shop status.");
     }
   };
@@ -34,6 +36,7 @@ const Shops: React.FC = () => {
       await deleteShop(shopId);
       message.success("Shop deleted successfully!");
     } catch (error) {
+      console.log(error);
       message.error("Failed to delete shop.");
     }
   };
@@ -62,7 +65,7 @@ const Shops: React.FC = () => {
       title: "Owner",
       dataIndex: "owner",
       key: "owner",
-      render: (_, shop: TShop) => (
+      render: (_:any, shop: TShop) => (
         console.log(shop),
         <>
           <p>{shop?.vendor?.name}</p>

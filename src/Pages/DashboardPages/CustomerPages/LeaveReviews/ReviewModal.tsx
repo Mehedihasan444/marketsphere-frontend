@@ -11,7 +11,7 @@ const ReviewModal = ({ order }: { order: TOrder }) => {
         const reviewData = {
             ...values,
             customerId: order.customerId,
-            reviewId: order?.orderItems[0]?.product?.reviews.id,
+            reviewId: order?.orderItems[0]?.product?.reviews?.id ,
             orderId: order.id,
         }
 
@@ -25,7 +25,17 @@ const ReviewModal = ({ order }: { order: TOrder }) => {
                 form.resetFields();
             }
             else if (res?.error) {
-                message.error(res?.error.data.message);
+                if ('data' in res.error) {
+                    // For FetchBaseQueryError, safely access the `data` property
+                    const errorMessage = (res.error.data as { message?: string })?.message || "Error occurred.";
+                    message.error(errorMessage);
+                } else if ('message' in res.error) {
+                    // For SerializedError, handle the `message` property
+                    message.error(res.error.message || "Error occurred.");
+                } else {
+                    // Handle unknown error types
+                    message.error("An unknown error occurred.");
+                }
             }
         } catch (error) {
             console.error("Error submitting review: ", error);

@@ -1,36 +1,36 @@
-import React, { useState } from "react";
-import { Card, message } from "antd";
+import React from "react";
+import { Card } from "antd";
 import SearchInput from "./SearchInput";
 import { useGetProductByIdQuery } from "../../../Redux/Features/Product/productApi";
 import { useParams } from "react-router-dom";
-import { TProduct } from "../../../Interface";
+// import { TProduct } from "../../../Interface";
 
 
 const CompareProducts: React.FC = () => {
   const {id}=useParams();
-  const { data={}, error } =  useGetProductByIdQuery(id as string ,{skip:!id});
+  const { data={} } =  useGetProductByIdQuery(id as string ,{skip:!id});
   const product = data?.data;
-  const [productLeft, setProductLeft] = useState<TProduct | null>(product||null);
-  const [productRight, setProductRight] = useState<TProduct | null>(null);
+  // const [product, setproduct] = useState<TProduct | null>(product||null);
+  // const [productRight, setProductRight] = useState<TProduct | null>(null);
 
   
-  const fetchProductDetails = async (productId: string, setProduct: React.Dispatch<React.SetStateAction<Product | null>>) => {
-    const { data, error } = await useGetProductByIdQuery(productId);
-    if (error) {
-      message.error("Failed to fetch product details.");
-      return;
-    }
-    const product = data?.data;
-    if (product) {
-      setProduct(product);
-    }
-  };
+  // const fetchProductDetails = async (productId: string, setProduct: React.Dispatch<React.SetStateAction<Product | null>>) => {
+  //   const { data, error } = await useGetProductByIdQuery(productId);
+  //   if (error) {
+  //     message.error("Failed to fetch product details.");
+  //     return;
+  //   }
+  //   const product = data?.data;
+  //   if (product) {
+  //     setProduct(product);
+  //   }
+  // };
 
   const handleProductSelect = (productId: string, side: "left" | "right") => {
-    if (side === "left") {
-      fetchProductDetails(productId, setProductLeft);
+    if (side === "left" && productId) {
+      // fetchProductDetails(productId, setproduct);
     } else {
-      fetchProductDetails(productId, setProductRight);
+      // fetchProductDetails(productId, setProductRight);
     }
   };
 
@@ -44,12 +44,12 @@ const CompareProducts: React.FC = () => {
             <div className="mb-4">
               <SearchInput onProductSelect={(productId) => handleProductSelect(productId, "left")} />
             </div>
-            {productLeft ? (
-              <Card title={productLeft.name} className="shadow-md">
-                <p>Price: ${productLeft.price}</p>
-                {/* <p>Brand: {productLeft?.brand}</p> */}
-                <p>Rating: {productLeft.rating} ⭐</p>
-                {/* <p>Features: {productLeft?.features.join(", ")}</p> */}
+            {product ? (
+              <Card title={product.name} className="shadow-md">
+                <p>Price: ${product.price}</p>
+                {/* <p>Brand: {product?.brand}</p> */}
+                <p>Rating: {product.rating} ⭐</p>
+                {/* <p>Features: {product?.features.join(", ")}</p> */}
               </Card>
             ) : (
               <p className="text-center text-gray-500">Select a product to see its details.</p>
@@ -61,12 +61,12 @@ const CompareProducts: React.FC = () => {
             <div className="mb-4">
               <SearchInput onProductSelect={(productId) => handleProductSelect(productId, "right")} />
             </div>
-            {productRight ? (
-              <Card title={productRight.name} className="shadow-md">
-                <p>Price: ${productRight.price}</p>
-                {/* <p>Brand: {productRight.brand}</p> */}
-                <p>Rating: {productRight.rating} ⭐</p>
-                {/* <p>Features: {productRight.features.join(", ")}</p> */}
+            {product ? (
+              <Card title={product.name} className="shadow-md">
+                <p>Price: ${product.price}</p>
+                {/* <p>Brand: {product.brand}</p> */}
+                <p>Rating: {product.rating} ⭐</p>
+                {/* <p>Features: {product.features.join(", ")}</p> */}
               </Card>
             ) : (
               <p className="text-center text-gray-500">Select a product to see its details.</p>

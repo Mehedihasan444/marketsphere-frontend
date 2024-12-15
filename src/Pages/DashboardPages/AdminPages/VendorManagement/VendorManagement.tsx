@@ -75,16 +75,24 @@ const VendorManagement: React.FC = () => {
   const onStatusUpdate = async (UserId: string, newStatus: string) => {
     try {
       const res = await updateUser({ UserId, status: newStatus });
-      if (res.data.success) {
+      if (res?.data?.success) {
         message.open({
           type: "success",
           content: `User status updated successfully!`,
         });
-      } else if (res.error) {
-        message.open({
-          type: "error",
-          content: res.error.data.message,
-        });
+      } else if (res?.error) {
+      
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Failed to update status .";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Failed to update status .");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (error) {
       console.log(error);
@@ -105,10 +113,19 @@ const VendorManagement: React.FC = () => {
           content: `User deleted successfully!`,
         });
       } else if (res.error) {
-        message.open({
-          type: "error",
-          content: res.error.data.message,
-        });
+ 
+
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Failed to delete user .";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Failed to delete user .");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (error) {
       console.log(error);

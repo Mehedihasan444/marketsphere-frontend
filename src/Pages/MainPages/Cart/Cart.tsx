@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Alert, Button, Drawer, Empty, message, Tooltip } from "antd";
+import { Button, Drawer, Empty, message, Tooltip } from "antd";
 import { IoCartOutline } from "react-icons/io5";
 import CartCard from "./CartCard";
 import { DeleteOutlined } from "@ant-design/icons";
@@ -10,7 +10,7 @@ import { TCartItem } from "../../../Interface";
 
 const Cart: React.FC = () => {
   const [open, setOpen] = React.useState<boolean>(false);
-  const { data = {}, isLoading, error, refetch } = useGetCartItemsQuery("");
+  const { data = {}, isLoading, refetch } = useGetCartItemsQuery("");
   const { data: cartItems = [] } = data || {};
   const [removeFromCart] = useRemoveFromCartMutation()
   const [clearCart] = useClearCartMutation()
@@ -29,7 +29,18 @@ console.log(cartItems, "cartItems")
     try {
       const res = await removeFromCart(id)
       if (res?.data?.success) message.success("Item deleted")
-      else if (res?.error) message.error(res?.error?.data.message)
+      else if (res?.error){
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Item delete error occurred.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Item delete error occurred.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }}
     } catch (error) {
       console.log(error)
       message.error("Failed to delete item")
@@ -40,7 +51,18 @@ console.log(cartItems, "cartItems")
     try {
       const res = await clearCart(cartId)
       if (res?.data?.success) message.success("Cart cleared")
-      else if (res?.error) message.error(res?.error?.data.message)
+      else if (res?.error) {
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Cart clear error occurred.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Cart clear error occurred.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }}
     } catch (error) {
       console.log(error)
       message.error("Failed to clear cart")

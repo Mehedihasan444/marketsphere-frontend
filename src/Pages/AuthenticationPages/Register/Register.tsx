@@ -31,12 +31,19 @@ const Register: React.FC = () => {
           content: 'Registration Completed!',
         });
         navigate('/login', { replace: true });
-      } else if ('error' in res) {
-        const error = res.error;
-        message.open({
-          type: 'error',
-          content: `${error?.data?.message}`,
-        });
+      } else if (res.error) {
+    
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Register error occurred.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Register error occurred.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (error) {
       message.open({

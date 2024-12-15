@@ -32,7 +32,17 @@ const ProductInfo = ({ product }: { product: TProduct & { colors: string[], size
       if (res?.data?.success) {
         message.success("Product added to cart");
       } else if (res.error) {
-        message.error(res?.error?.data?.message);
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Add to cart error occurred.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Add to cart error occurred.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (error) {
       console.log(error);
@@ -40,7 +50,7 @@ const ProductInfo = ({ product }: { product: TProduct & { colors: string[], size
     }
   };
   const addToWishlist = (id: string) => {
-    console.log(`Added ${product.name} to wishlist`);
+    console.log(`Added ${product.name,id} to wishlist`);
     // Add your logic to add the product to the wishlist
   };
 
@@ -51,7 +61,7 @@ const ProductInfo = ({ product }: { product: TProduct & { colors: string[], size
       <div className="flex items-center space-x-2">
         <Rate allowHalf defaultValue={product.rating} disabled className="text-2xl" />
         <span className="text-gray-600">
-          ({product.reviews?.length || 0} reviews)
+          ({product.reviews?.reviewItems?.length || 0} reviews)
         </span>
       </div>
       <p className="text-3xl font-semibold mt-4 text-blue-500">${product.price}</p>

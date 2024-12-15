@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Form, Input, Button, message } from "antd";
 import { useSendBecomeVendorRequestMutation } from "../../../../Redux/Features/BecomeSeller/becomeSellerApi";
@@ -10,18 +11,26 @@ const BecomeSeller: React.FC = () => {
     useSendBecomeVendorRequestMutation(); 
 
   const handleSubmit = async (values: any) => {
-    console.log(values)
     try {
-      const response = await sendBecomeVendorRequest(values);
-      console.log(response);
-      if (response?.data?.success) {
+      const res = await sendBecomeVendorRequest(values);
+      if (res?.data?.success) {
         message.success(
           "Your request to become a seller has been submitted successfully!"
         );
         form.resetFields();
         // setUploadedFiles([]);
-      } else if (response?.error) {
-        message.error(response?.error?.data?.message);
+      } else if (res?.error) {
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Faild to send request error occurred.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Faild to send request error occurred.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (error) {
       console.error(error);

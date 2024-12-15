@@ -1,16 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
-import { Table,  Rate, Button, message, Alert, Spin } from "antd";
+import { Table, Rate, Button, message, Alert, Spin } from "antd";
 import { TReview } from "../../../../Interface";
 import { useGetVendorReviewsQuery } from "../../../../Redux/Features/Review/reviewApi";
-import { useAppSelector } from "../../../../Redux/hook";
 
 const CustomerReviews = () => {
-    const vendor = useAppSelector((state) => state.auth.user); 
-    const [page, setPage] = useState<number>(1);
-    const [limit, setLimit] = useState<number>(10);
-  const vendorId = vendor?.id || "";
-  const { data={}, isLoading, error } = useGetVendorReviewsQuery({ vendorId, page, limit });
-  const { data: reviews, } = data?.data||{};
+
+  const { data = {}, isLoading, error } = useGetVendorReviewsQuery({ page:1, limit:10 });
+  const { data: reviews, } = data?.data || {};
+
   // Fetch reviews for vendor's products
   const [reviewList, setReviewList] = useState<TReview[]>([]);
 
@@ -56,7 +54,7 @@ const CustomerReviews = () => {
         <Button
           type="link"
           danger
-          onClick={() => handleDeleteReview(record._id)}
+          onClick={() => handleDeleteReview(record.id)}
         >
           Delete
         </Button>
@@ -69,7 +67,7 @@ const CustomerReviews = () => {
     try {
       // Replace this with a delete API call
       message.success("Review deleted successfully!");
-      setReviewList((prev) => prev.filter((review) => review._id !== reviewId));
+      setReviewList((prev) => prev.filter((review) => review.id !== reviewId));
     } catch (error) {
       console.error(error);
       message.error("Failed to delete the review.");
@@ -107,7 +105,7 @@ const CustomerReviews = () => {
         pagination={{ pageSize: 5 }}
         bordered
       />
-      
+
     </div>
   );
 };

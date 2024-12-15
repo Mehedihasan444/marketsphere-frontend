@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Divider, Input, message } from "antd";
 import { TProduct } from "../../../Interface";
 import { useUpdateQuantityMutation } from "../../../Redux/Features/Cart/cartApi";
@@ -19,7 +20,19 @@ const CartCard = ({ product, quantity, id, refetch }: { product: TProduct, quant
         message.success("Quantity updated")
         refetch()
       }
-      else if (res.error) message.error(res?.error?.data.message)
+      else if (res?.error){
+         if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Error occurred.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Error occurred.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
+        }
     } catch (error) {
       console.log(error)
       message.error("Failed to update quantity")
@@ -37,7 +50,19 @@ const CartCard = ({ product, quantity, id, refetch }: { product: TProduct, quant
           message.success("Quantity updated")
           refetch()
         }
-        else if (res.error) message.error(res?.error?.data.message)
+        else if (res?.error){
+           if ('data' in res.error) {
+            // For FetchBaseQueryError, safely access the `data` property
+            const errorMessage = (res.error.data as { message?: string })?.message || "Error occurred.";
+            message.error(errorMessage);
+        } else if ('message' in res.error) {
+            // For SerializedError, handle the `message` property
+            message.error(res.error.message || "Error occurred.");
+        } else {
+            // Handle unknown error types
+            message.error("An unknown error occurred.");
+        }
+          }
       } catch (error) {
         console.log(error)
         message.error("Failed to update quantity")

@@ -148,7 +148,7 @@ const onClick: MenuProps['onClick'] = (e) => {
 };
 
 const BannerCategoryMenu: React.FC = () => (
-  <Menu onClick={onClick} style={{ width: 256 }} mode="vertical" items={items} />
+  <Menu onClick={onClick}  style={{ width: 270,  height:"100%"}} mode="vertical" items={items} />
 );
 
 export default BannerCategoryMenu;

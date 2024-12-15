@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { Table, Button, Tag, Space, message, Select, Pagination, Spin, Alert } from "antd";
-import { useGetAdminReviewsQuery, useUpdateReviewStatusMutation } from "../../../../Redux/Features/Review/reviewApi";
+import { Table, Button, Space, message, Pagination, Spin, Alert } from "antd";
+import { useDeleteReviewMutation, useGetAdminReviewsQuery } from "../../../../Redux/Features/Review/reviewApi";
 
-const { Option } = Select;
+// const { Option } = Select;
 
 interface Review {
   id: string;
@@ -13,42 +14,38 @@ interface Review {
   date: string;
 }
 
-const ReviewActivities= () => {
-  const [selectedStatus, setSelectedStatus] = useState("");
+const ReviewActivities = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
 
   // Fetch reviews from the API
   const { data = {}, isLoading, error } = useGetAdminReviewsQuery({
-    status: selectedStatus,
     page: currentPage,
     limit,
   });
 
-  const [updateReviewStatus, { isLoading: isUpdating }] =
-    useUpdateReviewStatusMutation();
+  const [deleteReview, { isLoading: isDeleting }] =
+  useDeleteReviewMutation();
 
-  const { data:reviews = [], meta } = data?.data || {};
+  const { data: reviews = [], meta } = data?.data || {};
   const { total } = meta || {};
 
-  const handleStatusChange = (value: string) => {
-    setSelectedStatus(value);
-    setCurrentPage(1); // Reset to the first page when filter changes
-  };
+
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  const handleUpdateStatus = async (id: string, newStatus: string) => {
+  const handleDelete = async (reviewItemId: string) => {
     try {
-      const response = await updateReviewStatus({ id, status: newStatus });
+      const response = await deleteReview(reviewItemId);
       if (response?.data?.success) {
         message.success("Review status updated successfully.");
       } else {
         message.error("Failed to update review status.");
       }
     } catch (error) {
+      console.log(error);
       message.error("An error occurred while updating the review status.");
     }
   };
@@ -56,13 +53,18 @@ const ReviewActivities= () => {
   const columns = [
     {
       title: "User",
-      dataIndex: "user",
-      key: "user",
+      dataIndex: "customer",
+      key: "customer",
+      render: (customer: any) =>
+        <div className="">
+          <h3>{customer?.name}</h3>
+          <h3>{customer?.email}</h3>
+        </div>,
     },
     {
       title: "Review",
-      dataIndex: "review",
-      key: "review",
+      dataIndex: "comment",
+      key: "comment",
       ellipsis: true,
     },
     {
@@ -71,41 +73,27 @@ const ReviewActivities= () => {
       key: "rating",
       render: (rating: number) => `${rating} ★`,
     },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status: string) => {
-        const color = status === "APPROVED" ? "green" : status === "PENDING" ? "orange" : "red";
-        return <Tag color={color}>{status}</Tag>;
-      },
-    },
+ 
     {
       title: "Date",
-      dataIndex: "date",
-      key: "date",
+      dataIndex: "createdAt",
+      key: "createdAt",
     },
     {
       title: "Actions",
       key: "actions",
       render: (_: any, record: Review) => (
         <Space>
-          <Button
-            type="primary"
-            size="small"
-            onClick={() => handleUpdateStatus(record.id, "APPROVED")}
-            disabled={record.status === "APPROVED" || isUpdating}
-          >
-            Approve
-          </Button>
+      
           <Button
             type="default"
             danger
             size="small"
-            onClick={() => handleUpdateStatus(record.id, "REJECTED")}
-            disabled={record.status === "REJECTED" || isUpdating}
+            loading={isDeleting}
+            onClick={() => handleDelete(record.id)}
+
           >
-            Reject
+            Delete
           </Button>
         </Space>
       ),
@@ -133,8 +121,9 @@ const ReviewActivities= () => {
   }
   return (
     <div className="p-5 bg-white rounded-lg">
+      <h1 className="text-2xl font-semibold mb-4">Customer Reviews</h1>
       {/* Filters */}
-      <Space className="mb-4" size="large">
+      {/* <Space className="mb-4" size="large">
         <Select
           placeholder="Filter by Status"
           value={selectedStatus}
@@ -146,7 +135,7 @@ const ReviewActivities= () => {
           <Option value="PENDING">Pending</Option>
           <Option value="REJECTED">Rejected</Option>
         </Select>
-      </Space>
+      </Space> */}
 
       {/* Reviews Table */}
       <Table

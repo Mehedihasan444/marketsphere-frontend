@@ -16,6 +16,8 @@ import { useState } from "react";
 import { useGetProductsQuery } from "../../../Redux/Features/Product/productApi";
 import { TProduct } from "../../../Interface";
 const { Search } = Input;
+
+
 const TopHeader = () => {
   const user = useAppSelector((state) => state.auth.user);
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,7 +26,7 @@ const TopHeader = () => {
   const { data = {} } = useGetMyProfileQuery("")
   const profiledata = data.data || {}
 
-  const { data: productsData = {}, isLoading, error } = useGetProductsQuery({ searchTerm }, { skip: !searchTerm });
+  const { data: productsData = {}, isLoading,  } = useGetProductsQuery({ searchTerm }, { skip: !searchTerm });
   const { data: products } = productsData?.data || {};
   const items: MenuProps["items"] = [
     {

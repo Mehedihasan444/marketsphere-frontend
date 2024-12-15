@@ -28,7 +28,17 @@ const ShopDetails = ({ shop }: { shop: TShop }) => {
       if (res.data?.success) {
         message.success("Followed the shop!");
       } else if (res?.error) {
-        message.error(res.error.data?.message)
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Followed the shop error occurred.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Followed the shop error occurred.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (error) {
       console.log(error);
@@ -49,7 +59,17 @@ const ShopDetails = ({ shop }: { shop: TShop }) => {
       if (res.data?.success) {
         message.success("Unfollowed the shop!");
       } else if (res?.error) {
-        message.error(res.error.data?.message)
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Unfollowed the shop error occurred.";
+          message.error(errorMessage);
+      } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Unfollowed the shop error occurred.");
+      } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+      }
       }
     } catch (error) {
       console.log(error);

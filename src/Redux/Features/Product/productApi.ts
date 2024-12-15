@@ -1,20 +1,10 @@
-import { TProduct } from "../../../Interface";
 import { baseApi } from "../../Api/baseApi";
 
 
 
 export const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getProducts: builder.query<
-      TProduct[],
-      {
-        brand?: string;
-        searchTerm?: string;
-        category?: string;
-        page?: number;
-        limit?: number;
-      }
-    >({
+    getProducts: builder.query({
       query: ({
         category,
         searchTerm,
@@ -22,11 +12,11 @@ export const productApi = baseApi.injectEndpoints({
         page,
         limit,
       }: {
-        category: string;
-        searchTerm: string;
-        brand: string;
-        page: number;
-        limit: number;
+        category?: string;
+        searchTerm?: string;
+        brand?: string;
+        page?: number;
+        limit?: number;
       }) => {
         let queryString = "/products?";
         if (searchTerm) queryString += `searchTerm=${searchTerm}&`;
@@ -39,7 +29,7 @@ export const productApi = baseApi.injectEndpoints({
 
       providesTags: ["product"],
     }),
-    getProductById: builder.query<TProduct, string>({
+    getProductById: builder.query({
       query: (id) => `/products/${id}`,
       providesTags: ["product"],
     }),

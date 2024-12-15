@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Alert, Button, Divider, Spin } from "antd";
 import { useGetCartItemsQuery } from "../../../Redux/Features/Cart/cartApi";
 import { useEffect, useMemo, useState } from "react";
@@ -25,10 +26,15 @@ const Checkout = () => {
     const [form] = Form.useForm();
 
     useEffect(() => {
+        // need to remove this line
+        setShipping(5)
+        setDiscount(0)
+        setCoupon(coupon)
+        // 
         const subTotal = cartItems?.reduce((acc: number, item: TCartItem) => acc + item.product.price * item.quantity, 0)
         setSubTotalAmount(subTotal)
         setTotalAmount(subTotal + shipping - discount)
-    }, [cartItems])
+    }, [cartItems, shipping, discount,coupon])
 
 
 
@@ -49,12 +55,21 @@ const Checkout = () => {
         }
         try {
             const res = await createOrder(newOrder)
-            console.log(res)
             if (res?.data?.success) {
                 form.resetFields()
                 message.success('Order placed successfully!')
             } else if (res?.error) {
-                message.error(res?.error?.data.message)
+                if ('data' in res.error) {
+                    // For FetchBaseQueryError, safely access the `data` property
+                    const errorMessage = (res.error.data as { message?: string })?.message || "Order placed error occurred.";
+                    message.error(errorMessage);
+                } else if ('message' in res.error) {
+                    // For SerializedError, handle the `message` property
+                    message.error(res.error.message || "Order placed error occurred.");
+                } else {
+                    // Handle unknown error types
+                    message.error("An unknown error occurred.");
+                }
             }
         } catch (error) {
             console.log(error)

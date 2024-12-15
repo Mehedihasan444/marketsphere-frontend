@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Form, Input, message, Modal } from "antd";
 import { useState } from "react";
 import { TShop } from "../../../../../Interface";
@@ -5,7 +6,7 @@ import { useUpdateShopMutation } from "../../../../../Redux/Features/Shop/shopAp
 
 const UpdateShopModal = ({ shop }: { shop: TShop }) => {
     const [open, setOpen] = useState(false);
-    const [confirmLoading, setConfirmLoading] = useState(false);
+    // const [confirmLoading, setConfirmLoading] = useState(false);
     const [logoFile, setLogoFile] = useState<File | null>(null);
     const [bannerFile, setBannerFile] = useState<File | null>(null);
 
@@ -40,15 +41,25 @@ const UpdateShopModal = ({ shop }: { shop: TShop }) => {
         if (bannerFile) formData.append("banner", bannerFile); // Append the banner file
 
         try {
-            const response = await updateShop({ id: shop.id, formData });
-            if (response?.data?.success) {
+            const res = await updateShop({ id: shop.id, formData });
+            if (res?.data?.success) {
                 message.success("Shop updated successfully!");
                 form.resetFields();
                 setLogoFile(null);
                 setBannerFile(null);
                 setOpen(false);
-            } else if (response?.error) {
-                message.error(response?.error?.data?.message || "Failed to update shop.");
+            } else if (res?.error) {
+                if ('data' in res.error) {
+                    // For FetchBaseQueryError, safely access the `data` property
+                    const errorMessage = (res.error.data as { message?: string })?.message || "Failed to update shop.";
+                    message.error(errorMessage);
+                } else if ('message' in res.error) {
+                    // For SerializedError, handle the `message` property
+                    message.error(res.error.message || "Failed to update shop.");
+                } else {
+                    // Handle unknown error types
+                    message.error("An unknown error occurred.");
+                }
             }
         } catch (error) {
             console.error(error);

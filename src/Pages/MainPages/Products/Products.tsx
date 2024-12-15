@@ -6,7 +6,10 @@ import { useGetProductsQuery } from "../../../Redux/Features/Product/productApi"
 import { TProduct } from "../../../Interface";
 
 const Products = () => {
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<{
+    priceRange: [number, number];
+    categories: string[];
+  }>({
     priceRange: [0, 500000],
     categories: [],
   });
@@ -44,6 +47,13 @@ const Products = () => {
         showIcon
       />
     );
+  }
+  function updateQueryParams({ page }: { page: number }) {
+    // Assuming you have a way to update the query parameters in the URL
+    const url = new URL(window.location.href);
+    url.searchParams.set('page', page.toString());
+    window.history.pushState({}, '', url.toString());
+    // Optionally, you can trigger a re-fetch of the products here if needed
   }
   return (
     <div className="max-w-8xl mx-auto bg-neutral-100 min-h-screen">
