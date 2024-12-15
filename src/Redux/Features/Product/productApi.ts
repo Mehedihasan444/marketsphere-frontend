@@ -60,6 +60,10 @@ export const productApi = baseApi.injectEndpoints({
 
       providesTags: ["product"],
     }),
+    getPriorityBasedProducts: builder.query({
+      query: () => "/products/priority",
+      providesTags: ["product"],
+    }),
     getProductById: builder.query({
       query: (id) => `/products/${id}`,
       providesTags: ["product"],
@@ -96,5 +100,6 @@ export const {
   useAddProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
-  useGetVendorProductsQuery
+  useGetVendorProductsQuery,
+  useGetPriorityBasedProductsQuery,
 } = productApi;

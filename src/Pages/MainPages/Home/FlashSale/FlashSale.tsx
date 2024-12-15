@@ -34,7 +34,7 @@ const FlashSale = () => {
           <h2 className="text-xl font-semibold ">Flash Sale</h2>
           <Button
             color="primary"
-            size="large"
+            // size="large"
             type="primary"
             variant="outlined"
             shape="default"
@@ -45,9 +45,9 @@ const FlashSale = () => {
         </div>
         <hr />
       </div>
-      <div className="flex gap-2 items-center">
+      <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-2 items-center">
         {/* product list */}
-        {products.map((product:TProduct, index:number) => (
+        {products.slice(0,6).map((product:TProduct, index:number) => (
           <ProductCard product={product} key={index} />
         ))}
       </div>
