@@ -61,7 +61,16 @@ export const productApi = baseApi.injectEndpoints({
       providesTags: ["product"],
     }),
     getPriorityBasedProducts: builder.query({
-      query: () => "/products/priority",
+      query: (page) => {
+        let queryString = "/products/priority?";
+        if (page) {
+          queryString += `page=${page}&`;
+        }
+        return {
+          url: queryString,
+          method:"GET"
+        }
+      },
       providesTags: ["product"],
     }),
     getProductById: builder.query({
