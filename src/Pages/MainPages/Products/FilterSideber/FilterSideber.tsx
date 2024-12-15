@@ -1,33 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { Slider, Checkbox } from "antd";
-
-
-
+import { Slider, Select } from "antd";
+import { TCategory } from "../../../../Interface";
+import { useGetAllCategoriesQuery } from "../../../../Redux/Features/Category/categoryApi";
 
 interface FiltersProps {
-  filters: {
-    priceRange: [number, number];
-    categories: string[];
-  };
-  setFilters: (filters: { priceRange: [number, number]; categories: string[] }) => void;
+  setBrand: (value: string) => void;
+  setCategory: (value: string) => void;
 }
 
-const Filters = ({ filters, setFilters }: FiltersProps) => {
-  const handlePriceChange = (value:any) => {
-    setFilters({ ...filters, priceRange: value });
-  };
+const Filters = ({ setBrand, setCategory }: FiltersProps) => {
+  // Fetch categories using the custom hook
+  const { data } = useGetAllCategoriesQuery({ page: 1, limit: 100 });
 
-  const handleCheckboxChange = (category :any) => {
-    const updatedCategories = filters.categories.includes(category)
-      ? filters.categories.filter((c) => c !== category)
-      : [...filters.categories, category];
-    setFilters({ ...filters, categories: updatedCategories });
-  };
+  // Safely access the categories data
+  const {data:categories} = data?.data || [];
 
   return (
     <div className="p-4 bg-white border rounded-lg shadow-md">
       <h3 className="text-lg font-bold mb-4">Filters</h3>
+
       {/* Price Range */}
       <div className="mb-6">
         <h4 className="font-semibold mb-2">Price Range (৳)</h4>
@@ -35,22 +26,41 @@ const Filters = ({ filters, setFilters }: FiltersProps) => {
           range
           min={0}
           max={500000}
-          defaultValue={filters.priceRange}
-          onChange={handlePriceChange}
+          defaultValue={[0, 500000]}
+          onChange={(value) => console.log("Price range:", value)} // Add proper handler if needed
         />
       </div>
+
       {/* Categories */}
       <div className="mb-6">
         <h4 className="font-semibold mb-2">Categories</h4>
-        {["Laptops", "Mobiles", "Tablets", "Accessories"].map((category) => (
-          <Checkbox
-            key={category}
-            onChange={() => handleCheckboxChange(category)}
-            checked={filters.categories.includes(category)}
-          >
-            {category}
-          </Checkbox>
-        ))}
+        <Select
+          style={{ width: "100%" }}
+          placeholder="Select a category"
+          onChange={(value) => setCategory(value)}
+        >
+          {categories?.map((category: TCategory) => (
+            <Select.Option key={category.id} value={category.name}>
+              {category.name}
+            </Select.Option>
+          ))}
+        </Select>
+      </div>
+{/* brand */}
+      <div className="mb-6">
+        <h4 className="font-semibold mb-2">Brand</h4>
+        <Select
+          style={{ width: "100%" }}
+          placeholder="Select a Brand"
+          onChange={(value) => setBrand(value)}
+          disabled
+        >
+          {categories?.map((category: TCategory) => (
+            <Select.Option key={category.id} value={category.name}>
+              {category.name}
+            </Select.Option>
+          ))}
+        </Select>
       </div>
     </div>
   );

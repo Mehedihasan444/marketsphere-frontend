@@ -11,6 +11,37 @@ export const productApi = baseApi.injectEndpoints({
         brand,
         page,
         limit,
+        sortBy,
+        sortOrder
+      }: {
+        category?: string;
+        searchTerm?: string;
+        brand?: string;
+        page?: number;
+        limit?: number;
+        sortBy?: string;
+        sortOrder?: string;
+      }) => {
+        let queryString = "/products?";
+        if (searchTerm) queryString += `searchTerm=${searchTerm}&`;
+        if (brand) queryString += `brand=${brand}&`;
+        if (category) queryString += `category=${category}&`;
+        if (page) queryString += `page=${page}&`;
+        if (sortBy) queryString += `sortBy=${sortBy}&`;
+        if (sortOrder) queryString += `sortOrder=${sortOrder}&`;
+        if (limit) queryString += `limit=${limit}&`;
+        return { url: queryString, method: "GET" };
+      },
+
+      providesTags: ["product"],
+    }),
+    getVendorProducts:builder.query({
+      query: ({
+        category,
+        searchTerm,
+        brand,
+        page,
+        limit,
       }: {
         category?: string;
         searchTerm?: string;
@@ -18,7 +49,7 @@ export const productApi = baseApi.injectEndpoints({
         page?: number;
         limit?: number;
       }) => {
-        let queryString = "/products?";
+        let queryString = "/products/vendor?";
         if (searchTerm) queryString += `searchTerm=${searchTerm}&`;
         if (brand) queryString += `brand=${brand}&`;
         if (category) queryString += `category=${category}&`;
@@ -65,4 +96,5 @@ export const {
   useAddProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
+  useGetVendorProductsQuery
 } = productApi;

@@ -1,29 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Table, Button, message, Popconfirm } from "antd";
+import { Table, Button, message, Popconfirm, Pagination, Input } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import {
   useDeleteProductMutation,
-  useGetProductsQuery,
+  useGetVendorProductsQuery,
 } from "../../../../Redux/Features/Product/productApi";
 import ProductModal from "./ProductModal";
 import { TProduct } from "../../../../Interface";
+import { useState } from "react";
 
 const ProductManagement = () => {
-  // const [brand, setBrand] = useState("");
-  // const [searchTerm, setSearchTerm] = useState("");
-  // const [category, setCategory] = useState("");
-  // const [limit, setLimit] = useState(10);
-  // const [page, setPage] = useState(1);
-  const { data = {}, isLoading } = useGetProductsQuery({
-    brand:"",
-    category:"",
-    page:1,
-    limit:10,
-    searchTerm:"",
+  const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(1);
+  const limit=8
+  const { data = {}, isLoading } = useGetVendorProductsQuery({
+    page,
+    limit,
+    searchTerm,
   }); // Fetch all products
   const { data: products ,meta} = data?.data || {};
   const { total } = meta || {};
   const [deleteProduct] = useDeleteProductMutation(); // Mutation for deleting products
+
+
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  };
 
   // Delete product handler
   const handleDelete = async (id: string) => {
@@ -99,6 +101,15 @@ const ProductManagement = () => {
         <div className="">
           Total products: <strong>{total || 0}</strong>
         </div>
+        <div className="">
+        <Input
+              type="text"
+              placeholder="Search by Name"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              allowClear
+            />
+        </div>
         <ProductModal initialData={null} />
       </div>
       <Table
@@ -109,7 +120,18 @@ const ProductManagement = () => {
         }))}
         loading={isLoading}
         bordered
+        pagination={false} 
       />
+       {/* Pagination */}
+       <div className="mt-4 flex justify-end">
+          <Pagination
+            current={page}
+            total={total}
+            pageSize={limit}
+            onChange={handlePageChange}
+            showSizeChanger={false}
+          />
+        </div>
     </div>
   );
 };
