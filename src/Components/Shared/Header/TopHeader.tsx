@@ -71,7 +71,7 @@ const TopHeader = () => {
         <Link to="/">
           <div className="col-span-1 flex items-center">
             <img
-              src="/src/assets/logo.webp"
+              src="https://i.ibb.co.com/wKZbrTj/logo.webp"
               alt="logo"
               className="w-10 rounded-full h-auto"
             />
