@@ -219,7 +219,7 @@ const VendorManagement: React.FC = () => {
     return (
       <Alert
         message="Error"
-        description="Failed to load users."
+        description="Failed to load vendors."
         type="error"
         showIcon
       />

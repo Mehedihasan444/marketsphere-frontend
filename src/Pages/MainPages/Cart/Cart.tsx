@@ -15,7 +15,6 @@ const Cart: React.FC = () => {
   const [removeFromCart] = useRemoveFromCartMutation()
   const [clearCart] = useClearCartMutation()
   const [totalAmount, setTotalAmount] = React.useState<number>(0)
-console.log(cartItems, "cartItems")
 
   useEffect(() => {
     const calculateTotal = async () => {

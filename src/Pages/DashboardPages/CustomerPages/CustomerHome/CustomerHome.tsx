@@ -27,7 +27,7 @@ const CustomerHome: React.FC = () => {
     return (
       <Alert
         message="Error"
-        description="Failed to load users."
+        description="Failed to load data."
         type="error"
         showIcon
       />

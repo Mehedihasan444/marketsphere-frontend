@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { TProduct } from "../../Interface";
 import { useAddToCartMutation } from "../../Redux/Features/Cart/cartApi";
 import { useAppSelector } from "../../Redux/hook";
+import { useAddToWishlistMutation } from "../../Redux/Features/Wishlist/wishlistApi";
 
 const { Meta } = Card;
 const { Text } = Typography;
@@ -14,7 +15,11 @@ const { Text } = Typography;
 const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
   const user = useAppSelector((state) => state.auth.user);
   const [addToCart] = useAddToCartMutation();
+  const [addToWishlist]=useAddToWishlistMutation()
   const navigate = useNavigate();
+
+
+  // handle add to cart
   const handleAddToCart = async (productId: string) => {
     try {
       const res = await addToCart({ userEmail: user?.email, productId });
@@ -40,11 +45,33 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
     }
   };
 
-  const addToWishlist = (id: string) => {
-    console.log(`Added ${product.name, id} to wishlist`);
-    // Add your logic to add the product to the wishlist
+  // Add to wishlist
+  const handleAddToWishlist =async (productId: string) => {
+    try {
+      const res = await addToWishlist({ userEmail: user?.email, productId });
+
+      if (res?.data?.success) {
+        message.success("Product added to wishlist");
+      } else if (res.error) {
+        if ('data' in res.error) {
+          // For FetchBaseQueryError, safely access the `data` property
+          const errorMessage = (res.error.data as { message?: string })?.message || "Product add to wishlist error occurred.";
+          message.error(errorMessage);
+        } else if ('message' in res.error) {
+          // For SerializedError, handle the `message` property
+          message.error(res.error.message || "Product add to wishlist error occurred.");
+        } else {
+          // Handle unknown error types
+          message.error("An unknown error occurred.");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      message.error("Failed to add product to wishlist");
+    }
   };
 
+  // Add to compare
   const addToCompare = () => {
     navigate(`/compare-products/${product.id}`);
   };
@@ -81,7 +108,7 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
         className="hover:block hidden"
       >
         <Tooltip title="Add to Wishlist">
-          <FaRegHeart onClick={() => addToWishlist(product.id)} className="" style={{ fontSize: 16, color: "#1890ff" }} />
+          <FaRegHeart onClick={() => handleAddToWishlist(product.id)} className="" style={{ fontSize: 16, color: "#1890ff" }} />
         </Tooltip>
         <Tooltip title="View Details">
           <Link to={`/products/${product.id}`} style={{ color: "#1890ff" }}>

@@ -19,7 +19,7 @@ const FlashSale = () => {
     return (
       <Alert
         message="Error"
-        description="Failed to load users."
+        description="Failed to load products."
         type="error"
         showIcon
       />

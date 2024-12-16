@@ -125,7 +125,7 @@ const CustomerRequests: React.FC = () => {
     return (
       <Alert
         message="Error"
-        description="Failed to load users."
+        description="Failed to load requests."
         type="error"
         showIcon
       />
