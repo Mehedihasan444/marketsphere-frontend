@@ -27,10 +27,11 @@ export const couponApi = baseApi.injectEndpoints({
         updateCoupon: builder.mutation({
             query: ({ id, ...patch }) => {
                 return {
-                url: `/coupons/${id}`,
-                method: 'PATCH',
-                body: patch,
-            }},
+                    url: `/coupons/${id}`,
+                    method: 'PATCH',
+                    body: patch,
+                }
+            },
             invalidatesTags: ['coupon'],
         }),
         deleteCoupon: builder.mutation({
@@ -40,6 +41,14 @@ export const couponApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ['coupon'],
         }),
+        applyCoupon: builder.mutation({
+            query: (coupon) => ({
+                url: '/coupons/apply',
+                method: 'POST',
+                body: coupon,
+            }),
+            invalidatesTags: ['coupon'],
+        })
     }),
 });
 
@@ -50,4 +59,5 @@ export const {
     useUpdateCouponMutation,
     useDeleteCouponMutation,
     useGetSingleShopCouponsQuery,
+    useApplyCouponMutation
 } = couponApi;

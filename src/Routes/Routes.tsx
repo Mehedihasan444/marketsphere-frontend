@@ -41,6 +41,7 @@ import LeaveReviews from "../Pages/DashboardPages/CustomerPages/LeaveReviews/Lea
 import ForgetPassword from "../Pages/AuthenticationPages/ForgetPassword/ForgetPassword";
 import ResetPassword from "../Pages/AuthenticationPages/ResetPassword/ResetPassword";
 import CouponManagement from "../Pages/DashboardPages/VendorPages/CouponManagement/CouponManagement";
+import RecentViewProducts from "../Pages/DashboardPages/CustomerPages/RecentViewProducts/RecentViewProducts";
 
 // Router configuration
 const router = createBrowserRouter([
@@ -120,6 +121,10 @@ const router = createBrowserRouter([
       },{
         path: "/dashboard/customer/leave-reviews",
         element: <LeaveReviews />,
+      },
+      {
+        path: "/dashboard/customer/recent-products",
+        element: <RecentViewProducts />,
       },
     ],
   },

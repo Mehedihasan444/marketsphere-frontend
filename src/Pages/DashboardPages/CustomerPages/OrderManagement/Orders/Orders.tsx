@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Table, Button, Spin, message, Alert, Pagination, Space } from "antd";
+import { Table, Button, message, Pagination, Space } from "antd";
 import { useState } from "react";
 import { OrderStatus, TOrder } from "../../../../../Interface";
 import { useCancelOrderMutation, useGetOrdersQuery, useMakePaymentMutation } from "../../../../../Redux/Features/Order/orderApi";
 const Orders = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const limit = 8;
-    const { data = {}, isLoading, error } = useGetOrdersQuery({ status: OrderStatus.PENDING })
+    const { data = {}, isLoading, } = useGetOrdersQuery({ status: OrderStatus.PENDING })
     const { data: orders, meta } = data.data || {}
     const { total } = meta || {};
     const [makePayment, { isLoading: isPaying }] = useMakePaymentMutation()
@@ -25,7 +25,6 @@ const Orders = () => {
             const res = await makePayment(payemntData)
             if (res?.data?.data.payment_url) {
                 window.location.href = res.data.data.payment_url;
-                return;
 
             } else if (res?.error) {
                 if ('data' in res.error) {
@@ -155,22 +154,22 @@ const Orders = () => {
 
 
 
-    if (isLoading)
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <Spin size="large" />
-            </div>
-        );
-    if (error) {
-        return (
-            <Alert
-                message="Error"
-                description="Failed to load orders."
-                type="error"
-                showIcon
-            />
-        );
-    }
+    // if (isLoading)
+    //     return (
+    //         <div className="flex justify-center items-center h-screen">
+    //             <Spin size="large" />
+    //         </div>
+    //     );
+    // if (error) {
+    //     return (
+    //         <Alert
+    //             message="Error"
+    //             description="Failed to load orders."
+    //             type="error"
+    //             showIcon
+    //         />
+    //     );
+    // }
 
     return (
         <div className="container mx-auto p-4">
@@ -185,6 +184,7 @@ const Orders = () => {
                 rowKey="id"
                 pagination={false}
                 className="shadow-md"
+                loading={isLoading}
             />
             {/* )} */}
             {/* Pagination */}

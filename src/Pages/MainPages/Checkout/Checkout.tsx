@@ -10,6 +10,8 @@ const { TextArea } = Input;
 import { BiCart } from "react-icons/bi";
 import { useCreateOrderMutation } from "../../../Redux/Features/Order/orderApi";
 import { useGetMyProfileQuery } from "../../../Redux/Features/User/userApi";
+import { useApplyCouponMutation } from "../../../Redux/Features/Coupon/couponApi";
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
     const [subTotalAmount, setSubTotalAmount] = useState<number>(0)
@@ -24,17 +26,19 @@ const Checkout = () => {
     const { data: profileData = {} } = useGetMyProfileQuery("");
     const userProfile = useMemo(() => profileData.data || {}, [profileData]);
     const [form] = Form.useForm();
+    const [applyCoupon] = useApplyCouponMutation()
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         // need to remove this line
         setShipping(5)
-        setDiscount(0)
-        setCoupon(coupon)
+        // setCoupon(coupon)
         // 
         const subTotal = cartItems?.reduce((acc: number, item: TCartItem) => acc + item.product.price * item.quantity, 0)
         setSubTotalAmount(subTotal)
         setTotalAmount(subTotal + shipping - discount)
-    }, [cartItems, shipping, discount,coupon])
+    }, [cartItems, shipping, discount, coupon])
 
 
 
@@ -52,12 +56,14 @@ const Checkout = () => {
                 productId: item.product.id,
                 quantity: item.quantity,
             })),
+            appliedCoupon: coupon || null,
         }
         try {
             const res = await createOrder(newOrder)
             if (res?.data?.success) {
                 form.resetFields()
                 message.success('Order placed successfully!')
+                navigate("/dashboard/customer/orders")
             } else if (res?.error) {
                 if ('data' in res.error) {
                     // For FetchBaseQueryError, safely access the `data` property
@@ -75,9 +81,57 @@ const Checkout = () => {
             console.log(error)
             message.error('Failed to place order!')
         }
-        console.log('Form values:', newOrder);
-        message.success('Form submitted successfully!');
     };
+
+    // Apply coupon
+    const handleApplyCoupon = async () => {
+        // if (totalAmount < 500) {
+        //     message.error('Coupon is not valid for this amount!')
+        //     return
+        // } else if (totalAmount >= 500 && totalAmount < 1000 && coupon.split("-")[1] !== "500") {
+        //     message.error('Coupon is not valid for this amount!')
+        //     return
+        // } else if (totalAmount >= 1000 && totalAmount < 1500 && coupon.split("-")[1] !== "1000") {
+        //     message.error('Coupon is not valid for this amount!')
+        //     return
+        // } else if (totalAmount >= 1500 && totalAmount < 2000 && coupon.split("-")[1] !== "1500") {
+        //     message.error('Coupon is not valid for this amount!')
+        //     return
+        // } else if (totalAmount >= 2000 && totalAmount < 2500 && coupon.split("-")[1] !== "2000") {
+        //     message.error('Coupon is not valid for this amount!')
+        //     return
+        // } else if (totalAmount >= 2500 && coupon.split("-")[1] !== "2500") {
+        //     message.error('Coupon is not valid for this amount!')
+        //     return
+        // }
+        try {
+            const res = await applyCoupon({ code: coupon, shopId: cartItems[0]?.product?.shopId, })
+            // console.log(res)
+            if (res?.data?.success) {
+                if (res?.data?.data?.coupon) {
+                    setDiscount((totalAmount * res.data.data.discount) / 100)
+                }
+                message.success('Coupon applied successfully!')
+            } else if (res?.error) {
+                if ('data' in res.error) {
+                    // For FetchBaseQueryError, safely access the `data` property
+                    const errorMessage = (res.error.data as { message?: string })?.message || "Failed to apply coupon.";
+                    message.error(errorMessage);
+                } else if ('message' in res.error) {
+                    // For SerializedError, handle the `message` property
+                    message.error(res.error.message || "Failed to apply coupon.");
+                } else {
+                    // Handle unknown error types
+                    message.error("An unknown error occurred.");
+                }
+            }
+        } catch (error) {
+            console.log(error)
+            message.error('Failed to apply coupon!')
+
+        }
+    }
+
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-screen w-full">
@@ -124,6 +178,7 @@ const Checkout = () => {
                     layout="vertical"
                     onFinish={handleSubmit}
                     className="space-y-4"
+
                 >
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
@@ -167,12 +222,7 @@ const Checkout = () => {
                                     </Button>
                                 </div>
                             </Form.Item>
-
-
-
-
                             {/* Form */}
-
                             <Form.Item
                                 name="name"
                                 label="Full name"
@@ -203,9 +253,13 @@ const Checkout = () => {
                                     rules={[{ required: true, message: 'Please select your country!' }]}
                                 >
                                     <Select>
+                                        <Select.Option value="Bangladesh">Bangladesh</Select.Option>
+                                        <Select.Option value="Pakistan">Pakistan</Select.Option>
                                         <Select.Option value="USA">USA</Select.Option>
                                         <Select.Option value="Canada">Canada</Select.Option>
-                                        <Select.Option value="Canada">Canada</Select.Option>
+                                        <Select.Option value="UK">UK</Select.Option>
+                                        <Select.Option value="Australia">Australia</Select.Option>
+
                                     </Select>
                                 </Form.Item>
 
@@ -258,11 +312,7 @@ const Checkout = () => {
                                     I have read and agree to the Terms and Conditions.
                                 </Checkbox>
                             </Form.Item>
-                            {/* <Form.Item>
-                                <Button type="primary" htmlType="submit">
-                                    Submit
-                                </Button>
-                            </Form.Item> */}
+
 
                         </div>
 
@@ -314,7 +364,7 @@ const Checkout = () => {
                                             onChange={(e) => setCoupon(e.target.value)}
 
                                         />
-                                        <Button variant="solid" className=" " size="large" type="primary">Apply</Button>
+                                        <Button onClick={handleApplyCoupon} variant="solid" className=" " size="large" type="primary">Apply</Button>
                                     </div>
                                 </div>
                                 {/* Summary */}

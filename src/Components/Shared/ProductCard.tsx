@@ -8,6 +8,7 @@ import { TProduct } from "../../Interface";
 import { useAddToCartMutation } from "../../Redux/Features/Cart/cartApi";
 import { useAppSelector } from "../../Redux/hook";
 import { useAddToWishlistMutation } from "../../Redux/Features/Wishlist/wishlistApi";
+import { useAddRecentViewProductMutation } from "../../Redux/Features/RecentViewProducts/recentViewProductsApi";
 
 const { Meta } = Card;
 const { Text } = Typography;
@@ -15,49 +16,50 @@ const { Text } = Typography;
 const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
   const user = useAppSelector((state) => state.auth.user);
   const [addToCart] = useAddToCartMutation();
-  const [addToWishlist]=useAddToWishlistMutation()
+  const [addToWishlist] = useAddToWishlistMutation()
   const navigate = useNavigate();
-
+  const [addRecentViewProduct] = useAddRecentViewProductMutation()
 
   // handle add to cart
   const handleAddToCart = async (productId: string) => {
     if (!user) {
-      message.info("Please login to add product to cart");}else{
+      message.info("Please login to add product to cart");
+    } else {
 
-        try {
-          const res = await addToCart({ userEmail: user?.email, productId });
-    
-          if (res?.data?.success) {
-            message.success("Product added to cart");
-          } else if (res.error) {
-            if ('data' in res.error) {
-              // For FetchBaseQueryError, safely access the `data` property
-              const errorMessage = (res.error.data as { message?: string })?.message || "Product add to cart error occurred.";
-              message.error(errorMessage);
-            } else if ('message' in res.error) {
-              // For SerializedError, handle the `message` property
-              message.error(res.error.message || "Product add to cart error occurred.");
-            } else {
-              // Handle unknown error types
-              message.error("An unknown error occurred.");
-            }
+      try {
+        const res = await addToCart({ userEmail: user?.email, productId });
+
+        if (res?.data?.success) {
+          message.success("Product added to cart");
+        } else if (res.error) {
+          if ('data' in res.error) {
+            // For FetchBaseQueryError, safely access the `data` property
+            const errorMessage = (res.error.data as { message?: string })?.message || "Product add to cart error occurred.";
+            message.error(errorMessage);
+          } else if ('message' in res.error) {
+            // For SerializedError, handle the `message` property
+            message.error(res.error.message || "Product add to cart error occurred.");
+          } else {
+            // Handle unknown error types
+            message.error("An unknown error occurred.");
           }
-        } catch (error) {
-          console.log(error);
-          message.error("Failed to add product to cart");
         }
+      } catch (error) {
+        console.log(error);
+        message.error("Failed to add product to cart");
       }
+    }
   };
 
   // Add to wishlist
-  const handleAddToWishlist =async (productId: string) => {
+  const handleAddToWishlist = async (productId: string) => {
     if (!user) {
       message.info("Please login to add product to wishlist");
-    }else{
+    } else {
 
       try {
         const res = await addToWishlist({ userEmail: user?.email, productId });
-  
+
         if (res?.data?.success) {
           message.success("Product added to wishlist");
         } else if (res.error) {
@@ -85,7 +87,18 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
     navigate(`/compare-products/${product.id}`);
   };
 
+  // add recent view product
+  const handleAddRecentViewProduct = async (productId: string) => {
+    try {
 
+      await addRecentViewProduct({ productId });
+
+    } catch (error) {
+      console.log(error);
+      message.error("Failed to add product to recent view product");
+    }
+
+  }
   return (
     <Card
       hoverable
@@ -101,6 +114,7 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
           style={{ height: 200, objectFit: "cover" }}
         />
       }
+      onClick={() => handleAddRecentViewProduct(product.id)}
     >
       {/* Hover icons */}
       <div
@@ -117,7 +131,7 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
         className="hover:block hidden"
       >
         <Tooltip title="Add to Wishlist">
-    
+
           <FaRegHeart onClick={() => handleAddToWishlist(product.id)} className="" style={{ fontSize: 16, color: "#1890ff" }} />
         </Tooltip>
         <Tooltip title="View Details">
@@ -135,36 +149,36 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
           />
         </Tooltip>
       </div>
-     
-      <div className=""  onClick={() => navigate(`/products/${product.id}`)}>
 
-      <Meta title={product.name} />
-      <div style={{ marginTop: 10 }}>
-        {/* Rating and Reviews */}
-        <Rate disabled defaultValue={product.rating} style={{ fontSize: 14 }} />
-        <Text type="secondary" style={{ marginLeft: 8 }}>
-          {product.reviews?.reviewItems?.length || 0} review
-          {product.reviews?.reviewItems?.length > 1 ? "s" : ""}
+      <div className="" onClick={() => navigate(`/products/${product.id}`)}>
+
+        <Meta title={product.name} />
+        <div style={{ marginTop: 10 }}>
+          {/* Rating and Reviews */}
+          <Rate disabled defaultValue={product.rating} style={{ fontSize: 14 }} />
+          <Text type="secondary" style={{ marginLeft: 8 }}>
+            {product.reviews?.reviewItems?.length || 0} review
+            {product.reviews?.reviewItems?.length > 1 ? "s" : ""}
+          </Text>
+        </div>
+        {/* Price */}
+        <Text strong style={{ display: "block", marginTop: 8, fontSize: 16 }}>
+          ${(Number(product.price.toFixed(2)) - product.discount).toFixed(2)}
+          {product.discount > 0 && <span className="ml-2" style={{ textDecoration: "line-through", color: "gray" }}>{`$${product.price.toFixed(2)}`}</span>}
         </Text>
+        {/* Stock Status */}
+        <div style={{ marginTop: 5 }}>
+          {product.quantity > 0 ? (
+            <Text type="success">
+              <CheckCircleOutlined /> In stock
+            </Text>
+          ) : (
+            <Text type="danger">
+              <CloseCircleOutlined /> Out of stock
+            </Text>
+          )}
+        </div>
       </div>
-      {/* Price */}
-      <Text strong style={{ display: "block", marginTop: 8, fontSize: 16 }}>
-        ${(Number(product.price.toFixed(2)) - product.discount).toFixed(2)}
-        {product.discount > 0 && <span className="ml-2" style={{ textDecoration: "line-through", color: "gray" }}>{`$${product.price.toFixed(2)}`}</span>}
-      </Text>
-      {/* Stock Status */}
-      <div style={{ marginTop: 5 }}>
-        {product.quantity > 0 ? (
-          <Text type="success">
-            <CheckCircleOutlined /> In stock
-          </Text>
-        ) : (
-          <Text type="danger">
-            <CloseCircleOutlined /> Out of stock
-          </Text>
-        )}
-      </div>
-</div>
 
 
     </Card>
