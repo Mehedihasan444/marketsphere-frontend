@@ -4,11 +4,13 @@ import { TProduct } from "../../../../Interface";
 import { FacebookOutlined, TwitterOutlined, WhatsAppOutlined } from "@ant-design/icons";
 import { useAppSelector } from "../../../../Redux/hook";
 import { useAddToCartMutation } from "../../../../Redux/Features/Cart/cartApi";
+import { useAddToWishlistMutation } from "../../../../Redux/Features/Wishlist/wishlistApi";
 
 const ProductInfo = ({ product }: { product: TProduct & { colors: string[], sizes: string[] } }) => {
   const [quantity, setQuantity] = useState(1);
   const user = useAppSelector((state) => state.auth.user);
   const [addToCart] = useAddToCartMutation();
+    const [addToWishlist]=useAddToWishlistMutation()
   // Increase quantity
   const increaseQuantity = () => {
     if (product.quantity < quantity) {
@@ -26,33 +28,66 @@ const ProductInfo = ({ product }: { product: TProduct & { colors: string[], size
     }
   };
   const handleAddToCart = async (productId: string) => {
-    try {
-      const res = await addToCart({ userEmail: user?.email, productId, quantity });
+    if (!user) {
+      message.info("Please login to add product to cart");
+    }else{
 
-      if (res?.data?.success) {
-        message.success("Product added to cart");
-      } else if (res.error) {
-        if ('data' in res.error) {
-          // For FetchBaseQueryError, safely access the `data` property
-          const errorMessage = (res.error.data as { message?: string })?.message || "Add to cart error occurred.";
-          message.error(errorMessage);
-      } else if ('message' in res.error) {
-          // For SerializedError, handle the `message` property
-          message.error(res.error.message || "Add to cart error occurred.");
-      } else {
-          // Handle unknown error types
-          message.error("An unknown error occurred.");
+      try {
+        const res = await addToCart({ userEmail: user?.email, productId, quantity });
+  
+        if (res?.data?.success) {
+          message.success("Product added to cart");
+        } else if (res.error) {
+          if ('data' in res.error) {
+            // For FetchBaseQueryError, safely access the `data` property
+            const errorMessage = (res.error.data as { message?: string })?.message || "Add to cart error occurred.";
+            message.error(errorMessage);
+        } else if ('message' in res.error) {
+            // For SerializedError, handle the `message` property
+            message.error(res.error.message || "Add to cart error occurred.");
+        } else {
+            // Handle unknown error types
+            message.error("An unknown error occurred.");
+        }
+        }
+      } catch (error) {
+        console.log(error);
+        message.error("Failed to add product to cart");
       }
-      }
-    } catch (error) {
-      console.log(error);
-      message.error("Failed to add product to cart");
     }
   };
-  const addToWishlist = (id: string) => {
-    console.log(`Added ${product.name,id} to wishlist`);
-    // Add your logic to add the product to the wishlist
+  // Add to wishlist
+  const handleAddToWishlist =async (productId: string) => {
+    if (!user) {
+      message.info("Please login to add product to wishlist");
+    }else{
+
+      try {
+        const res = await addToWishlist({ userEmail: user?.email, productId });
+  
+        if (res?.data?.success) {
+          message.success("Product added to wishlist");
+        } else if (res.error) {
+          if ('data' in res.error) {
+            // For FetchBaseQueryError, safely access the `data` property
+            const errorMessage = (res.error.data as { message?: string })?.message || "Product add to wishlist error occurred.";
+            message.error(errorMessage);
+          } else if ('message' in res.error) {
+            // For SerializedError, handle the `message` property
+            message.error(res.error.message || "Product add to wishlist error occurred.");
+          } else {
+            // Handle unknown error types
+            message.error("An unknown error occurred.");
+          }
+        }
+      } catch (error) {
+        console.log(error);
+        message.error("Failed to add product to wishlist");
+      }
+    }
   };
+
+
 
   return (
     <div>
@@ -120,7 +155,7 @@ const ProductInfo = ({ product }: { product: TProduct & { colors: string[], size
 
         {/* Add to Cart Button */}
         <div className="mt-6 flex gap-5 flex-1">
-          <Button onClick={() => addToWishlist(product?.id)} type="default" variant="outlined" size="large" className="flex-1">
+          <Button onClick={() => handleAddToWishlist(product?.id)} type="default" variant="outlined" size="large" className="flex-1">
             Add to Wishlist
           </Button>
           <Button onClick={() => handleAddToCart(product?.id)} type="primary" size="large" color="primary" className="flex-1">

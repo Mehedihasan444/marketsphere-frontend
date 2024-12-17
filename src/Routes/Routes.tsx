@@ -40,6 +40,7 @@ import OrderHistory from "../Pages/DashboardPages/VendorPages/OrderManagement/Or
 import LeaveReviews from "../Pages/DashboardPages/CustomerPages/LeaveReviews/LeaveReviews";
 import ForgetPassword from "../Pages/AuthenticationPages/ForgetPassword/ForgetPassword";
 import ResetPassword from "../Pages/AuthenticationPages/ResetPassword/ResetPassword";
+import CouponManagement from "../Pages/DashboardPages/VendorPages/CouponManagement/CouponManagement";
 
 // Router configuration
 const router = createBrowserRouter([
@@ -163,6 +164,10 @@ const router = createBrowserRouter([
         path: "/dashboard/vendor/customer-review",
         element: <CustomerReviews />,
       },
+      {
+        path: "/dashboard/vendor/manage-coupon",
+        element: <CouponManagement />,
+      }
     ],
   },
   {

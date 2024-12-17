@@ -217,6 +217,15 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
           Order History
         </button>
       ),
+    },{
+      key: "18",
+      icon: <AppstoreAddOutlined />,
+      onClick: () => navigate("/dashboard/vendor/manage-coupon"),
+      label: (
+        <button onClick={() => navigate("/dashboard/vendor/coupon-management")}>
+          Coupon Management
+        </button>
+      ),
     },
     {
       key: "6",

@@ -21,53 +21,62 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
 
   // handle add to cart
   const handleAddToCart = async (productId: string) => {
-    try {
-      const res = await addToCart({ userEmail: user?.email, productId });
+    if (!user) {
+      message.info("Please login to add product to cart");}else{
 
-      if (res?.data?.success) {
-        message.success("Product added to cart");
-      } else if (res.error) {
-        if ('data' in res.error) {
-          // For FetchBaseQueryError, safely access the `data` property
-          const errorMessage = (res.error.data as { message?: string })?.message || "Product add to cart error occurred.";
-          message.error(errorMessage);
-        } else if ('message' in res.error) {
-          // For SerializedError, handle the `message` property
-          message.error(res.error.message || "Product add to cart error occurred.");
-        } else {
-          // Handle unknown error types
-          message.error("An unknown error occurred.");
+        try {
+          const res = await addToCart({ userEmail: user?.email, productId });
+    
+          if (res?.data?.success) {
+            message.success("Product added to cart");
+          } else if (res.error) {
+            if ('data' in res.error) {
+              // For FetchBaseQueryError, safely access the `data` property
+              const errorMessage = (res.error.data as { message?: string })?.message || "Product add to cart error occurred.";
+              message.error(errorMessage);
+            } else if ('message' in res.error) {
+              // For SerializedError, handle the `message` property
+              message.error(res.error.message || "Product add to cart error occurred.");
+            } else {
+              // Handle unknown error types
+              message.error("An unknown error occurred.");
+            }
+          }
+        } catch (error) {
+          console.log(error);
+          message.error("Failed to add product to cart");
         }
       }
-    } catch (error) {
-      console.log(error);
-      message.error("Failed to add product to cart");
-    }
   };
 
   // Add to wishlist
   const handleAddToWishlist =async (productId: string) => {
-    try {
-      const res = await addToWishlist({ userEmail: user?.email, productId });
+    if (!user) {
+      message.info("Please login to add product to wishlist");
+    }else{
 
-      if (res?.data?.success) {
-        message.success("Product added to wishlist");
-      } else if (res.error) {
-        if ('data' in res.error) {
-          // For FetchBaseQueryError, safely access the `data` property
-          const errorMessage = (res.error.data as { message?: string })?.message || "Product add to wishlist error occurred.";
-          message.error(errorMessage);
-        } else if ('message' in res.error) {
-          // For SerializedError, handle the `message` property
-          message.error(res.error.message || "Product add to wishlist error occurred.");
-        } else {
-          // Handle unknown error types
-          message.error("An unknown error occurred.");
+      try {
+        const res = await addToWishlist({ userEmail: user?.email, productId });
+  
+        if (res?.data?.success) {
+          message.success("Product added to wishlist");
+        } else if (res.error) {
+          if ('data' in res.error) {
+            // For FetchBaseQueryError, safely access the `data` property
+            const errorMessage = (res.error.data as { message?: string })?.message || "Product add to wishlist error occurred.";
+            message.error(errorMessage);
+          } else if ('message' in res.error) {
+            // For SerializedError, handle the `message` property
+            message.error(res.error.message || "Product add to wishlist error occurred.");
+          } else {
+            // Handle unknown error types
+            message.error("An unknown error occurred.");
+          }
         }
+      } catch (error) {
+        console.log(error);
+        message.error("Failed to add product to wishlist");
       }
-    } catch (error) {
-      console.log(error);
-      message.error("Failed to add product to wishlist");
     }
   };
 
@@ -108,6 +117,7 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
         className="hover:block hidden"
       >
         <Tooltip title="Add to Wishlist">
+    
           <FaRegHeart onClick={() => handleAddToWishlist(product.id)} className="" style={{ fontSize: 16, color: "#1890ff" }} />
         </Tooltip>
         <Tooltip title="View Details">

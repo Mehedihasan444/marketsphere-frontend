@@ -122,7 +122,9 @@ const TopHeader = () => {
             </div>
           </Link>
           <div className="flex justify-between items-center gap-2">
+
             <Wishlist />
+         
           </div>
           <div className="flex justify-between items-center gap-2">
             <Cart />
