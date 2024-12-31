@@ -5,7 +5,6 @@ import {
   UserOutlined,
   ShopOutlined,
   HistoryOutlined,
-
   QuestionCircleOutlined,
   ProfileOutlined,
   LogoutOutlined,
@@ -238,6 +237,16 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
       ),
     },
     {
+key: "19",
+      icon: <AppstoreAddOutlined />,
+      onClick: () => navigate("/dashboard/vendor/flash-sale"),
+      label: (
+        <button onClick={() => navigate("/dashboard/vendor/flash-sale")}>
+          Flash Sale
+        </button>
+      ),
+    },
+    {
       key: "7",
       icon: <LogoutOutlined />,
       onClick: () => handleLogout(),
@@ -357,6 +366,16 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
         </button>
       ),
     },
+    {
+      key: "15",
+            icon: <AppstoreAddOutlined />,
+            onClick: () => navigate("/dashboard/admin/flash-sale"),
+            label: (
+              <button onClick={() => navigate("/dashboard/admin/flash-sale")}>
+                Flash Sale
+              </button>
+            ),
+          },
     {
       key: "10",
       icon: <LogoutOutlined />,

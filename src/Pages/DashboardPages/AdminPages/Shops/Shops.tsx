@@ -45,6 +45,11 @@ const Shops: React.FC = () => {
 
   const columns = [
     {
+      title: '#',
+      key: 'index',
+      render: (_text: any, _record: any, index: number) => index + 1,
+    },
+    {
       title: "Logo",
       dataIndex: "logo",
       key: "logo",

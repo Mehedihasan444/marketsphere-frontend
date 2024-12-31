@@ -52,6 +52,11 @@ const ReviewActivities = () => {
 
   const columns = [
     {
+      title: '#',
+      key: 'index',
+      render: (_text: any, _record: any, index: number) => index + 1,
+    },
+    {
       title: "User",
       dataIndex: "customer",
       key: "customer",

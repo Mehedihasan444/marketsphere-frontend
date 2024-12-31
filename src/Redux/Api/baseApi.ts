@@ -63,7 +63,8 @@ export const baseApi = createApi({
     "follow",
     "BecomeVendorRequest",
     "coupon",
-    "recentViewProduct"
+    "recentViewProduct",
+    "flashSale"
   ],
 
   endpoints: () => ({}),

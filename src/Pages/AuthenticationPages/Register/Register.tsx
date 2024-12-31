@@ -57,7 +57,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
+    <div className="flex justify-center items-center min-h-screen bg-neutral-100">
       <div className="p-8 bg-white shadow-lg rounded-lg max-w-sm w-full">
         <Title level={3} className="text-center">
           Create an Account

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import type { FormProps } from "antd";
 import {
 
@@ -14,6 +14,7 @@ import { useLoginMutation } from "../../../Redux/Features/Auth/authApi";
 import { useNavigate } from "react-router-dom";
 import { verifyToken } from "../../../Utils/verifyToken";
 import { setUser } from "../../../Redux/Features/Auth/authSlice";
+import { BiArrowBack } from "react-icons/bi";
 
 const { Title, Text } = Typography;
 
@@ -34,7 +35,7 @@ const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
-
+  const [form] = Form.useForm();
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const userInfo = {
       email: values.email as string,
@@ -61,13 +62,13 @@ const Login: React.FC = () => {
           // For FetchBaseQueryError, safely access the `data` property
           const errorMessage = (res.error.data as { message?: string })?.message || "Login error occurred.";
           message.error(errorMessage);
-      } else if ('message' in res.error) {
+        } else if ('message' in res.error) {
           // For SerializedError, handle the `message` property
           message.error(res.error.message || "Login error occurred.");
-      } else {
+        } else {
           // Handle unknown error types
           message.error("An unknown error occurred.");
-      }
+        }
       }
     } catch (error) {
       console.log(error);
@@ -78,20 +79,56 @@ const Login: React.FC = () => {
     }
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo
-  ) => {
-    console.log("Failed:", errorInfo);
-    // <Alert
-    //   message={errorInfo.errorFields[0].errors[0]}
-    //   type="error"
-    //   showIcon
-    // />;
-  };
+
+// Add interface for credentials
+interface Credentials {
+  email: string;
+  password: string;
+}
+
+// Add default values object
+const defaultCredentials: Record<string, Credentials> = {
+  admin: {
+    email: "admin@gmail.com",
+    password: "admin@gmail.com",
+  },
+  vendor: {
+    email: "vendor@gmail.com",
+    password: "vendor@gmail.com",
+  },
+  customer: {
+    email: "customer@gmail.com",
+    password: "customer@gmail.com",
+  },
+};
+
+// Update setDefaultValues function
+const setDefaultValues = (type: keyof typeof defaultCredentials) => {
+  form.setFieldsValue(defaultCredentials[type]);
+};
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <div className="p-8 bg-white shadow-lg rounded-lg max-w-sm w-full">
+    <div className="flex bg-neutral-100 flex-col justify-center items-center min-h-screen "
+    // style={{
+    //   background: "url('https://t4.ftcdn.net/jpg/02/58/86/97/360_F_258869730_KSydnAki0M5lBLRthoTtCfIxkwhA5VzF.jpg')",
+    //   backgroundSize: "cover",
+    //   backgroundPosition: "center",
+    //   backgroundRepeat: "no-repeat",
+
+    // }}
+    >
+        <div className="flex justify-center items-center max-w-sm mx-auto w-full gap-4">
+        <Button   className="w-full " onClick={() => navigate("/")} iconPosition="start" icon={<BiArrowBack/>}>Back To Home</Button>
+       
+
+      </div>
+      <div className="flex justify-between items-center max-w-lg mx-auto w-full p-4 gap-4">
+        <Button onClick={() => setDefaultValues("admin")}>Admin Credentials</Button>
+        <Button onClick={() => setDefaultValues("vendor")}>Vendor Credentials</Button>
+        <Button onClick={() => setDefaultValues("customer")}>Customer Credentials</Button>
+
+      </div>
+      <div className="p-8 bg-white shadow rounded-lg max-w-sm w-full ">
         <Title level={3} className="text-center">
           Welcome Back
         </Title>
@@ -99,11 +136,11 @@ const Login: React.FC = () => {
           Please log in to your account
         </Text>
         <Form
+        form={form}
           name="basic"
           layout="vertical"
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           {/* Username Field */}

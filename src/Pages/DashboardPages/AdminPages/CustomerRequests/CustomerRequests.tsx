@@ -55,6 +55,11 @@ const CustomerRequests: React.FC = () => {
 
   const columns = [
     {
+      title: '#',
+      key: 'index',
+      render: (_text: any, _record: any, index: number) => index + 1,
+    },
+    {
       title: "Customer Name",
       dataIndex: "name",
       key: "name",

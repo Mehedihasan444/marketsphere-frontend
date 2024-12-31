@@ -42,6 +42,9 @@ import ForgetPassword from "../Pages/AuthenticationPages/ForgetPassword/ForgetPa
 import ResetPassword from "../Pages/AuthenticationPages/ResetPassword/ResetPassword";
 import CouponManagement from "../Pages/DashboardPages/VendorPages/CouponManagement/CouponManagement";
 import RecentViewProducts from "../Pages/DashboardPages/CustomerPages/RecentViewProducts/RecentViewProducts";
+import FlashSaleManagement from "../Pages/DashboardPages/AdminPages/FlashSaleManagement/FlashSaleManagement";
+import FlashSaleProductManagement from "../Pages/DashboardPages/VendorPages/FlashSaleProductManagement/FlashSaleProductManagement";
+import FlashSale from "../Pages/MainPages/FlashSale/FlashSale";
 
 // Router configuration
 const router = createBrowserRouter([
@@ -57,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: "/products",
         element: <Products />,
+      },
+      {
+        path: "/flash-sale",
+        element: <FlashSale />,
       },
       {
         path: "/shops/:id",
@@ -172,6 +179,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/vendor/manage-coupon",
         element: <CouponManagement />,
+      },
+      {
+        path: "/dashboard/vendor/flash-sale",
+        element: <FlashSaleProductManagement />,
       }
     ],
   },
@@ -228,6 +239,10 @@ const router = createBrowserRouter([
         path: "/dashboard/admin/order-history",
         element: <AdminOrderHistory />,
       },
+      {
+        path: "/dashboard/admin/flash-sale",
+        element: <FlashSaleManagement />,
+      }
     ],
   },
   {

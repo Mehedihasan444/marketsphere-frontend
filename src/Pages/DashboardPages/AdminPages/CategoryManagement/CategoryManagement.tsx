@@ -81,6 +81,11 @@ const CategoryManagement: React.FC = () => {
 
   const columns: TableProps<TCategory>["columns"] = [
     {
+      title: '#',
+      key: 'index',
+      render: (_text: any, _record: any, index: number) => index + 1,
+    },
+    {
       title: "Name",
       dataIndex: "name",
       key: "name",

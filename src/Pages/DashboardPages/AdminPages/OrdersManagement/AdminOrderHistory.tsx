@@ -25,6 +25,11 @@ message.info(`View Order Details: ${orderId}`);
   // Table columns
   const columns = [
     {
+      title: '#',
+      key: 'index',
+      render: (_text: any, _record: any, index: number) => index + 1,
+    },
+    {
       title: "Order Number",
       dataIndex: "orderNumber",
       key: "orderNumber",

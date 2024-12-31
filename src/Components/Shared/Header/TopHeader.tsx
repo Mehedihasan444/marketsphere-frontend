@@ -24,7 +24,7 @@ const TopHeader = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { data = {} } = useGetMyProfileQuery("")
-  const profiledata = data.data || {}
+  const profileData = data.data || {}
 
   const { data: productsData = {}, isLoading,  } = useGetProductsQuery({ searchTerm }, { skip: !searchTerm });
   const { data: products } = productsData?.data || {};
@@ -66,7 +66,7 @@ const TopHeader = () => {
   ];
 
   return (
-    <div className="bg-white lg:mx-16 px-4 py-5">
+    <div className="bg-white px-4 py-5">
       <div className="grid  grid-cols-5 gap-4 justify-between items-center ">
         <Link to="/">
           <div className="col-span-1 flex items-center">
@@ -75,10 +75,11 @@ const TopHeader = () => {
               alt="logo"
               className="w-10 rounded-full h-auto"
             />
-            <h1 className="text-3xl font-bold">MarketSphere</h1>
+            <h1 className="lg:text-3xl font-bold">MarketSphere</h1>
           </div>
         </Link>
-        <div className="col-span-3 flex justify-center items-center relative">
+        {/* search bar */}
+        <div className="col-span-3 flex justify-center items-center relative ">
           <Search
           type="search"
           value={searchTerm}
@@ -86,22 +87,22 @@ const TopHeader = () => {
             enterButton="Search"
             size="large"
             loading={isLoading}
-            className="w-2/3 h-10"
+            className="w-2/3 h-10  hidden sm:flex "
           
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          {products&&searchTerm&&<div className="absolute space-y-1 top-14 bg-blue-50 rounded-md z-50 p-3 w-2/3 shadow ">
+          {products&&searchTerm&&<div className="absolute space-y-1 top-12 bg-neutral-100 rounded-md z-50 p-3 w-2/3 shadow ">
             {
-              products?.slice(0, 6)?.map((product: TProduct) => <div onClick={()=>{navigate(`/products/${product.id}`); setSearchTerm(""); }} className="cursor-pointer hover:bg-neutral-100 flex gap-3 justify-between border p-4 bg-white">
+              products?.slice(0, 4)?.map((product: TProduct) => <div onClick={()=>{navigate(`/products/${product.id}`); setSearchTerm(""); }} className="cursor-pointer rounded-lg hover:shadow-lg flex gap-3 justify-between border p-4 bg-white">
                 <div className="">
                   <img src={product?.images[0]} alt={product.name} className="w-20 h-auto " />
                 </div>
                 <div className="flex-1 space-y-1">
 
-                  <h4 className=" font-semibold text-sm text-gray-500">{product.category.name}</h4>
-                  <h4 className=" font-semibold text-xl">{product.name}</h4>
-                  <Rate value={product.rating} disabled/>
-                  <h4 className="font-semibold text-lg text-blue-500">${product.price}</h4>
+                  <h4 className=" font-semibold text-xs text-gray-500">{product.category.name}</h4>
+                  <h4 className=" font-semibold text-base">{product.name}</h4>
+                  <Rate value={product.rating} disabled className="text-sm"/>
+                  <h4 className="font-semibold text-sm text-blue-500">${product.price}</h4>
 
                 </div>
               </div>)
@@ -111,6 +112,7 @@ const TopHeader = () => {
             </div>
           </div>}
         </div>
+        {/*  */}
         <div className="col-span-1 flex gap-4 justify-end items-center">
           <Link to="/login">
             <div className="hover:text-blue-500 text-3xl flex justify-between items-center gap-1">
@@ -140,7 +142,7 @@ const TopHeader = () => {
               <Dropdown menu={{ items }} trigger={["click"]}>
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
-                    <Avatar size="large" icon={<img src={profiledata?.profilePhoto} alt={profiledata?.name} />} />
+                    <Avatar size="large" icon={<img src={profileData?.profilePhoto} alt={profileData?.name} />} />
                     <DownOutlined />
                   </Space>
                 </a>

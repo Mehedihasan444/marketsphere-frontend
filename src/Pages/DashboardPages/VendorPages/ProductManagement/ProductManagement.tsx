@@ -12,13 +12,13 @@ import { useState } from "react";
 const ProductManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
-  const limit=8
+  const limit = 8
   const { data = {}, isLoading } = useGetVendorProductsQuery({
     page,
     limit,
     searchTerm,
   }); // Fetch all products
-  const { data: products ,meta} = data?.data || {};
+  const { data: products, meta } = data?.data || {};
   const { total } = meta || {};
   const [deleteProduct] = useDeleteProductMutation(); // Mutation for deleting products
 
@@ -44,6 +44,12 @@ const ProductManagement = () => {
 
   // Columns for the table
   const columns = [
+    {
+      title: '#',
+      key: 'index',
+      width: '4%',
+      render: (_text: any, _record: TProduct, index: number) => <span>{index + 1}</span>,
+    },
     {
       title: "Name",
       dataIndex: "name",
@@ -75,7 +81,7 @@ const ProductManagement = () => {
       title: "Actions",
       key: "actions",
       render: (_: any, record: TProduct) => (
-        <div className="sm:flex justify-between items-center gap-2 ">
+        <div className="sm:flex   items-center gap-4 ">
           <ProductModal key={`edit-${record.id}`} initialData={record} />
 
           <Popconfirm
@@ -85,7 +91,7 @@ const ProductManagement = () => {
             cancelText="No"
           >
             <Button danger type="primary" icon={<DeleteOutlined />}>
-              Delete
+
             </Button>
           </Popconfirm>
         </div>
@@ -95,43 +101,43 @@ const ProductManagement = () => {
 
   return (
     <div>
-          <h2 className="text-2xl font-semibold">Manage Products</h2>
+      <h2 className="text-2xl font-semibold">Manage Products</h2>
       <div className="flex justify-between items-center gap-5 my-4">
         {/* Total Count */}
         <div className="">
           Total products: <strong>{total || 0}</strong>
         </div>
         <div className="">
-        <Input
-              type="text"
-              placeholder="Search by Name"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              allowClear
-            />
+          <Input
+            type="text"
+            placeholder="Search by Name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            allowClear
+          />
         </div>
         <ProductModal initialData={null} />
       </div>
       <Table
         columns={columns}
-        dataSource={products?.map((product: any) => ({
+        dataSource={products?.map((product: TProduct) => ({
           ...product,
           key: product.id,
         }))}
         loading={isLoading}
         bordered
-        pagination={false} 
+        pagination={false}
       />
-       {/* Pagination */}
-       <div className="mt-4 flex justify-end">
-          <Pagination
-            current={page}
-            total={total}
-            pageSize={limit}
-            onChange={handlePageChange}
-            showSizeChanger={false}
-          />
-        </div>
+      {/* Pagination */}
+      <div className="mt-4 flex justify-end">
+        <Pagination
+          current={page}
+          total={total}
+          pageSize={limit}
+          onChange={handlePageChange}
+          showSizeChanger={false}
+        />
+      </div>
     </div>
   );
 };

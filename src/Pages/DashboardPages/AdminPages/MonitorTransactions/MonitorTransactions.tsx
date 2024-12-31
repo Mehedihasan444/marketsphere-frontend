@@ -82,6 +82,11 @@ const MonitorTransactions: React.FC = () => {
 
   const columns = [
     {
+      title: '#',
+      key: 'index',
+      render: (_text: any, _record: any, index: number) => index + 1,
+    },
+    {
       title: "Transaction ID",
       dataIndex: "id",
       key: "id",

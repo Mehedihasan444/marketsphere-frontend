@@ -137,6 +137,11 @@ const VendorManagement: React.FC = () => {
   };
   const columns: TableProps<DataType>["columns"] = [
     {
+      title: '#',
+      key: 'index',
+      render: (_text: any, _record: any, index: number) => index + 1,
+    },
+    {
       title: "Name",
       dataIndex: "name",
       key: "name",

@@ -68,7 +68,7 @@ const UnAuthorizedUserProducts = () => {
   }
 
   return (
-    <div className="bg-white lg:mx-16 p-4 mt-4">
+    <div className="bg-white lg:mx-16 p-4 mt-4 shadow rounded-xl">
       {/* Header */}
       <div className="py-4">
         <h2 className="text-xl font-semibold pb-2">Just For You</h2>
@@ -76,7 +76,7 @@ const UnAuthorizedUserProducts = () => {
       </div>
 
       {/* Product Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-2 items-center">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-2 items-center">
         {products?.map((product: TProduct, index: number) => (
           <ProductCard product={product} key={index} />
         ))}

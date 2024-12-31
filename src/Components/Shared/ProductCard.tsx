@@ -103,18 +103,42 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
     <Card
       hoverable
       style={{
-        width: 240,
+        // width: 240,
         position: "relative",
         overflow: "hidden",
       }}
       cover={
-        <img
-          alt={product.name}
-          src={product.images[0]}
-          style={{ height: 200, objectFit: "cover" }}
-        />
+        <div className="relative flex justify-center items-center">
+          <div className="flex justify-center items-center">
+
+            <img
+              alt={product.name}
+              src={product.images[0]}
+              style={{ height: 200, objectFit: "cover" }}
+            />
+          </div>
+          {/* Discount Badge */}
+          {product.discount > 0 && (
+            <div
+              style={{
+                position: "absolute",
+                top: 10,
+                left: 10,
+                backgroundColor: "#ff4d4f", // Red badge
+                color: "white",
+                padding: "4px 8px",
+                borderRadius: "12px",
+                fontWeight: "bold",
+                fontSize: "12px",
+              }}
+            >
+              {`-${product.discount}%`}
+            </div>
+          )}
+        </div>
       }
       onClick={() => handleAddRecentViewProduct(product.id)}
+      className="shadow  hover:shadow-lg"
     >
       {/* Hover icons */}
       <div
@@ -152,7 +176,9 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
 
       <div className="" onClick={() => navigate(`/products/${product.id}`)}>
 
-        <Meta title={product.name} />
+        <Meta title={product.name} style={{
+          color: "#1890ff",
+        }}/>
         <div style={{ marginTop: 10 }}>
           {/* Rating and Reviews */}
           <Rate disabled defaultValue={product.rating} style={{ fontSize: 14 }} />
@@ -163,7 +189,11 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
         </div>
         {/* Price */}
         <Text strong style={{ display: "block", marginTop: 8, fontSize: 16 }}>
-          ${(Number(product.price.toFixed(2)) - product.discount).toFixed(2)}
+          <span className="text-blue-600">
+
+            ${(Number(product.price.toFixed(2)) - product.discount).toFixed(2)}
+          </span>
+
           {product.discount > 0 && <span className="ml-2" style={{ textDecoration: "line-through", color: "gray" }}>{`$${product.price.toFixed(2)}`}</span>}
         </Text>
         {/* Stock Status */}
@@ -182,6 +212,159 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
 
 
     </Card>
+    //     <Card
+    //   hoverable
+    //   style={{
+    //     position: "relative",
+    //     overflow: "hidden",
+    //     borderRadius: "12px", // Rounded corners for a modern look
+    //     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
+    //     transition: "transform 0.3s, box-shadow 0.3s", // Smooth hover animation
+    //   }}
+    //   className="hover:scale-105 hover:shadow-lg " // Tailwind for hover effects
+    //   cover={
+    //     <div style={{ position: "relative" }}>
+    //       {/* Product Image */}
+    //       <img
+    //         alt={product.name}
+    //         src={product.images[0]}
+    //         style={{
+    //           // height: 200,
+    //           objectFit: "cover",
+    //           borderRadius: "12px 12px 0 0", // Top rounded corners
+    //           padding: "16px", // Add some padding for image
+    //         }}
+    //       />
+    //       {/* Discount Badge */}
+    //       {product.discount > 0 && (
+    //         <div
+    //           style={{
+    //             position: "absolute",
+    //             top: 10,
+    //             left: 10,
+    //             backgroundColor: "#ff4d4f", // Red badge
+    //             color: "white",
+    //             padding: "4px 8px",
+    //             borderRadius: "12px",
+    //             fontWeight: "bold",
+    //             fontSize: "12px",
+    //           }}
+    //         >
+    //           {`-${product.discount}%`}
+    //         </div>
+    //       )}
+    //     </div>
+    //   }
+    //   onClick={() => handleAddRecentViewProduct(product.id)}
+    // >
+    //   {/* Hover Icons */}
+    //   <div
+    //     style={{
+    //       position: "absolute",
+    //       top: 10,
+    //       right: 10,
+    //       display: "flex",
+    //       flexDirection: "column",
+    //       gap: 8,
+    //       transition: "opacity 0.3s",
+    //     }}
+    //     className=" opacity-0 hover:opacity-100" // Hover to reveal icons
+    //   >
+    //     <Tooltip title="Add to Wishlist">
+    //       <FaRegHeart
+    //         onClick={() => handleAddToWishlist(product.id)}
+    //         style={{
+    //           fontSize: 18,
+    //           color: "#1890ff",
+    //           cursor: "pointer",
+    //         }}
+    //         className="hover:text-red-500 cursor-pointer "
+    //       />
+    //     </Tooltip>
+    //     <Tooltip title="View Details">
+    //       <Link to={`/products/${product.id}`} style={{ color: "#1890ff" }}>
+    //         <IoEyeOutline style={{ fontSize: 18 }} />
+    //       </Link>
+    //     </Tooltip>
+    //     <Tooltip title="Compare">
+    //       <IoLayersOutline
+    //         onClick={addToCompare}
+    //         style={{
+    //           fontSize: 18,
+    //           color: "#1890ff",
+    //           cursor: "pointer",
+    //         }}
+    //       />
+    //     </Tooltip>
+    //     <Tooltip title="Add to Cart">
+    //       <IoCartOutline
+    //         onClick={() => handleAddToCart(product.id)}
+    //         style={{
+    //           fontSize: 18,
+    //           color: "#1890ff",
+    //           cursor: "pointer",
+    //         }}
+    //       />
+    //     </Tooltip>
+    //   </div>
+
+    //   {/* Product Details */}
+    //   <div className="pt-0">
+    //     {/* Product Title */}
+    //     <Meta
+    //       title={
+    //         <span className="text-lg font-semibold text-gray-800">
+    //           {product.name}
+    //         </span>
+    //       }
+    //       description={
+    //         <Text type="secondary" style={{ fontSize: "14px" }}>
+    //           {product.category?.name}
+    //         </Text>
+    //       }
+    //     />
+
+    //     {/* Rating and Reviews */}
+    //     <div className="mt-2 flex items-center gap-2">
+    //       <Rate disabled defaultValue={product.rating} style={{ fontSize: 14 }} />
+    //       <Text type="secondary" style={{ fontSize: "12px" }}>
+    //         {product.reviews?.reviewItems?.length || 0} review
+    //         {product.reviews?.reviewItems?.length > 1 ? "s" : ""}
+    //       </Text>
+    //     </div>
+
+    //     {/* Pricing Section */}
+    //     <div className="mt-2">
+    //       <Text strong className="text-lg text-blue-600">
+    //         ${(
+    //           Number(product.price.toFixed(2)) - product.discount
+    //         ).toFixed(2)}
+    //       </Text>
+    //       {product.discount > 0 && (
+    //         <span
+    //           className="ml-2 text-gray-400 line-through"
+    //           style={{ fontSize: "14px" }}
+    //         >
+    //           {`$${product.price.toFixed(2)}`}
+    //         </span>
+    //       )}
+    //     </div>
+
+    //     {/* Stock Status */}
+    //     <div className="mt-2">
+    //       {product.quantity > 0 ? (
+    //         <Text type="success">
+    //           <CheckCircleOutlined /> In Stock
+    //         </Text>
+    //       ) : (
+    //         <Text type="danger">
+    //           <CloseCircleOutlined /> Out of Stock
+    //         </Text>
+    //       )}
+    //     </div>
+    //   </div>
+    // </Card>
+
   );
 };
 

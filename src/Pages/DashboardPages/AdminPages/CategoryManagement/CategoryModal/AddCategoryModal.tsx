@@ -117,7 +117,7 @@ const AddCategoryModal: React.FC = () => {
           <Form.Item className="flex justify-end items-center gap-4">
             <Button onClick={handleCancel} className="mr-4">Cancel</Button>
             <Button type="primary" htmlType="submit" loading={isLoading}>
-              Add Product
+              Add category
             </Button>
           </Form.Item>
         </Form>

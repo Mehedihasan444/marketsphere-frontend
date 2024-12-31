@@ -6,7 +6,7 @@ import { useGetProductsQuery } from "../../../Redux/Features/Product/productApi"
 import { TProduct } from "../../../Interface";
 import { useLocation } from "react-router-dom";
 
-const Products = () => {
+const FlashSale = () => {
   // const [filters, setFilters] = useState<{
   //   priceRange: [number, number];
   //   categories: string[];
@@ -22,6 +22,8 @@ const Products = () => {
   const [category, setCategory] = useState("");
   const [sortBy, setSortBy] = useState("price");
   const [sortOrder, setSortOrder] = useState("");
+//    const { data = {}, isLoading, error } = useGetFlashSaleProductsQuery("");
+//     const products = data?.data || [];
   const { data = {}, isLoading, error } = useGetProductsQuery({ brand, category,sortOrder, page:currentPage, limit, searchTerm,sortBy });
   const { data: products, meta } = data?.data || {};
   const { total } = meta || {};
@@ -72,7 +74,7 @@ const Products = () => {
         </aside>
         <div className="flex-1 pb-4">
           <div className="flex justify-between items-center gap-4 bg-white p-4 mb-4 w-full">
-            <div className="font-semibold">Products</div>
+            <div className="font-semibold">🔥 Flash Sale Products</div>
             <div className="flex gap-4">
               <div className="flex gap-2 items-center">
                 <span className="font-semibold text-neutral-600">Shows:</span>
@@ -131,4 +133,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default FlashSale;
