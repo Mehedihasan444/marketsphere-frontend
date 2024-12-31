@@ -1,5 +1,5 @@
 
-import { Alert, Spin } from "antd";
+import { Alert, Skeleton, Spin } from "antd";
 import ProductCard from "../../../../Components/Shared/ProductCard";
 import { TProduct } from "../../../../Interface";
 import { useState, useEffect, useRef } from "react";
@@ -49,8 +49,16 @@ const PersonalizedProducts = () => {
   // Loading Spinner
   if (isLoading && page === 1) {
     return (
-      <div className="flex justify-center items-center h-screen w-full">
-        <Spin tip="Loading..." />
+      <div className="bg-white lg:mx-16 p-4 mt-4 shadow rounded-xl">
+        <div className="py-4">
+          <Skeleton.Input style={{ width: 200 }} active />
+          <Skeleton.Input style={{ width: '100%', marginTop: 10 }} active />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-2 items-center">
+          {Array(6).fill(0).map((_, index) => (
+            <Skeleton key={index} active />
+          ))}
+        </div>
       </div>
     );
   }
