@@ -1,5 +1,5 @@
 
-import { Alert, Button, Progress, Skeleton, Spin } from "antd";
+import { Alert, Button, Progress, Skeleton } from "antd";
 import ProductCard from "../../../../Components/Shared/ProductCard";
 import { TProduct } from "../../../../Interface";
 import Countdown from "react-countdown";

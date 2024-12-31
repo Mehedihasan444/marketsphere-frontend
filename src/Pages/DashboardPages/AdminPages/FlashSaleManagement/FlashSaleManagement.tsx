@@ -307,7 +307,7 @@ const FlashSaleManagement = () => {
               showUploadList={false}
               beforeUpload={beforeUpload}
               onChange={handleChange}
-              customRequest={({ file, onSuccess }) => {
+              customRequest={({ onSuccess }) => {
                 setTimeout(() => {
                   onSuccess!("ok");
                 }, 0);
