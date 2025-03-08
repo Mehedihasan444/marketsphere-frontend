@@ -4,7 +4,7 @@ import { MenuUnfoldOutlined, CloseOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu, Drawer } from "antd";
 import { RiDiscountPercentFill } from "react-icons/ri";
-
+import {Menu as LuMenu} from 'lucide-react'
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -92,12 +92,16 @@ const Navbar: React.FC = () => {
   return (
     <div className="w-full bg-white px-4 lg:px-0 sm:bg-none">
       {/* Desktop Navigation */}
-      <div className="max-w-8xl lg:mx-16 mx-auto hidden lg:grid grid-cols-5 gap-4 items-center bg-white  px-4">
+      <div className="max-w-8xl lg:mx-16 mx-auto hidden lg:grid grid-cols-5 gap-4 items-center bg-white  ">
         <div className="col-span-1">
-          <div className="flex gap-4 items-center cursor-pointer">
+          {/* <div className="flex gap-4 items-center cursor-pointer">
             <MenuUnfoldOutlined />
             <h1 className="text-lg font-bold">Browse All Categories</h1>
-          </div>
+          </div> */}
+           <button className="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-300">
+                <LuMenu size={20} className="mr-2" />
+                Categories
+              </button>
         </div>
         <div className="col-span-3 flex justify-end">
 
