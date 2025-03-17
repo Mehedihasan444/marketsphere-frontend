@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 
@@ -28,17 +27,19 @@ const baseQueryWithReauth: BaseQueryFn<
   });
 
   const result = await baseQuery(args, api, extraOptions);
-  // Handle JWT expiration globally
-  if (result.error && result.error.status === 500) {
-    // Check if the error object has the expected structure
-    const errorData = result.error.data as { message?: string } | undefined;
-    // !need to be fix
-    if (errorData?.message === "jwt expired") {
-      // Logout the user and clear the token
-      api.dispatch(logout());
-
-      // Optionally redirect to login page
-      window.location.href = "/login";
+  // Updated JWT expiration handling
+  if (result.error) {
+    // Handle network errors first
+    if ('status' in result.error) {
+      // Check for 401 status
+      if (result.error.status === 401) {
+        const errorData = result.error.data as { message?: string };
+        if (errorData?.message === 'JWT expired') {
+          api.dispatch(logout());
+          window.location.href = '/login';
+        }
+      }
+      // Add other status code handling if needed
     }
   }
 
