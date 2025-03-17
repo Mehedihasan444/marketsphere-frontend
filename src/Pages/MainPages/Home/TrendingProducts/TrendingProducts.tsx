@@ -1,87 +1,140 @@
-import { Clock, Truck, Shield, HeadphonesIcon as HeadphoneIcon, Send, ChevronRight, ArrowRight, ChevronLeft } from 'lucide-react';
-import { useState } from 'react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import ProductCard from '../../../../Components/Shared/ProductCard';
+import { useGetProductsQuery } from '../../../../Redux/Features/Product/productApi';
+import { TProduct } from '../../../../Interface';
+import { Skeleton } from 'antd';
 
-// fake data
-
-const trendingProducts = [
-    {
-      id: 1,
-      name: "MacBook Pro M2",
-      image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80",
-      price: 1299,
-      discount: 15
-    },
-    {
-      id: 2,
-      name: "Sony WH-1000XM5",
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
-      price: 399,
-      discount: 20
-    },
-    {
-      id: 3,
-      name: "iPhone 15 Pro",
-      image: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=500&q=80",
-      price: 999,
-      discount: 10
-    }
-  ];
-  
 const TrendingProducts = () => {
   const [currentTrendingIndex, setCurrentTrendingIndex] = useState(0);
+  const [visibleProducts, setVisibleProducts] = useState<TProduct[]>([]);
+  const { data = {}, isLoading } = useGetProductsQuery({});
+  const { data: trendingProducts = [] } = data?.data || [];
+  
+  // Number of products to show at once based on screen size
+  const [productsToShow, setProductsToShow] = useState(4);
+
+  // Update products to show based on window size
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setProductsToShow(1);
+      } else if (window.innerWidth < 768) {
+        setProductsToShow(2);
+      } else if (window.innerWidth < 1024) {
+        setProductsToShow(3);
+      } else {
+        setProductsToShow(4);
+      }
+    };
+
+    handleResize(); // Set initial value
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Update visible products when trending products or current index changes
+  useEffect(() => {
+    if (trendingProducts && trendingProducts.length > 0) {
+      const endIndex = Math.min(currentTrendingIndex + productsToShow, trendingProducts.length);
+      setVisibleProducts(trendingProducts.slice(currentTrendingIndex, endIndex));
+    }
+  }, [trendingProducts, currentTrendingIndex, productsToShow]);
+
+  // Handle navigation
+  const handlePrevious = () => {
+    setCurrentTrendingIndex(prev => Math.max(0, prev - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentTrendingIndex(prev => 
+      Math.min(prev + 1, Math.max(0, trendingProducts.length - productsToShow))
+    );
+  };
+
+  // Skeleton loader component
+  const ProductSkeleton = () => (
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <Skeleton.Image className="w-full h-48" active />
+      <div className="p-4">
+        <Skeleton.Input active size="small" className="mb-2 w-3/4" />
+        <Skeleton active paragraph={{ rows: 1 }} />
+        <div className="flex justify-between mt-2">
+          <Skeleton.Input active size="small" className="w-1/4" />
+          <Skeleton.Button active size="small" className="w-1/4" />
+        </div>
+      </div>
+    </div>
+  );
+
+  // Render skeleton loaders during loading state
+  if (isLoading) {
+    return (
+      <section className="py-16 bg-white lg:px-16">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between mb-8">
+            <Skeleton.Input active size="large" className="w-1/4" />
+            <div className="flex space-x-2">
+              <Skeleton.Button active shape="circle" />
+              <Skeleton.Button active shape="circle" />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {Array(productsToShow).fill(null).map((_, index) => (
+              <ProductSkeleton key={index} />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!trendingProducts || trendingProducts.length === 0) {
+    return <div className="py-16 text-center">No trending products available</div>;
+  }
 
   return (
     <section className="py-16 bg-white lg:px-16">
-    <div className="container mx-auto px-4">
-      <div className="flex items-center justify-between mb-8">
-        <h2 className="text-3xl font-bold text-gray-800">Trending Now</h2>
-        <div className="flex space-x-2">
-          <button
-            onClick={() => setCurrentTrendingIndex(prev => (prev > 0 ? prev - 1 : trendingProducts.length - 1))}
-            className="p-2 rounded-full bg-gray-100 hover:bg-indigo-100 transition-colors duration-300"
-          >
-            <ChevronLeft className="w-6 h-6 text-gray-600" />
-          </button>
-          <button
-            onClick={() => setCurrentTrendingIndex(prev => (prev < trendingProducts.length - 1 ? prev + 1 : 0))}
-            className="p-2 rounded-full bg-gray-100 hover:bg-indigo-100 transition-colors duration-300"
-          >
-            <ChevronRight className="w-6 h-6 text-gray-600" />
-          </button>
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-3xl font-bold text-gray-800">Trending Now</h2>
+          <div className="flex space-x-2">
+            <button
+              onClick={handlePrevious}
+              disabled={currentTrendingIndex === 0}
+              className={`p-2 rounded-full transition-colors duration-300 ${
+                currentTrendingIndex === 0 
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                  : 'bg-gray-100 hover:bg-indigo-100 text-gray-600'
+              }`}
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={handleNext}
+              disabled={currentTrendingIndex >= trendingProducts.length - productsToShow}
+              className={`p-2 rounded-full transition-colors duration-300 ${
+                currentTrendingIndex >= trendingProducts.length - productsToShow
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                  : 'bg-gray-100 hover:bg-indigo-100 text-gray-600'
+              }`}
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {visibleProducts.map((product: TProduct, index: number) => (
+            <div 
+              key={product.id || index} 
+              className="transition-all duration-300 transform hover:scale-105"
+            >
+              <ProductCard product={product} />
+            </div>
+          ))}
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {trendingProducts.map((product, index) => (
-          <div
-            key={product.id}
-            className={`bg-gray-50 rounded-2xl overflow-hidden transition-all duration-500 ${index === currentTrendingIndex ? 'scale-105 shadow-xl' : 'scale-95 opacity-50'
-              }`}
-          >
-            <div className="aspect-[4/3] relative overflow-hidden">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                {product.discount}% OFF
-              </div>
-            </div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">{product.name}</h3>
-              <div className="flex items-center justify-between">
-                <p className="text-2xl font-bold text-indigo-600">${product.price}</p>
-                <button className="flex items-center space-x-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300">
-                  <span>Buy Now</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
+    </section>
   );
 };
 
