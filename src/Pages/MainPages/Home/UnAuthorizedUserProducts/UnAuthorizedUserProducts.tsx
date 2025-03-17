@@ -76,7 +76,7 @@ const UnAuthorizedUserProducts = () => {
   }
 
   return (
-    <div className="bg-white lg:mx-16 p-4 mt-4 shadow rounded-xl">
+    <div className=" lg:mx-16 p-4 mt-4  rounded-xl">
       {/* Header */}
       <div className="py-4">
         <h2 className="text-xl font-semibold pb-2">Just For You</h2>
