@@ -111,14 +111,14 @@ const TestimonialSlider = () => {
     const visibleCount = getVisibleCount();
   
     // Get visible testimonials
-    const getVisibleTestimonials = () => {
-      const result = [];
-      for (let i = 0; i < visibleCount; i++) {
-        const index = (currentIndex + i) % testimonials.length;
-        result.push(testimonials[index]);
-      }
-      return result;
-    };
+    // const getVisibleTestimonials = () => {
+    //   const result = [];
+    //   for (let i = 0; i < visibleCount; i++) {
+    //     const index = (currentIndex + i) % testimonials.length;
+    //     result.push(testimonials[index]);
+    //   }
+    //   return result;
+    // };
   
     return (
       <div className="relative">
