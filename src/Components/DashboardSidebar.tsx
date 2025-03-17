@@ -399,16 +399,26 @@ key: "19",
         width: collapsed ? "auto " : 256,
         transition: "width 0.3s ease",
       }}
-      className="h-screen relative"
+      className="h-screen relative  text-white"
     >
+         {/* Logo and Title */}
+         <div className="w-full text-lg  rounded-none mt-auto absolute top-0 left-0 right-0 ">
+
+         <div className={`p-4 flex items-center justify-center ${collapsed ? 'py-4' : 'py-6'}`}>
+        <h1 className={`font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text ${collapsed ? 'text-xl' : 'text-2xl'}`}>
+          {collapsed ? 'MS' : 'MarketSphere'}
+        </h1>
+      </div>
+         </div>
       {/* Sidebar Menu */}
       <Menu
         defaultSelectedKeys={["1"]}
+        title="Dashboard"
         mode="inline"
         theme="dark"
         inlineCollapsed={collapsed}
         items={items}
-        className="h-full pt-10"
+        className="h-full pt-20"
       />
 
       <Button
