@@ -1,12 +1,12 @@
 import React from "react";
 import { Button, Divider, Drawer, Empty, message, Tooltip } from "antd";
-import { FaRegHeart } from "react-icons/fa";
 import { useClearWishlistMutation, useGetWishlistItemsQuery, useRemoveFromWishlistMutation } from "../Redux/Features/Wishlist/wishlistApi";
 import { TWishlistItem } from "../Interface";
 import { DeleteOutlined } from "@ant-design/icons";
+import { Heart } from "lucide-react";
 const Wishlist: React.FC = () => {
   const [open, setOpen] = React.useState<boolean>(false);
-  const { data = {}, isLoading,  } = useGetWishlistItemsQuery("");
+  const { data = {}, isLoading, } = useGetWishlistItemsQuery("");
   const { data: wishlistItems = [] } = data || {};
   const [removeFromWishlist] = useRemoveFromWishlistMutation()
   const [clearWishlist] = useClearWishlistMutation()
@@ -59,10 +59,16 @@ const Wishlist: React.FC = () => {
   return (
     <>
       <div className="relative cursor-pointer" onClick={() => setOpen(true)}>
-        <FaRegHeart size={25} className="hover:text-blue-500" />
-        <div className="absolute -top-2 -right-2 p-1 h-4  w-4 flex items-center justify-center bg-red-500 rounded-full text-white text-xs">
+        <button className="text-gray-600 hover:text-blue-600 transition-transform duration-300 hover:scale-110" >
+          <Heart size={24} />
+        </button>
+        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
+          {wishlistItems?.length || 0}
+        </span>
+        {/* <FaRegHeart size={25} className="hover:text-blue-500" /> */}
+        {/* <div className="absolute -top-2 -right-2 p-1 h-4  w-4 flex items-center justify-center bg-red-500 rounded-full text-white text-xs">
           <span>{wishlistItems?.length || 0}</span>
-        </div>
+        </div> */}
       </div>
       <Drawer
         closable

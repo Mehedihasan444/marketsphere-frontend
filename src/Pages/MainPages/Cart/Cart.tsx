@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { Button, Drawer, Empty, message, Tooltip } from "antd";
-import { IoCartOutline } from "react-icons/io5";
 import CartCard from "./CartCard";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useClearCartMutation, useGetCartItemsQuery, useRemoveFromCartMutation } from "../../../Redux/Features/Cart/cartApi";
 import { TCartItem } from "../../../Interface";
+import { ShoppingCart } from "lucide-react";
 
 
 const Cart: React.FC = () => {
@@ -72,10 +72,16 @@ const Cart: React.FC = () => {
   return (
     <div className="relative">
       <div className="relative cursor-pointer" onClick={() => setOpen(true)}>
-        <IoCartOutline size={30} className="hover:text-blue-500" />
+        {/* <IoCartOutline size={30} className="hover:text-blue-500" />
         <div className="absolute -top-2 -right-2 p-1 h-4  w-4 flex items-center justify-center bg-red-500 rounded-full text-white text-xs">
           <span>{cartItems.length}</span>
-        </div>
+        </div> */}
+                <button className="relative text-gray-600 hover:text-blue-600 transition-transform duration-300 hover:scale-110">
+                <ShoppingCart size={24} />
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
+                  3
+                </span>
+              </button>
       </div>
       <Drawer
         closable

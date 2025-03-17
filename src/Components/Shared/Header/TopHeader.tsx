@@ -1,4 +1,4 @@
-import { Avatar, Button, Dropdown, Input, MenuProps, Rate, Space, Spin } from "antd";
+import { Avatar, Button, Dropdown, MenuProps, Rate, Space, Spin } from "antd";
 
 import Cart from "../../../Pages/MainPages/Cart/Cart";
 import Wishlist from "../../Wishlist";
