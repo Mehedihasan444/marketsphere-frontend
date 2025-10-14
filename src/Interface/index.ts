@@ -203,6 +203,10 @@ export type TProduct = {
   discount: number;
   quantity: number;
   rating: number;
+  color?: string[];
+  size?: string[];
+  features?: string[];
+  brand?: string;
   categoryId: string;
   category: TCategory;
   flashSaleId?: string;
