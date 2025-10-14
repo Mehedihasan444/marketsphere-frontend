@@ -1,198 +1,462 @@
-# Multi-Vendor E-Commerce Application
+# MarketSphere - Multi-Vendor E-Commerce Platform
+
+![MarketSphere](./marketsphere-frontend/src/assets/logo.webp)
+
+## 📋 Table of Contents
+
+- [Overview](#overview)
+- [🚀 Features](#-features)
+- [🏗️ Architecture](#️-architecture)
+- [🛠️ Technology Stack](#️-technology-stack)
+- [📦 Installation](#-installation)
+- [🔧 Configuration](#-configuration)
+- [🚀 Running the Application](#-running-the-application)
+- [📚 API Documentation](#-api-documentation)
+- [🗄️ Database Schema](#️-database-schema)
+- [👥 User Roles](#-user-roles)
+- [🔐 Authentication](#-authentication)
+- [🎨 UI/UX Features](#-uiux-features)
+- [🧪 Testing](#-testing)
+- [🚀 Deployment](#-deployment)
+- [📄 License](#-license)
 
 ## Overview
 
-The E-Commerce Application is designed to provide a seamless online shopping experience for users (customers), vendors, and administrators. The platform allows customers to browse and purchase products, vendors to manage their shops and inventory, and administrators to oversee the entire system. The application is built using modern web technologies, ensuring scalability, performance, and security.
+MarketSphere is a comprehensive multi-vendor e-commerce platform that enables customers to shop from multiple vendors, vendors to manage their shops and products, and administrators to oversee the entire marketplace. Built with modern web technologies, it provides a scalable, secure, and user-friendly shopping experience.
 
-### Technologies Used:
-- **Backend**: Node.js, Express.js
-- **Frontend**: React.js (or Next.js)
-- **Database**: PostgreSQL (with Prisma) or MongoDB (with Mongoose)
-- **Authentication**: JWT-based
-- **Image Storage**: Cloud storage integration (e.g., Cloudinary)
-- **Payment Gateway**: Aamarpay or Stripe
-- **State Management**: Redux or Context API (for React)
+### Key Highlights
 
-## Table of Contents
+- 🛍️ **Multi-Vendor Marketplace**: Support for multiple vendors with individual shop management
+- 🔐 **Role-Based Access Control**: Admin, Vendor, and Customer roles with specific permissions
+- 🛒 **Advanced Shopping Cart**: Smart cart management with vendor separation
+- 💳 **Secure Payments**: Integrated payment processing with transaction management
+- 📱 **Responsive Design**: Mobile-first approach with modern UI components
+- 🔍 **Advanced Search & Filtering**: Comprehensive product discovery features
+- ⭐ **Review & Rating System**: Customer feedback and rating functionality
+- 📊 **Analytics Dashboard**: Comprehensive dashboards for all user roles
 
-- [Roles and Responsibilities](#roles-and-responsibilities)
-  - [Admin](#admin)
-  - [Vendor](#vendor)
-  - [User (Customer)](#user-customer)
-- [Features and Functionalities](#features-and-functionalities)
-  - [Home Page](#home-page)
-  - [Product Details Page](#product-details-page)
-  - [Shop Page](#shop-page)
-  - [Cart Functionality](#cart-functionality)
-  - [Checkout](#checkout)
-  - [Order History](#order-history)
-  - [Authentication](#authentication)
-  - [Vendor Dashboard](#vendor-dashboard)
-  - [Recent Products Page](#recent-products-page)
-  - [Comparison Feature](#comparison-feature)
-  - [Responsive Design](#responsive-design)
-  - [Scalability](#scalability)
-- [Technical Requirements](#technical-requirements)
-  - [Backend](#backend)
-  - [Frontend](#frontend)
+## 🚀 Features
 
-## Roles and Responsibilities
+### Customer Features
+- Browse products from multiple vendors
+- Advanced search and filtering (price, category, ratings, etc.)
+- Shopping cart with vendor separation warnings
+- Wishlist functionality
+- Product comparison (up to 3 products)
+- Order tracking and history
+- Product reviews and ratings (post-purchase)
+- Shop following system
+- Recent products viewed
+- Coupon code application
+- Multiple payment options
 
-### Admin
-- Full control over the platform, including monitoring and moderation.
-- Manage users (vendors and customers) with the ability to suspend or delete accounts.
-- Blacklist vendor shops to restrict their operations.
-- Dynamically manage product categories (add, edit, delete categories).
-- Monitor transactions and review activities across the platform.
+### Vendor Features
+- Shop creation and management
+- Product management (CRUD operations)
+- Inventory tracking
+- Order management
+- Sales analytics and dashboard
+- Customer review monitoring
+- Discount and promotion management
+- Shop customization
 
-### Vendor
-- Create and manage their shop (name, logo, description, etc.).
-- Add products with attributes such as name, price, category, inventory count, images, and discounts.
-- Duplicate existing products and edit their details for quicker additions.
-- View customer reviews and ratings.
-- Manage product inventory (update quantity, edit details, or delete products).
-- View order history specific to their shop.
+### Admin Features
+- User management (customers and vendors)
+- Shop blacklisting and monitoring
+- Category management
+- Transaction oversight
+- Platform analytics
+- Content moderation
+- System configuration
 
-### User (Customer)
-- Browse products across all vendor shops from the home page.
-- Use advanced filtering and searching (price range, category, keyword, etc.).
-- Add products to the cart from either the homepage or individual shop pages.
-- Purchase products and apply coupon codes during checkout for discounts.
-- Compare up to three products at a time based on their attributes.
-- Leave reviews and ratings for purchased products (Only after purchase).
-- Access order history to view past purchases.
-- Follow specific vendor shops to prioritize their products in the listing.
-- View a "Recent Products" page showing the last 10 products they viewed.
-- Receive a warning if attempting to add products from multiple vendors in the cart, with options:
-  - Replace the cart with the new product(s).
-  - Retain the current cart and cancel the addition.
+## 🏗️ Architecture
 
-## Features and Functionalities
+MarketSphere follows a modern full-stack architecture:
 
-### Home Page
-- Display all available products from various vendors.
-- Prioritize products from followed shops for logged-in users.
-- Infinite scrolling for product listing.
-- Filtering and searching functionalities (price range, category, keyword, etc.).
-- Scroll-to-top button for better navigation.
-- Display a list of categories. When a category is clicked, redirect the user to the "All Products" page and automatically filter the products to show only those belonging to the selected category.
-- Show flash sale products and add a button at the bottom. After clicking the button, redirect to the flash sale page and display all flash sale products.
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │   Backend       │    │   Database      │
+│   (React)       │◄──►│   (Node.js)     │◄──►│   (PostgreSQL)  │
+│                 │    │                 │    │                 │
+│ - React 18      │    │ - Express.js    │    │ - Prisma ORM    │
+│ - TypeScript    │    │ - TypeScript    │    │ - Migrations    │
+│ - Redux Toolkit │    │ - JWT Auth      │    │ - Seeding       │
+│ - Ant Design    │    │ - Cloudinary    │    │                 │
+│ - Tailwind CSS  │    │ - Nodemailer    │    │                 │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
 
-### Product Details Page
-- Product name, price, category, images, and detailed descriptions.
-- Display the shop name with a clickable link redirecting to the shop page.
-- Related products section showing products in the same category.
-- Customer reviews and ratings for the product.
-
-### Shop Page
-- Vendor’s shop name and details.
-- List of products belonging to the vendor only.
-- Option for customers to add products directly to the cart from the shop page.
-- Option for users to follow or unfollow the shop.
-- Follower count.
-
-### Cart Functionality
-- Products can only be added from one vendor at a time.
-- If attempting to add products from another vendor, show a warning with options:
-  - Replace the cart with the new product(s).
-  - Retain the current cart and cancel the addition.
-- Display product details, pricing, and total cost in the cart.
-
-### Checkout
-- Apply coupon codes for discounts during checkout.
-- Integrate Aamarpay or Stripe for payment processing.
-
-### Order History
-- **For Vendors**: View a detailed list of all orders placed for their shop.
-- **For Customers**: View their purchase history with product and order details.
-
-### Authentication
-- **Signup Page**: Option to register as a user or vendor.
-  - If a vendor is selected, redirect them to the dashboard to add their shop name and some initial products.
-- **Login Page**: Secure login using JWT.
-  - Password Management: Change password after logging in.
-  - Reset password functionality via email.
-
-### Vendor Dashboard
-- Manage shop information (name, logo, etc.).
-- Add, edit, duplicate, or delete products.
-- View and respond to customer reviews.
-- Paginated lists for added products and order history.
-
-### Recent Products Page
-- Display the last 10 products viewed by the user.
-- Include product details, prices, and direct links to the product page.
-
-### Comparison Feature
-- Allow users to compare up to three products, but only if the products are from the same category. Comparison will be based on attributes such as price, category, ratings, and other relevant details.
-- If a user attempts to add a product from a different category for comparison, display a warning message indicating that only products from the same category can be compared.
-
-### Responsive Design
-- Mobile and desktop-friendly interface for all users.
-
-### Scalability
-- Implement paginated APIs for any list-based data to ensure scalability and performance. This includes, but is not limited to:
-  - **Order History**: For both vendors and customers, paginate the order history to display a limited number of orders per page. Include options to navigate between pages (e.g., next, previous, or specific page numbers).
-  - **Product Listings**: On the homepage, shop page, and "All Products" page, paginate product listings to handle large datasets efficiently.
-  - Pagination should work seamlessly with filters and search functionality.
-
-## Technical Requirements
+## 🛠️ Technology Stack
 
 ### Backend
-- **Authentication**: JWT-based authentication.
-- **Database**: Relational database PostgreSQL with Prisma or MongoDB with Mongoose.
-- **Server**: Node.js with Express for handling APIs. Typescript is optional but highly encouraged.
-- **Image Uploads**: Cloud storage integration for product images (e.g., Cloudinary).
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Language**: TypeScript
+- **Database**: PostgreSQL
+- **ORM**: Prisma
+- **Authentication**: JWT (JSON Web Tokens)
+- **File Upload**: Multer + Cloudinary
+- **Email**: Nodemailer
+- **Validation**: Zod
+- **Security**: bcryptjs, CORS, Cookie Parser
 
 ### Frontend
-- **Framework**: React.js or Next.js with state management using Redux or Context API. Typescript is optional but highly encouraged.
+- **Framework**: React 18
+- **Language**: TypeScript
+- **State Management**: Redux Toolkit
+- **UI Framework**: Ant Design
+- **Styling**: Tailwind CSS
+- **Routing**: React Router DOM
+- **Animations**: Framer Motion
+- **Build Tool**: Vite
+- **Image Gallery**: React Image Gallery
+- **Icons**: Lucide React, React Icons
 
-## How to Get Started
+### Development Tools
+- **Package Manager**: npm
+- **Linting**: ESLint
+- **Type Checking**: TypeScript
+- **Database Management**: Prisma CLI
+- **Development Server**: ts-node-dev (backend), Vite (frontend)
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/Mehedihasan444/marketsphere-frontend.git
-   cd e-commerce-app-forntend
-   
-   git clone https://github.com/Mehedihasan444/marketsphere-backend.git
-   cd e-commerce-app-backend
+## 📦 Installation
 
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
+- PostgreSQL database
+- Cloudinary account (for image storage)
 
-
-## Installation Instructions
-
-### Install Dependencies:
-
-#### Backend:
-
+### Clone the Repository
 ```bash
-cd backend
+git clone <repository-url>
+cd marketsphere
+```
+
+### Backend Setup
+```bash
+cd marketsphere-backend
 npm install
 
-#### Frontend:
+# Setup environment variables
+cp .env.example .env
+# Edit .env file with your configuration
 
+# Generate Prisma client
+npx prisma generate
+
+# Run database migrations
+npx prisma migrate dev
+
+# Seed the database (optional)
+npm run dev
+```
+
+### Frontend Setup
 ```bash
-cd frontend
+cd marketsphere-frontend
 npm install
 
-#### Forntend
- npm start
+# Setup environment variables
+cp .env.example .env
+# Edit .env file with your configuration
 
- #### Backend
- npm run start
+# Start development server
+npm run dev
+```
 
-Set up the Environment:
+## 🔧 Configuration
 
-    Create .env files for both the backend and frontend with the appropriate configuration (e.g., database credentials, JWT secret, Cloudinary credentials, etc.).
+### Backend Environment Variables
+Create a `.env` file in the `marketsphere-backend` directory:
 
-Run the Application:
+```env
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/marketsphere"
 
+# JWT
+JWT_ACCESS_SECRET="your-jwt-access-secret"
+JWT_REFRESH_SECRET="your-jwt-refresh-secret"
+JWT_ACCESS_EXPIRES_IN="1d"
+JWT_REFRESH_EXPIRES_IN="7d"
 
-npm start
+# Application
+NODE_ENV="development"
+PORT=5000
+CLIENT_URL="http://localhost:5173"
 
+# Cloudinary
+CLOUDINARY_CLOUD_NAME="your-cloudinary-cloud-name"
+CLOUDINARY_API_KEY="your-cloudinary-api-key"
+CLOUDINARY_API_SECRET="your-cloudinary-api-secret"
 
-License
+# Email (Nodemailer)
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT=587
+SMTP_USER="your-email@gmail.com"
+SMTP_PASS="your-app-password"
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+# Admin Credentials (for seeding)
+ADMIN_EMAIL="admin@marketsphere.com"
+ADMIN_PASS="admin123"
+```
 
-This markdown provides instructions on how to install dependencies, set up the environment, run the application, and contribute to the project. It also includes information about the project's license.
+### Frontend Environment Variables
+Create a `.env` file in the `marketsphere-frontend` directory:
+
+```env
+VITE_SERVER_URL="http://localhost:5000/api/v1"
+```
+
+## 🚀 Running the Application
+
+### Development Mode
+
+1. **Start the Backend Server**:
+```bash
+cd marketsphere-backend
+npm run dev
+```
+The backend server will start on `http://localhost:5000`
+
+2. **Start the Frontend Development Server**:
+```bash
+cd marketsphere-frontend
+npm run dev
+```
+The frontend will be available at `http://localhost:5173`
+
+### Production Build
+
+1. **Build the Frontend**:
+```bash
+cd marketsphere-frontend
+npm run build
+```
+
+2. **Build the Backend**:
+```bash
+cd marketsphere-backend
+npm run build
+```
+
+## 📚 API Documentation
+
+### Base URL
+```
+http://localhost:5000/api/v1
+```
+
+### Authentication Endpoints
+- `POST /auth/login` - User login
+- `POST /auth/register` - User registration
+- `POST /auth/refresh-token` - Refresh access token
+- `POST /auth/logout` - User logout
+- `POST /auth/change-password` - Change password
+- `POST /auth/forgot-password` - Forgot password
+- `POST /auth/reset-password` - Reset password
+
+### User Management
+- `GET /users/profile` - Get user profile
+- `PUT /users/profile` - Update user profile
+- `DELETE /users/profile` - Delete user account
+
+### Product Endpoints
+- `GET /products` - Get all products (with pagination and filters)
+- `GET /products/:id` - Get product by ID
+- `POST /products` - Create new product (Vendor only)
+- `PUT /products/:id` - Update product (Vendor only)
+- `DELETE /products/:id` - Delete product (Vendor only)
+
+### Shop Management
+- `GET /shops` - Get all shops
+- `GET /shops/:id` - Get shop by ID
+- `POST /shops` - Create shop (Vendor only)
+- `PUT /shops/:id` - Update shop (Vendor only)
+- `DELETE /shops/:id` - Delete shop (Admin only)
+
+### Order Management
+- `GET /orders` - Get user orders
+- `GET /orders/:id` - Get order by ID
+- `POST /orders` - Create new order
+- `PUT /orders/:id/status` - Update order status (Vendor/Admin)
+
+### Cart Operations
+- `GET /cart` - Get user cart
+- `POST /cart/add` - Add item to cart
+- `PUT /cart/update` - Update cart item
+- `DELETE /cart/remove` - Remove item from cart
+- `DELETE /cart/clear` - Clear entire cart
+
+### Review System
+- `GET /reviews/product/:productId` - Get product reviews
+- `POST /reviews` - Create review (Customer only)
+- `PUT /reviews/:id` - Update review
+- `DELETE /reviews/:id` - Delete review
+
+### Admin Endpoints
+- `GET /admins/users` - Get all users
+- `PUT /admins/users/:id/status` - Update user status
+- `GET /admins/shops` - Get all shops
+- `PUT /admins/shops/:id/blacklist` - Blacklist shop
+- `GET /admins/analytics` - Get platform analytics
+
+For detailed API documentation with request/response schemas, see [API_DOCUMENTATION.md](./docs/API_DOCUMENTATION.md)
+
+## 🗄️ Database Schema
+
+The application uses PostgreSQL with Prisma ORM. Key entities include:
+
+### Core Models
+- **User**: Base user entity with role-based access
+- **Admin**: Administrator accounts
+- **Customer**: Customer accounts and profiles
+- **Vendor**: Vendor accounts and shop management
+- **Shop**: Vendor shops with products and settings
+- **Product**: Product catalog with categories and inventory
+- **Category**: Product categorization system
+
+### E-commerce Models
+- **Cart**: Shopping cart functionality
+- **Order**: Order management and tracking
+- **Payment**: Payment processing and records
+- **Transaction**: Financial transaction logs
+- **Coupon**: Discount and promotional codes
+- **Review**: Product reviews and ratings
+
+### Additional Features
+- **Wishlist**: Customer wishlists
+- **Follow**: Shop following system
+- **FlashSale**: Time-limited promotions
+- **RecentProduct**: Recently viewed products tracking
+
+For detailed schema documentation, see [DATABASE_SCHEMA.md](./docs/DATABASE_SCHEMA.md)
+
+## 👥 User Roles
+
+### Admin
+- **Permissions**: Full platform control
+- **Capabilities**:
+  - User management (suspend/delete accounts)
+  - Shop management (blacklist shops)
+  - Category management
+  - Transaction monitoring
+  - Platform analytics
+  - Content moderation
+
+### Vendor
+- **Permissions**: Shop and product management
+- **Capabilities**:
+  - Create and manage shop
+  - Product CRUD operations
+  - Inventory management
+  - Order processing
+  - Customer communication
+  - Sales analytics
+
+### Customer
+- **Permissions**: Shopping and account management
+- **Capabilities**:
+  - Browse and search products
+  - Cart and wishlist management
+  - Place and track orders
+  - Write product reviews
+  - Follow shops
+  - Account management
+
+## 🔐 Authentication
+
+MarketSphere uses JWT-based authentication with the following features:
+
+- **Access Tokens**: Short-lived tokens for API access (1 day)
+- **Refresh Tokens**: Long-lived tokens for token renewal (7 days)
+- **Role-Based Access**: Different permissions for Admin, Vendor, and Customer
+- **Password Security**: bcrypt hashing with salt rounds
+- **Email Verification**: Account verification via email
+- **Password Reset**: Secure password reset functionality
+
+### Authentication Flow
+1. User registers/logs in with credentials
+2. Server validates credentials and returns JWT tokens
+3. Client stores tokens securely
+4. Protected routes require valid access token
+5. Refresh token used to renew expired access tokens
+
+## 🎨 UI/UX Features
+
+### Design System
+- **Component Library**: Ant Design for consistent UI components
+- **Styling**: Tailwind CSS for custom styling and responsive design
+- **Typography**: System fonts with fallbacks
+- **Color Scheme**: Professional e-commerce color palette
+- **Icons**: Lucide React and React Icons for comprehensive iconography
+
+### User Experience
+- **Responsive Design**: Mobile-first approach
+- **Loading States**: Skeleton loaders and spinners
+- **Error Handling**: User-friendly error messages
+- **Navigation**: Intuitive menu structure
+- **Search**: Real-time search with suggestions
+- **Pagination**: Infinite scroll and traditional pagination
+- **Animations**: Smooth transitions with Framer Motion
+
+### Accessibility
+- **ARIA Labels**: Screen reader support
+- **Keyboard Navigation**: Full keyboard accessibility
+- **Color Contrast**: WCAG compliant color schemes
+- **Focus Management**: Clear focus indicators
+
+## 🧪 Testing
+
+### Running Tests
+```bash
+# Backend tests
+cd marketsphere-backend
+npm test
+
+# Frontend tests
+cd marketsphere-frontend
+npm test
+```
+
+### Test Coverage
+- Unit tests for utility functions
+- Integration tests for API endpoints
+- Component tests for React components
+- E2E tests for critical user flows
+
+## 🚀 Deployment
+
+### Backend Deployment (Vercel)
+1. Install Vercel CLI: `npm i -g vercel`
+2. Login to Vercel: `vercel login`
+3. Deploy: `vercel --prod`
+
+### Frontend Deployment (Vercel)
+1. Build the project: `npm run build`
+2. Deploy: `vercel --prod`
+
+### Database Deployment
+- **Production**: Use managed PostgreSQL (e.g., Railway, Supabase, AWS RDS)
+- **Migrations**: Run `npx prisma migrate deploy` in production
+
+### Environment Variables
+Ensure all production environment variables are configured in your deployment platform.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+## 📞 Support
+
+For support, email support@marketsphere.com or join our [Discord community](https://discord.gg/marketsphere).
+
+---
+
+**Built with ❤️ by the MarketSphere Team**
