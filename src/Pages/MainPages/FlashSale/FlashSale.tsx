@@ -52,12 +52,14 @@ const FlashSale = () => {
 
   if (error) {
     return (
-      <Alert
-        message="Error"
-        description="Failed to load products."
-        type="error"
-        showIcon
-      />
+      <div className="flex justify-center items-center h-[50vh]">
+        <Alert
+          message="Error"
+          description="Failed to load products."
+          type="error"
+          showIcon
+        />
+      </div>
     );
   }
   const handlePageChange=( page: number )=> {
