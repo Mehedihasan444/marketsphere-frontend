@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { FloatButton, Skeleton } from "antd";
 import Banner from "./Banner/Banner";
 import PersonalizedProducts from "./PersonalizedProducts/PersonalizedProducts";
@@ -6,13 +7,9 @@ import FlashSale from "./FlashSale/FlashSale";
 import UnAuthorizedUserProducts from "./UnAuthorizedUserProducts/UnAuthorizedUserProducts";
 import { useAppSelector } from "../../../Redux/hook";
 import TrendingProducts from "./TrendingProducts/TrendingProducts";
-import Newsletter from "./Newsletter/Newsletter";
 import Features from "./Features/Features";
+import PopularCategories from "./PopularCategories/PopularCategories";
 import SpecialDeals from "./SpecialDeals/SpecialDeals";
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import Testimonials from "./Testimonials/Testimonials";
-
 
 
 
@@ -31,23 +28,88 @@ const Home = () => {
   // Loading skeleton
   if (isLoading) {
     return (
-      <div className="max-w-8xl lg:px-16 mx-auto bg-neutral-100 min-h-screen p-4">
-        <Skeleton.Input active style={{ width: '100%', height: '400px' }} />
+      <div className="container mx-auto min-h-screen">
+        {/* Banner Skeleton */}
+        <div className="px-4 lg:px-16 mt-4">
+          <Skeleton.Input active style={{ width: '100%', height: '400px', borderRadius: '12px' }} />
+        </div>
 
-        <div className="mt-8">
-          <Skeleton.Input active style={{ width: '200px', marginBottom: '20px' }} />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Features Skeleton */}
+        <div className="px-4 lg:px-16 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {[1, 2, 3, 4].map((i) => (
-              <Skeleton key={i} active avatar paragraph={{ rows: 3 }} />
+              <div key={i} className="bg-white p-6 rounded-lg">
+                <Skeleton active avatar paragraph={{ rows: 2 }} />
+              </div>
             ))}
           </div>
         </div>
 
-        <div className="mt-8">
-          <Skeleton.Input active style={{ width: '200px', marginBottom: '20px' }} />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Popular Categories Skeleton */}
+        <div className="px-4 lg:px-16 mt-12">
+          <Skeleton.Input active style={{ width: '250px', marginBottom: '24px' }} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="bg-gray-100 rounded-lg p-6">
+                <Skeleton active paragraph={{ rows: 2 }} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Trending Products Skeleton */}
+        <div className="px-4 lg:px-16 mt-12">
+          <Skeleton.Input active style={{ width: '250px', marginBottom: '24px' }} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[1, 2, 3, 4].map((i) => (
-              <Skeleton key={i} active paragraph={{ rows: 4 }} />
+              <div key={i} className="bg-white rounded-lg overflow-hidden shadow">
+                <Skeleton.Image active style={{ width: '100%', height: '200px' }} />
+                <div className="p-4">
+                  <Skeleton active paragraph={{ rows: 3 }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Flash Sale Skeleton */}
+        <div className="px-4 lg:px-16 mt-12">
+          <Skeleton.Input active style={{ width: '250px', marginBottom: '24px' }} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="bg-white rounded-lg overflow-hidden shadow">
+                <Skeleton.Image active style={{ width: '100%', height: '200px' }} />
+                <div className="p-4">
+                  <Skeleton active paragraph={{ rows: 3 }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Special Deals Skeleton */}
+        <div className="px-4 lg:px-16 mt-12">
+          <div className="bg-gray-200 rounded-2xl overflow-hidden" style={{ height: '400px' }}>
+            <div className="grid lg:grid-cols-2 h-full">
+              <div className="p-12">
+                <Skeleton active paragraph={{ rows: 4 }} />
+              </div>
+              <div className="bg-gray-300"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Products Skeleton */}
+        <div className="px-4 lg:px-16 mt-12 mb-12">
+          <Skeleton.Input active style={{ width: '250px', marginBottom: '24px' }} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+              <div key={i} className="bg-white rounded-lg overflow-hidden shadow">
+                <Skeleton.Image active style={{ width: '100%', height: '200px' }} />
+                <div className="p-4">
+                  <Skeleton active paragraph={{ rows: 3 }} />
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -56,79 +118,23 @@ const Home = () => {
   }
 
   return (
-    <div className="max-w-8xl mx-auto bg-neutral-100 min-h-screen">
+    <div className="container mx-auto  min-h-screen">
+      {/*banner section  */}
       <Banner />
-
-
 
       {/* Features with hover animations */}
       <Features />
 
+      {/* categories section */}
+      <PopularCategories />
+
       {/* Trending Products Carousel */}
       <TrendingProducts />
 
-      {/* SpecialDeals */}
-      <SpecialDeals />
-
       {/* flash sale */}
       <FlashSale />
-
-      {/* Featured categories section */}
-      <section className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">Shop by Category</h2>
-            <div className="w-24 h-1 bg-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600 max-w-2xl mx-auto">Explore our wide range of products across popular categories</p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {[
-              { name: 'Electronics', icon: '💻', color: 'bg-blue-100', textColor: 'text-blue-700', borderColor: 'border-blue-300', hoverBg: 'hover:bg-blue-50' },
-              { name: 'Fashion', icon: '👕', color: 'bg-purple-100', textColor: 'text-purple-700', borderColor: 'border-purple-300', hoverBg: 'hover:bg-purple-50' },
-              { name: 'Home & Garden', icon: '🏡', color: 'bg-green-100', textColor: 'text-green-700', borderColor: 'border-green-300', hoverBg: 'hover:bg-green-50' },
-              { name: 'Beauty', icon: '💄', color: 'bg-pink-100', textColor: 'text-pink-700', borderColor: 'border-pink-300', hoverBg: 'hover:bg-pink-50' },
-              { name: 'Sports', icon: '⚽', color: 'bg-orange-100', textColor: 'text-orange-700', borderColor: 'border-orange-300', hoverBg: 'hover:bg-orange-50' },
-              { name: 'Toys', icon: '🧸', color: 'bg-yellow-100', textColor: 'text-yellow-700', borderColor: 'border-yellow-300', hoverBg: 'hover:bg-yellow-50' }
-            ].map((category, index) => (
-              <Link to={`/products?category=${category.name}`} key={index} className="group">
-                <div className={`bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-lg border-b-4 ${category.borderColor} ${category.hoverBg}`}>
-                  <div className={`h-36 ${category.color} flex items-center justify-center relative overflow-hidden`}>
-                    <div className="absolute -top-6 -right-6 w-12 h-12 bg-white opacity-10 rounded-full"></div>
-                    <div className="absolute bottom-4 left-4 w-8 h-8 bg-white opacity-10 rounded-full"></div>
-                    <span className="text-6xl transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">{category.icon}</span>
-                  </div>
-                  <div className="p-5 text-center">
-                    <h3 className={`font-semibold text-lg ${category.textColor}`}>{category.name}</h3>
-                    <div className="mt-3 flex items-center justify-center">
-                      <span className="text-sm text-blue-600 font-medium">Shop Now</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 text-blue-600 transform group-hover:translate-x-2 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <Link to="/products" className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg">
-              View All Categories
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter Section */}
-      <Newsletter />
-
-      {/* Testimonials section */}
-      <Testimonials />
-
+      {/* special deal section */}
+      <SpecialDeals />
       {/* user based products */}
       {
         user ?
