@@ -28,18 +28,19 @@ const Cart: React.FC = () => {
     try {
       const res = await removeFromCart(id)
       if (res?.data?.success) message.success("Item deleted")
-      else if (res?.error){
+      else if (res?.error) {
         if ('data' in res.error) {
           // For FetchBaseQueryError, safely access the `data` property
           const errorMessage = (res.error.data as { message?: string })?.message || "Item delete error occurred.";
           message.error(errorMessage);
-      } else if ('message' in res.error) {
+        } else if ('message' in res.error) {
           // For SerializedError, handle the `message` property
           message.error(res.error.message || "Item delete error occurred.");
-      } else {
+        } else {
           // Handle unknown error types
           message.error("An unknown error occurred.");
-      }}
+        }
+      }
     } catch (error) {
       console.log(error)
       message.error("Failed to delete item")
@@ -55,13 +56,14 @@ const Cart: React.FC = () => {
           // For FetchBaseQueryError, safely access the `data` property
           const errorMessage = (res.error.data as { message?: string })?.message || "Cart clear error occurred.";
           message.error(errorMessage);
-      } else if ('message' in res.error) {
+        } else if ('message' in res.error) {
           // For SerializedError, handle the `message` property
           message.error(res.error.message || "Cart clear error occurred.");
-      } else {
+        } else {
           // Handle unknown error types
           message.error("An unknown error occurred.");
-      }}
+        }
+      }
     } catch (error) {
       console.log(error)
       message.error("Failed to clear cart")
@@ -72,16 +74,12 @@ const Cart: React.FC = () => {
   return (
     <div className="relative">
       <div className="relative cursor-pointer" onClick={() => setOpen(true)}>
-        {/* <IoCartOutline size={30} className="hover:text-blue-500" />
-        <div className="absolute -top-2 -right-2 p-1 h-4  w-4 flex items-center justify-center bg-red-500 rounded-full text-white text-xs">
-          <span>{cartItems.length}</span>
-        </div> */}
-                <button className="relative text-gray-600 hover:text-blue-600 transition-transform duration-300 hover:scale-110">
-                <ShoppingCart size={24} />
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
-                {cartItems?.length}
-                </span>
-              </button>
+        <button className="relative text-white hover:text-blue-400 transition-transform duration-300 hover:scale-110">
+          <ShoppingCart size={24} />
+          <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
+            {cartItems?.length}
+          </span>
+        </button>
       </div>
       <Drawer
         closable
