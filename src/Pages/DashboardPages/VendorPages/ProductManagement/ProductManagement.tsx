@@ -51,6 +51,35 @@ const ProductManagement = () => {
       render: (_text: any, _record: TProduct, index: number) => <span>{index + 1}</span>,
     },
     {
+      title: "Image",
+      dataIndex: "images",
+      key: "images",
+      render: (images: string[]) =>
+        images && images.length > 0 ? (
+          <img
+            src={images[0]}
+            alt="Product"
+            style={{ width: 50, height: 50, objectFit: "cover", borderRadius: 4 }}
+          />
+        ) : (
+          <div
+            style={{
+              width: 50,
+              height: 50,
+              backgroundColor: "#f0f0f0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 4,
+              color: "#999",
+              fontSize: 12,
+            }}
+          >
+            No Image
+          </div>
+        ),
+    },
+    {
       title: "Name",
       dataIndex: "name",
       key: "name",
