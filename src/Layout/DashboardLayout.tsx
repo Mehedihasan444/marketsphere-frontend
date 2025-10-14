@@ -7,10 +7,29 @@ import {
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
 import { useGetMyProfileQuery } from "../Redux/Features/User/userApi";
+import { useAppSelector } from "../Redux/hook";
+
 const DashboardLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const { data = {} } = useGetMyProfileQuery("")
-  const user = data.data || {}
+  
+  // Get user from auth state (always available after login)
+  const authUser = useAppSelector((state) => state.auth.user);
+  
+  // Fetch full profile (with profilePhoto) - will refetch when user changes
+  const { data = {}, isLoading } = useGetMyProfileQuery(undefined, {
+    skip: !authUser, // Skip if no authenticated user
+    refetchOnMountOrArgChange: true, // Refetch when component mounts
+  });
+  
+  const profileData = data.data || {};
+  
+  // Use profile data if available, otherwise fall back to auth user
+  const user = {
+    name: profileData.name || authUser?.name || "",
+    email: profileData.email || authUser?.email || "",
+    role: profileData.role || authUser?.role || "",
+    profilePhoto: profileData.profilePhoto || "https://cdn-icons-png.flaticon.com/512/3607/3607444.png",
+  };
 
 
   const toggleCollapsed = () => {
@@ -38,9 +57,13 @@ const DashboardLayout = () => {
           <div className="flex justify-between items-center gap-2">
             <div className="">
               <strong className="text-xs">Login as </strong>
-              <p className="">{user?.email}</p>
+              <p className="text-sm">{isLoading ? "Loading..." : user?.email}</p>
             </div>
-            <Avatar size="large" icon={<img src={user.profilePhoto} alt={user.name} />} />
+            <Avatar 
+              size="large" 
+              src={user.profilePhoto}
+              alt={user.name}
+            />
           </div>
         </div>
         <hr />
