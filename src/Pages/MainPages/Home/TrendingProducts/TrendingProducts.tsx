@@ -94,7 +94,7 @@ const TrendingProducts = () => {
   }
 
   return (
-    <section className="py-16 bg-white lg:px-16">
+    <section className="py-16 bg-white ">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-3xl font-bold text-gray-800">Trending Now</h2>
@@ -123,7 +123,7 @@ const TrendingProducts = () => {
             </button>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
           {visibleProducts.map((product: TProduct, index: number) => (
             <div 
               key={product.id || index} 
