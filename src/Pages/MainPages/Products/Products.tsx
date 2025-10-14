@@ -64,14 +64,14 @@ const Products = () => {
     setSortBy("price")
   }
   return (
-    <div className="max-w-8xl mx-auto bg-neutral-100 min-h-screen">
-      <div className="flex  space-x-4  lg:mx-16">
+    <div className="container mx-auto  min-h-screen">
+      <div className="flex  space-x-4  ">
         {/* Filters Sidebar */}
         <aside className="w-1/4 ">
           <Filters setBrand={setBrand}  setCategory={setCategory}/>
         </aside>
-        <div className="flex-1 pb-4">
-          <div className="flex justify-between items-center gap-4 bg-white p-4 mb-4 w-full">
+        <div className="flex-1 pb-4 ">
+          <div className="flex justify-between rounded-md shadow-md border items-center gap-4 bg-white p-4 mb-4 w-full">
             <div className="font-semibold">Products</div>
             <div className="flex gap-4">
               <div className="flex gap-2 items-center">
