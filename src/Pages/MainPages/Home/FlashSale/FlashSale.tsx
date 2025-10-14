@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Alert, Button, Progress, Skeleton } from "antd";
 import ProductCard from "../../../../Components/Shared/ProductCard";
@@ -63,7 +64,7 @@ const FlashSale = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white  lg:px-16 p-8  mt-10"
+      className="container mx-auto bg-white p-8  mt-10 "
     >
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-8">
@@ -121,10 +122,10 @@ const FlashSale = () => {
           
           <div className="flex gap-3 items-center mt-3">
             <span className="text-blue-600 text-2xl font-bold">
-              ${(highlightedProduct?.product.price - ((highlightedProduct?.product.price * highlightedProduct?.discount) / 100)).toFixed(2)}
+              ${(highlightedProduct?.product.price - ((highlightedProduct?.product.price * highlightedProduct?.discount) / 100))?.toFixed(2)}
             </span>
             <span className="text-gray-400 line-through text-lg">
-              ${highlightedProduct?.product.price.toFixed(2)}
+              ${highlightedProduct?.product?.price?.toFixed(2)}
             </span>
           </div>
           
@@ -176,10 +177,10 @@ const FlashSale = () => {
           <div className="mt-6">
             <div className="flex justify-between text-sm text-gray-600 mb-2">
               <span>Selling Fast!</span>
-              <span>{(highlightedProduct.product.quantity - 20)}/{(highlightedProduct.product.quantity)} sold</span>
+              <span>{(highlightedProduct?.product.quantity - 20)}/{(highlightedProduct?.product.quantity)} sold</span>
             </div>
             <Progress
-              percent={((highlightedProduct.product.quantity - 20) / highlightedProduct.product.quantity) * 100}
+              percent={((highlightedProduct?.product.quantity - 20) / highlightedProduct?.product.quantity) * 100}
               status="active"
               strokeColor={{ from: '#1890ff', to: '#4c51bf' }}
               showInfo={false}
@@ -190,15 +191,15 @@ const FlashSale = () => {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             className="w-full mt-6 bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-3 rounded-lg font-semibold flex items-center justify-center"
-            onClick={() => navigate(`/product/${highlightedProduct.product.id}`)}
+            onClick={() => navigate(`/product/${highlightedProduct?.product.id}`)}
           >
             Shop Now <FaArrowRight className="ml-2" />
           </motion.button>
         </motion.div>
 
         {/* Right Section: Product Grid */}
-        <div className="w-full lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {products.slice(0, 8).map((product: any, index: number) => (
+        <div className="w-full lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+          {products?.slice(0, 8)?.map((product: any, index: number) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
