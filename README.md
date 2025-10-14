@@ -1,4 +1,4 @@
-# E-Commerce Application
+# Multi-Vendor E-Commerce Application
 
 ## Overview
 
