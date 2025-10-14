@@ -2,8 +2,7 @@ import { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../Redux/hook';
 import { verifyToken } from '../Utils/verifyToken';
-import { logout } from '../Redux/Features/Auth/authSlice';
-import { RootState } from '../Redux/store';
+import { logout, useCurrentToken } from '../Redux/Features/Auth/authSlice';
 import { JwtPayload } from 'jwt-decode';
 
 type TProtectedRoute = {
@@ -12,7 +11,6 @@ type TProtectedRoute = {
 };
 
 const ProtectedRoute = ({ children, role }: TProtectedRoute) => {
-    const useCurrentToken = (state: RootState) => state.auth.token;
   const token = useAppSelector(useCurrentToken);
 
   let user;
