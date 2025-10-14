@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   HomeOutlined,
   FileTextOutlined,
@@ -22,7 +22,7 @@ import type { MenuProps } from "antd";
 import { Button, Menu } from "antd";
 import { useAppDispatch, useAppSelector } from "../Redux/hook";
 import { logout } from "../Redux/Features/Auth/authSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { MdRequestPage } from "react-icons/md";
 import { TiCancelOutline } from "react-icons/ti";
 
@@ -31,8 +31,9 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
   const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const handleLogout = async () => {
-    await dispatch(logout());
+    dispatch(logout());
     navigate("/");
   };
 
@@ -216,7 +217,7 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
           Order History
         </button>
       ),
-    },{
+    }, {
       key: "18",
       icon: <AppstoreAddOutlined />,
       onClick: () => navigate("/dashboard/vendor/manage-coupon"),
@@ -237,7 +238,7 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
       ),
     },
     {
-key: "19",
+      key: "19",
       icon: <AppstoreAddOutlined />,
       onClick: () => navigate("/dashboard/vendor/flash-sale"),
       label: (
@@ -368,14 +369,14 @@ key: "19",
     },
     {
       key: "15",
-            icon: <AppstoreAddOutlined />,
-            onClick: () => navigate("/dashboard/admin/flash-sale"),
-            label: (
-              <button onClick={() => navigate("/dashboard/admin/flash-sale")}>
-                Flash Sale
-              </button>
-            ),
-          },
+      icon: <AppstoreAddOutlined />,
+      onClick: () => navigate("/dashboard/admin/flash-sale"),
+      label: (
+        <button onClick={() => navigate("/dashboard/admin/flash-sale")}>
+          Flash Sale
+        </button>
+      ),
+    },
     {
       key: "10",
       icon: <LogoutOutlined />,
@@ -393,6 +394,91 @@ key: "19",
           ? Admins
           : [];
 
+  // Get selected key based on current route
+  const getSelectedKey = useMemo(() => {
+    const pathname = location.pathname;
+    
+    // Route to key mapping
+    const routeKeyMap: Record<string, string> = {
+      // Customer routes
+      '/dashboard/customer/home': '1',
+      '/dashboard/customer/orders': '13',
+      '/dashboard/customer/order-history': '14',
+      '/dashboard/customer/leave-reviews': '4',
+      '/dashboard/customer/cancelled-orders': '3',
+      '/dashboard/customer/followed-shops': '5',
+      '/dashboard/customer/recent-products': '6',
+      '/dashboard/customer/profile': '7',
+      '/dashboard/customer/be-a-vendor': '8',
+      '/dashboard/customer/contact-us': '10',
+      '/dashboard/customer/faqs': '11',
+      
+      // Vendor routes
+      '/dashboard/vendor/home': '1',
+      '/dashboard/vendor/manage-shop': '2',
+      '/dashboard/vendor/manage-product': '3',
+      '/dashboard/vendor/orders': '17',
+      '/dashboard/vendor/confirmed-order': '15',
+      '/dashboard/vendor/shifted-order': '16',
+      '/dashboard/vendor/order-history': '5',
+      '/dashboard/vendor/coupon-management': '18',
+      '/dashboard/vendor/manage-coupon': '18',
+      '/dashboard/vendor/customer-review': '6',
+      '/dashboard/vendor/flash-sale': '19',
+      
+      // Admin routes
+      '/dashboard/admin/home': '1',
+      '/dashboard/admin/user-management': '2',
+      '/dashboard/admin/vendor-management': '3',
+      '/dashboard/admin/orders': '13',
+      '/dashboard/admin/order-history': '14',
+      '/dashboard/admin/category-management': '4',
+      '/dashboard/admin/monitor-transactions': '5',
+      '/dashboard/admin/review-activities': '6',
+      '/dashboard/admin/all-shops': '7',
+      '/dashboard/admin/blacklist-shop': '8',
+      '/dashboard/admin/become-vendor-requests': '9',
+      '/dashboard/admin/flash-sale': '15',
+    };
+    
+    return routeKeyMap[pathname] || '1';
+  }, [location.pathname]);
+
+  // Get open keys for submenu (if current route is in a submenu)
+  const getOpenKeys = useMemo(() => {
+    const pathname = location.pathname;
+    const openKeys: string[] = [];
+    
+    // Customer order submenu
+    if (pathname.includes('/dashboard/customer/orders') || 
+        pathname.includes('/dashboard/customer/order-history') ||
+        pathname.includes('/dashboard/customer/leave-reviews') ||
+        pathname.includes('/dashboard/customer/cancelled-orders')) {
+      openKeys.push('2');
+    }
+    
+    // Customer support submenu
+    if (pathname.includes('/dashboard/customer/contact-us') || 
+        pathname.includes('/dashboard/customer/faqs')) {
+      openKeys.push('9');
+    }
+    
+    // Vendor order submenu
+    if (pathname.includes('/dashboard/vendor/orders') || 
+        pathname.includes('/dashboard/vendor/confirmed-order') ||
+        pathname.includes('/dashboard/vendor/shifted-order')) {
+      openKeys.push('4');
+    }
+    
+    // Admin order submenu
+    if (pathname.includes('/dashboard/admin/orders') || 
+        pathname.includes('/dashboard/admin/order-history')) {
+      openKeys.push('11');
+    }
+    
+    return openKeys;
+  }, [location.pathname]);
+
   return (
     <div
       style={{
@@ -401,18 +487,21 @@ key: "19",
       }}
       className="h-screen relative  text-white"
     >
-         {/* Logo and Title */}
-         <div className="w-full text-lg  rounded-none mt-auto absolute top-0 left-0 right-0 ">
+      {/* Logo and Title */}
+      <div className="w-full text-lg  rounded-none mt-auto absolute top-0 left-0 right-0 ">
 
-         <div className={`p-4 flex items-center justify-center ${collapsed ? 'py-4' : 'py-6'}`}>
-        <h1 className={`font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text ${collapsed ? 'text-xl' : 'text-2xl'}`}>
-          {collapsed ? 'MS' : 'MarketSphere'}
-        </h1>
+        <div className={`p-4 flex items-center justify-center ${collapsed ? 'py-4' : 'py-6'}`}>
+          <Link to="/">
+          <h1 className={`font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text ${collapsed ? 'text-xl' : 'text-2xl'}`} >
+            {collapsed ? 'MS' : 'MarketSphere'}
+          </h1>
+          </Link>
+        </div>
       </div>
-         </div>
       {/* Sidebar Menu */}
       <Menu
-        defaultSelectedKeys={["1"]}
+        selectedKeys={[getSelectedKey]}
+        defaultOpenKeys={getOpenKeys}
         title="Dashboard"
         mode="inline"
         theme="dark"
