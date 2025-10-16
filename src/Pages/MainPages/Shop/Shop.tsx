@@ -47,8 +47,8 @@ const Shop = () => {
     );
   }
   return (
-    <div className=" bg-neutral-100 min-h-screen pb-4">
-      <div className="max-w-8xl mx-auto lg:mx-16">
+    <div className=" min-h-screen py-4">
+      <div className="max-w-7xl mx-auto">
         {/* Vendor Details */}
         <ShopDetails shop={shopData} />
         <NewArrivalProducts products={newArrival} />
