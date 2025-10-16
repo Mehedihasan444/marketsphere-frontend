@@ -68,8 +68,8 @@ const FlashSale = () => {
     setSortBy("price")
   }
   return (
-    <div className="max-w-8xl mx-auto bg-neutral-100 min-h-screen">
-      <div className="flex  space-x-4  lg:mx-16">
+    <div className="max-w-7xl mx-auto bg-neutral-100 min-h-screen">
+      <div className="flex  space-x-4  ">
         {/* Filters Sidebar */}
         <aside className="w-1/4 ">
           <Filters setBrand={setBrand}  setCategory={setCategory}/>

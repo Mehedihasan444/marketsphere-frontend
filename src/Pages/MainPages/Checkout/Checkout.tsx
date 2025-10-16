@@ -152,8 +152,8 @@ const Checkout = () => {
 
     }
     return (
-        <div className="min-h-screen bg-gray-100 ">
-            <div className="max-w-8xl lg:mx-16 mx-auto p-8 bg-white shadow-md rounded-md">
+        <div className="min-h-screen  ">
+            <div className="max-w-7xl  mx-auto p-8 bg-white shadow-md rounded-md">
                 {/* Header */}
                 <div className="flex justify-between items-center pb-6 border-b">
                     <h1 className="text-2xl font-semibold text-blue-600">Chechout</h1>

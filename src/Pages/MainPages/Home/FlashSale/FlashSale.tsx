@@ -17,7 +17,7 @@ const FlashSale = () => {
   // Loading State
   if (isLoading) {
     return (
-      <div className="bg-gradient-to-r from-red-50 to-orange-50 mx-3 lg:mx-16 p-8 rounded-2xl shadow-lg mt-10">
+      <div className="bg-gradient-to-r from-red-50 to-orange-50 mx-3  p-8 rounded-2xl shadow-lg mt-10">
         <div className="flex justify-between items-center mb-8">
           <Skeleton.Input style={{ width: 250 }} active />
           <Skeleton.Button style={{ width: 180 }} active />
