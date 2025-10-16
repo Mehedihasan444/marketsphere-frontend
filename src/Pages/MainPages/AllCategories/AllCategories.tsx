@@ -1,128 +1,87 @@
-import React, { useState } from 'react';
-import { Input, Breadcrumb, Tag } from 'antd';
-import { 
-  SearchOutlined, 
+import { useState, useMemo } from 'react';
+import { Input, Breadcrumb, Tag, Spin } from 'antd';
+import {
+  SearchOutlined,
   HomeOutlined,
-  MobileOutlined,
-  LaptopOutlined,
   ApiOutlined,
-  RocketOutlined,
-  CameraOutlined,
-  CustomerServiceOutlined,
-  TabletOutlined,
-  DesktopOutlined,
-  AppstoreOutlined
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import { useGetAllCategoriesQuery } from '../../../Redux/Features/Category/categoryApi';
+
+
+interface Category {
+  id: string;
+  name: string;
+  parentId: string | null;
+  image?: string;
+  description?: string;
+  _count?: {
+    products: number;
+  };
+}
 
 const AllCategories = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const { data: categoriesData, isLoading } = useGetAllCategoriesQuery({ limit: 100 });
+  // Extract and process categories
+  const allCategories = useMemo(() => categoriesData?.data?.data || [], [categoriesData]);
 
-  const categoryData = [
-    {
-      id: 1,
-      name: "Mobile Phones",
-      icon: <MobileOutlined />,
-      count: 1247,
-      color: "blue",
-      subcategories: ["Smartphones", "Feature Phones", "Refurbished Phones"]
-    },
-    {
-      id: 2,
-      name: "Tablets",
-      icon: <TabletOutlined />,
-      count: 342,
-      color: "cyan",
-      subcategories: ["Android Tablets", "iPad", "Windows Tablets"]
-    },
-    {
-      id: 3,
-      name: "Laptops",
-      icon: <LaptopOutlined />,
-      count: 856,
-      color: "purple",
-      subcategories: ["Gaming Laptops", "Business Laptops", "Ultrabooks", "Chromebooks"]
-    },
-    {
-      id: 4,
-      name: "Desktop Computers",
-      icon: <DesktopOutlined />,
-      count: 423,
-      color: "geekblue",
-      subcategories: ["Gaming PCs", "All-in-One", "Workstations"]
-    },
-    {
-      id: 5,
-      name: "Computer Accessories",
-      icon: <AppstoreOutlined />,
-      count: 2134,
-      color: "orange",
-      subcategories: ["Keyboards", "Mice", "Monitors", "Webcams", "Cables"]
-    },
-    {
-      id: 6,
-      name: "Gaming",
-      icon: <ApiOutlined />,
-      count: 1567,
-      color: "red",
-      subcategories: ["Gaming Consoles", "Gaming Accessories", "Video Games", "VR Headsets"]
-    },
-    {
-      id: 7,
-      name: "Audio Devices",
-      icon: <CustomerServiceOutlined />,
-      count: 892,
-      color: "green",
-      subcategories: ["Headphones", "Earbuds", "Speakers", "Microphones"]
-    },
-    {
-      id: 8,
-      name: "Cameras",
-      icon: <CameraOutlined />,
-      count: 534,
-      color: "magenta",
-      subcategories: ["DSLR Cameras", "Mirrorless Cameras", "Action Cameras", "Camera Lenses"]
-    },
-    {
-      id: 9,
-      name: "Smart Watches",
-      icon: <RocketOutlined />,
-      count: 678,
-      color: "volcano",
-      subcategories: ["Apple Watch", "Android Watches", "Fitness Trackers"]
-    },
-    {
-      id: 10,
-      name: "Smart Home",
-      icon: <HomeOutlined />,
-      count: 445,
-      color: "lime",
-      subcategories: ["Smart Speakers", "Smart Lights", "Security Cameras", "Smart Plugs"]
-    },
-    {
-      id: 11,
-      name: "Drones",
-      icon: <RocketOutlined />,
-      count: 187,
-      color: "gold",
-      subcategories: ["Consumer Drones", "Professional Drones", "Drone Accessories"]
-    },
-    {
-      id: 12,
-      name: "Mobile Accessories",
-      icon: <MobileOutlined />,
-      count: 3456,
-      color: "blue",
-      subcategories: ["Phone Cases", "Screen Protectors", "Chargers", "Power Banks"]
-    },
-  ];
+
+  const parentCategories = useMemo(() =>
+    Array.isArray(allCategories)
+      ? allCategories.filter((cat: Category) => !cat.parentId)
+      : []
+    , [allCategories]);
+
+  // Helper function to convert category name to slug
+  const categoryToSlug = (name: string) => {
+    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  };
+
+  // Map categories with their children
+  const categoryData = useMemo(() =>
+    parentCategories.map((parent: Category) => {
+      const children = Array.isArray(allCategories)
+        ? allCategories.filter((cat: Category) => cat.parentId === parent.id)
+        : [];
+
+      const productCount = parent._count?.products || 0;
+      const childrenProductCount = children.reduce((sum: number, child: Category) =>
+        sum + (child._count?.products || 0), 0
+      );
+
+      return {
+        id: parent.id,
+        name: parent.name,
+        icon: <ApiOutlined />,
+        count: productCount + childrenProductCount,
+        color: "blue",
+        image: parent.image,
+        subcategories: children.map((child: Category) => ({
+          id: child.id,
+          name: child.name,
+          slug: categoryToSlug(child.name),
+          count: child._count?.products || 0
+        })),
+        slug: categoryToSlug(parent.name),
+      };
+    })
+    , [parentCategories, allCategories]);
 
   const filteredCategories = categoryData.filter(category =>
     category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    category.subcategories.some(sub => sub.toLowerCase().includes(searchTerm.toLowerCase()))
+    category.subcategories.some(sub => sub.name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const totalProducts = categoryData.reduce((sum, cat) => sum + cat.count, 0);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Spin size="large" tip="Loading categories..." />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -184,51 +143,54 @@ const AllCategories = () => {
         {filteredCategories.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredCategories.map((category) => (
-              <Link
-                to={`/category/${category.name.toLowerCase().replace(/\s+/g, '-')}`}
+              <div
                 key={category.id}
-                className="block"
+                className="bg-white rounded-lg border border-gray-200 hover:border-[#1890ff] hover:shadow-lg transition-all duration-300 h-full group"
               >
-                <div className="bg-white rounded-lg border border-gray-200 hover:border-[#1890ff] hover:shadow-lg transition-all duration-300 h-full group">
-                  {/* Category Header */}
-                  <div className="p-6 border-b border-gray-100">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-2xl text-[#1890ff] group-hover:bg-[#1890ff] group-hover:text-white transition-colors">
-                        {category.icon}
-                      </div>
-                      <Tag color={category.color} className="text-xs">
-                        {category.count} items
-                      </Tag>
+                {/* Category Header - Clickable */}
+                <Link to={`/category/${category.slug}`} className="block p-6 border-b border-gray-100">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center justify-center text-2xl text-[#1890ff] group-hover:text-white transition-colors">
+                      <img src={category.image} alt={category.name} className="rounded-full w-28 h-28" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-[#1890ff] transition-colors">
-                      {category.name}
-                    </h3>
+                    <Tag color={category.color} className="text-xs">
+                      {category.count} items
+                    </Tag>
                   </div>
+                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-[#1890ff] transition-colors">
+                    {category.name}
+                  </h3>
+                </Link>
 
-                  {/* Subcategories */}
-                  <div className="p-6">
-                    <ul className="space-y-2">
-                      {category.subcategories.map((sub, idx) => (
-                        <li
-                          key={idx}
+                {/* Subcategories - Each clickable */}
+                <div className="p-6">
+                  <ul className="space-y-2">
+                    {category.subcategories.map((sub) => (
+                      <li key={sub.id}>
+                        <Link
+                          to={`/category/${sub.slug}`}
                           className="text-sm text-gray-600 hover:text-[#1890ff] transition-colors flex items-center gap-2 group/sub"
+                          onClick={(e) => e.stopPropagation()}
                         >
                           <span className="w-1 h-1 rounded-full bg-gray-400 group-hover/sub:bg-[#1890ff]"></span>
-                          {sub}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* View All Link */}
-                  <div className="px-6 pb-6">
-                    <div className="text-sm text-[#1890ff] font-medium group-hover:underline flex items-center gap-1">
-                      View All
-                      <span className="group-hover:translate-x-1 transition-transform">→</span>
-                    </div>
-                  </div>
+                          {sub.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </Link>
+
+                {/* View All Link */}
+                <div className="px-6 pb-6">
+                  <Link
+                    to={`/category/${category.slug}`}
+                    className="text-sm text-[#1890ff] font-medium hover:underline flex items-center gap-1"
+                  >
+                    View All
+                    <span className="group-hover:translate-x-1 transition-transform">→</span>
+                  </Link>
+                </div>
+              </div>
             ))}
           </div>
         ) : (
