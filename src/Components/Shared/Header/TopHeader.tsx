@@ -14,7 +14,7 @@ import { useGetMyProfileQuery } from "../../../Redux/Features/User/userApi";
 import { useState } from "react";
 import { useGetProductsQuery } from "../../../Redux/Features/Product/productApi";
 import { TProduct, TCategory } from "../../../Interface";
-import { Bell, Search, User } from "lucide-react";
+import { Search, User } from "lucide-react";
 import { LuMenu } from "react-icons/lu";
 import { useGetAllCategoriesQuery } from "../../../Redux/Features/Category/categoryApi";
 // const { Search } = Input;
@@ -44,7 +44,7 @@ const TopHeader = () => {
     },
     ...(categories?.map((category: TCategory) => ({
       key: category.id,
-      label: <span onClick={() => { setSelectedCategory(category.name); navigate(`/products?category=${category.id}`); }}>{category.name}</span>,
+      label: <span onClick={() => { setSelectedCategory(category.name); navigate(`/products?category=${category.name}`); }}>{category.name}</span>,
     })) || []),
   ];
 
@@ -97,16 +97,21 @@ const TopHeader = () => {
       {/*  */}
       <div className="max-w-7xl mx-auto  ">
         <div className="grid  grid-cols-5 gap-4 justify-between items-center ">
-          <Link to="/">
-            <div className="col-span-1 flex items-center">
-              <h1 className="text-2xl font-bold bg-white text-transparent bg-clip-text">
-                MarketSphere
-              </h1>
-            </div>
-          </Link>
+          <div className="col-span-3 lg:col-span-1 flex items-center">
+            <Link to="/">
+              <div className="">
+                <h1 className="text-2xl font-bold bg-white text-transparent bg-clip-text">
+                  MarketSphere
+                </h1>
+              </div>
+              {/* <div className="">
+                <img src="../../../../public/logo.png" alt="" className="rounded-md w-44" />
+
+              </div> */}
+            </Link>
+          </div>
           {/* search bar */}
-          <div className="col-span-3 sm:hidden"></div>
-          <div className="hidden col-span-3 sm:flex justify-center items-center relative ">
+          <div className="hidden col-span-3 lg:flex justify-center items-center relative ">
             <div className="flex-1 max-w-2xl mx-8">
               <div className="relative flex items-center bg-white rounded-full shadow-sm overflow-hidden">
                 {/* Menu/Category Dropdown */}
@@ -158,10 +163,10 @@ const TopHeader = () => {
           </div>
 
 
-          <div className="flex items-center space-x-6 col-span-1 justify-end">
-            <button className="text-white hover:text-blue-400 transition-transform duration-300 hover:scale-110">
+          <div className="col-span-2 flex items-center space-x-6 lg:col-span-1 justify-end">
+            {/* <button className="text-white hover:text-blue-400 transition-transform duration-300 hover:scale-110">
               <Bell size={24} />
-            </button>
+            </button> */}
             <Wishlist />
             <Cart />
             <button className="text-white hover:text-blue-400 transition-transform duration-300 hover:scale-110" onClick={() => navigate("/login")}>

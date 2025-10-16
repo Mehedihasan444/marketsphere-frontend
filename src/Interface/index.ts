@@ -188,6 +188,9 @@ export type TCategory = {
   name: string;
   description: string;
   image?: string;
+  parentId?: string | null;
+  parent?: TCategory | null;
+  children?: TCategory[];
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
