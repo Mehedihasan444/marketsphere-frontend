@@ -7,7 +7,7 @@ import { useGetProductByIdQuery, useGetProductsQuery } from "../../../Redux/Feat
 import ProductDetailsTabs from "./Product_Details_Tabs/Product_Details_Tabs";
 import { Alert, Button, Divider, message, Spin } from "antd";
 import ProductCard from "../../../Components/Shared/ProductCard";
-import {  TCouponItem, TProduct } from "../../../Interface";
+import { TCouponItem, TProduct } from "../../../Interface";
 import { useGetSingleShopCouponsQuery } from "../../../Redux/Features/Coupon/couponApi";
 
 const ProductDetails = () => {
@@ -80,7 +80,7 @@ const ProductDetails = () => {
   }
   return (
     <div className="min-h-screen ">
-      <div className="lg:mx-16 max-w-8xl mx-auto bg-white p-8">
+      <div className="max-w-7xl mx-auto bg-white py-8">
         {/* Breadcrumb */}
         <div className="mb-4">
           <DynamicBreadcrumb items={breadcrumbItems} />
@@ -159,7 +159,7 @@ const ProductDetails = () => {
       </div>
       {/* shop info */}
       <div className="">
-        <div className="lg:mx-16 max-w-8xl mx-auto bg-white p-6 mt-4">
+        <div className=" max-w-7xl mx-auto bg-white p-4 mt-4">
           <div className="flex justify-between items-center gap-4">
 
             <h2 className="text-2xl font-semibold ">Shop Information</h2>
@@ -204,13 +204,16 @@ const ProductDetails = () => {
         </div>
       </div>
       {/* related products */}
-      <div className=" lg:mx-16 max-w-8xl mx-auto bg-white p-6 mt-4">
+      <div className="  max-w-7xl mx-auto bg-white p-6 mt-4">
         <div className="flex justify-between items-center gap-4">
           <h2 className="text-2xl font-semibold ">Related Products</h2>
           <Button variant="outlined" type="default" size="large" >Sell More</Button>
         </div>
         <Divider />
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-4">
+          {
+            relatedProducts?.length === 0 && <p className="text-gray-500">No related products found.</p>
+          }
           {
             relatedProducts?.map((p: TProduct, idx: number) => <ProductCard key={idx} product={p} />)
           }

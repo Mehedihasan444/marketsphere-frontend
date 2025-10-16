@@ -33,7 +33,7 @@ const Reviews = ({ id }: { id: string }) => {
   );
 
   return (
-    <div className="p-6 bg-neutral-100 min-h-screen">
+    <div className="p-6  min-h-[50vh]">
       <div className=" flex justify-between  lg:gap-8 gap-6">
         {/* Left Section */}
         <div className="lg:w-3/5 w-full">
@@ -43,6 +43,13 @@ const Reviews = ({ id }: { id: string }) => {
               <Button icon={<FiFilter />} iconPosition="end" className="p-2 bg-gray-200 rounded-md">Newest</Button>
             </Dropdown>
           </div>
+          {
+            reviewItems.length === 0 && (
+              <div className="text-center py-10">
+                <p className="text-gray-500">No reviews yet. Be the first to review this product!</p>
+              </div>
+            )
+          }
           {reviewItems?.map((review:TReviewItem) => (
             <>
               <ReviewCard key={review.id} review={review} />
