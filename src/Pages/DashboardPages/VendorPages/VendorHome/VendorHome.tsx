@@ -5,50 +5,38 @@ import { DollarCircleOutlined, ShoppingCartOutlined, TeamOutlined } from "@ant-d
 import { useGetVendorDashboardDataQuery } from "../../../../Redux/Features/DashboardHome/dashboardHomeApi";
 import { FcRatings } from "react-icons/fc";
 
-// ! have to remove this
-const recentOrders= [
-        {
-          orderId: "ORD12345",
-          customerName: "John Doe",
-          totalAmount: 150.75,
-          status: "Completed"
-        },
-        {
-          orderId: "ORD12346",
-          customerName: "Jane Smith",
-          totalAmount: 75.50,
-          status: "Pending"
-        },
-        {
-          orderId: "ORD12347",
-          customerName: "Emily Johnson",
-          totalAmount: 99.99,
-          status: "Cancelled"
-        }
-      ]
-
 const VendorHome: React.FC = () => {
   // Fetch vendor-specific dashboard data
-  const { data={}, isLoading, error } = useGetVendorDashboardDataQuery("");
-const { data:dashboardData } = data;
-if (isLoading) {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <Spin size="large" />
-    </div>
-  );
-}
+  const { data = {}, isLoading, error } = useGetVendorDashboardDataQuery("");
+  const { data: dashboardData } = data;
+  
+  // Format recent orders from API response
+  const recentOrders = (dashboardData?.recentOrders || []).map((order: any, index: number) => ({
+    key: index,
+    orderId: order.orderId,
+    customerName: order.customerName,
+    totalAmount: order.totalAmount,
+    status: order.status,
+  }));
+  
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
-if (error) {
-  return (
-    <Alert
-      message="Error"
-      description="Failed to load data."
-      type="error"
-      showIcon
-    />
-  );
-}
+  if (error) {
+    return (
+      <Alert
+        message="Error"
+        description="Failed to load data."
+        type="error"
+        showIcon
+      />
+    );
+  }
 
   const {
     totalOrders,
@@ -57,7 +45,7 @@ if (error) {
     totalReviews,
     averageRating,
 
-  } = dashboardData ;
+  } = dashboardData;
 
   const columns = [
     {
@@ -85,8 +73,8 @@ if (error) {
           status === "Completed"
             ? "green"
             : status === "Pending"
-            ? "orange"
-            : "red";
+              ? "orange"
+              : "red";
         return <Tag color={color}>{status}</Tag>;
       },
     },
