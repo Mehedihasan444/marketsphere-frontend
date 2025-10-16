@@ -83,7 +83,19 @@ const CategoryManagement: React.FC = () => {
     {
       title: '#',
       key: 'index',
-      render: (_text: any, _record: any, index: number) => index + 1,
+      render: (_text: unknown, _record: TCategory, index: number) => index + 1,
+    },
+    {
+      title: "Image",
+      dataIndex: "image",
+      key: "image",
+      render: (image: string) => (
+        image ? (
+          <img src={image} alt="category" className="w-12 h-12 object-cover rounded" />
+        ) : (
+          <span className="text-gray-400">No image</span>
+        )
+      ),
     },
     {
       title: "Name",
@@ -91,10 +103,17 @@ const CategoryManagement: React.FC = () => {
       key: "name",
     },
     {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      render: (text: string) => (
+        <span className="max-w-xs truncate block">{text}</span>
+      ),
+    },
+    {
       title: "NO. of Products",
-      dataIndex: "noOfProducts",
       key: "noOfProducts",
-      render: (record) => (
+      render: (_text: unknown, record: TCategory) => (
         <span>{record?.products?.length || 0}</span>
       ),
     },
@@ -102,11 +121,21 @@ const CategoryManagement: React.FC = () => {
       title: "Created At",
       dataIndex: "createdAt",
       key: "createdAt",
+      render: (date: string) => new Date(date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      }),
     },
     {
       title: "Updated At",
       dataIndex: "updatedAt",
       key: "updatedAt",
+      render: (date: string) => new Date(date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      }),
     },
     {
       title: "Action",
@@ -115,7 +144,7 @@ const CategoryManagement: React.FC = () => {
         <Space size="middle">
           <UpdateCategoryModal category={record} />
           <Popconfirm
-            title="Are you sure you want to activate this shop?"
+            title="Are you sure you want to delete this category?"
             onConfirm={() => handleDelete(record.id)}
             okText="Yes"
             cancelText="No"

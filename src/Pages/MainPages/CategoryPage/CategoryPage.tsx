@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Breadcrumb, Select, Slider, Checkbox, Button, Empty, Spin } from 'antd';
+import { Breadcrumb, Select, Slider, Checkbox, Button, Empty, Spin, Pagination } from 'antd';
 import { 
   HomeOutlined, 
   AppstoreOutlined, 
@@ -8,7 +8,8 @@ import {
   FilterOutlined
 } from '@ant-design/icons';
 import ProductCard from '../../../Components/Shared/ProductCard';
-import { TProduct, ShopStatus } from '../../../Interface';
+import { useGetProductsByCategorySlugQuery } from '../../../Redux/Features/Category/categoryApi';
+import { TProduct } from '../../../Interface';
 
 const { Option } = Select;
 
@@ -18,7 +19,18 @@ const CategoryPage = () => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [sortBy, setSortBy] = useState('popularity');
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [isLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Fetch products using the API
+  const { data, isLoading, isFetching } = useGetProductsByCategorySlugQuery({
+    slug: categoryName || '',
+    page: currentPage,
+    limit: 12,
+    minPrice: priceRange[0],
+    maxPrice: priceRange[1],
+    brand: selectedBrands.length > 0 ? selectedBrands : undefined,
+    sortBy: sortBy,
+  });
 
   // Format category name for display
   const formatCategoryName = (name: string) => {
@@ -29,106 +41,11 @@ const CategoryPage = () => {
   };
 
   const displayName = categoryName ? formatCategoryName(categoryName) : 'Category';
-
-  // Mock data - Replace with actual API call using useGetProductsQuery
-  const products: TProduct[] = [
-    {
-      id: '1',
-      name: 'iPhone 15 Pro Max',
-      description: 'Latest iPhone with advanced features',
-      price: 1199,
-      images: ['https://via.placeholder.com/300'],
-      discount: 10,
-      quantity: 50,
-      rating: 4.8,
-      categoryId: 'cat1',
-      category: { 
-        id: 'cat1', 
-        name: 'Mobile Phones', 
-        description: '', 
-        createdAt: new Date(), 
-        updatedAt: new Date(), 
-        isDeleted: false,
-        products: []
-      },
-      shopId: 'shop1',
-      shop: { 
-        id: 'shop1',
-        name: 'Apple Store', 
-        logo: 'https://via.placeholder.com/50',
-        banner: '',
-        description: '',
-        status: ShopStatus.ACTIVE,
-        isActive: true,
-        vendorId: 'v1',
-        vendor: null as unknown as never,
-        isDeleted: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        products: [],
-        followers: [],
-        reviews: [],
-        order: [],
-        coupon: []
-      },
-      isDeleted: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      cartItems: [],
-      orderItems: [],
-      reviews: null as unknown as never,
-      wishlistItem: []
-    },
-    {
-      id: '2',
-      name: 'Samsung Galaxy S24 Ultra',
-      description: 'Premium Samsung flagship phone',
-      price: 1099,
-      images: ['https://via.placeholder.com/300'],
-      discount: 15,
-      quantity: 30,
-      rating: 4.7,
-      categoryId: 'cat1',
-      category: { 
-        id: 'cat1', 
-        name: 'Mobile Phones', 
-        description: '', 
-        createdAt: new Date(), 
-        updatedAt: new Date(), 
-        isDeleted: false,
-        products: []
-      },
-      shopId: 'shop2',
-      shop: { 
-        id: 'shop2',
-        name: 'Samsung Store', 
-        logo: 'https://via.placeholder.com/50',
-        banner: '',
-        description: '',
-        status: ShopStatus.ACTIVE,
-        isActive: true,
-        vendorId: 'v2',
-        vendor: null as unknown as never,
-        isDeleted: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        products: [],
-        followers: [],
-        reviews: [],
-        order: [],
-        coupon: []
-      },
-      isDeleted: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      cartItems: [],
-      orderItems: [],
-      reviews: null as unknown as never,
-      wishlistItem: []
-    },
-  ];
-
-  const brands = ['Apple', 'Samsung', 'Google', 'OnePlus', 'Xiaomi', 'Oppo'];
+  
+  const products = data?.data?.data || [];
+  const meta = data?.data?.meta;
+  const filters = data?.data?.filters;
+  const brands = filters?.brands || [];
 
   const handleBrandChange = (brand: string, checked: boolean) => {
     if (checked) {
@@ -173,7 +90,7 @@ const CategoryPage = () => {
             <div>
               <h1 className="text-3xl font-bold text-gray-900">{displayName}</h1>
               <p className="text-gray-600 mt-1">
-                {products.length} products found
+                {meta?.total || 0} products found
               </p>
             </div>
             <div className="flex items-center gap-4">
@@ -217,7 +134,7 @@ const CategoryPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex gap-6">
           {/* Sidebar Filters */}
           <div className="w-64 flex-shrink-0">
@@ -234,8 +151,8 @@ const CategoryPage = () => {
                 <h4 className="font-medium text-gray-900 mb-4">Price Range</h4>
                 <Slider
                   range
-                  min={0}
-                  max={10000}
+                  min={filters?.priceRange?.min || 0}
+                  max={filters?.priceRange?.max || 10000}
                   step={100}
                   value={priceRange}
                   onChange={(value) => setPriceRange(value as [number, number])}
@@ -253,16 +170,20 @@ const CategoryPage = () => {
               <div className="p-4 border-b border-gray-200">
                 <h4 className="font-medium text-gray-900 mb-4">Brands</h4>
                 <div className="space-y-3">
-                  {brands.map((brand) => (
-                    <div key={brand}>
-                      <Checkbox
-                        checked={selectedBrands.includes(brand)}
-                        onChange={(e) => handleBrandChange(brand, e.target.checked)}
-                      >
-                        {brand}
-                      </Checkbox>
-                    </div>
-                  ))}
+                  {brands && brands.length > 0 ? (
+                    brands.map((brand: string) => (
+                      <div key={brand}>
+                        <Checkbox
+                          checked={selectedBrands.includes(brand)}
+                          onChange={(e) => handleBrandChange(brand, e.target.checked)}
+                        >
+                          {brand}
+                        </Checkbox>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-sm text-gray-500">No brands available</p>
+                  )}
                 </div>
               </div>
 
@@ -297,7 +218,14 @@ const CategoryPage = () => {
           </div>
 
           {/* Products Grid/List */}
-          <div className="flex-1">
+          <div className="flex-1 relative">
+            {/* Loading Overlay for Refetching */}
+            {isFetching && !isLoading && (
+              <div className="absolute inset-0 bg-white bg-opacity-70 z-10 flex items-center justify-center rounded-lg">
+                <Spin size="large" />
+              </div>
+            )}
+            
             {isLoading ? (
               <div className="flex justify-center items-center h-64">
                 <Spin size="large" />
@@ -310,7 +238,7 @@ const CategoryPage = () => {
                     : 'space-y-4'
                 }
               >
-                {products.map((product) => (
+                {products.map((product: TProduct) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
@@ -334,12 +262,21 @@ const CategoryPage = () => {
               </div>
             )}
 
-            {/* Load More */}
-            {products.length > 0 && (
-              <div className="mt-8 text-center">
-                <Button type="primary" size="large">
-                  Load More Products
-                </Button>
+            {/* Pagination */}
+            {products.length > 0 && meta && meta.total > 0 && (
+              <div className="mt-8 flex justify-center">
+                <Pagination
+                  current={currentPage}
+                  total={meta.total}
+                  pageSize={12}
+                  onChange={(page) => {
+                    setCurrentPage(page);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} products`}
+                  showSizeChanger={false}
+                  className="text-center"
+                />
               </div>
             )}
           </div>
