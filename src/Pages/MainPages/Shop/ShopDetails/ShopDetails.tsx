@@ -32,13 +32,13 @@ const ShopDetails = ({ shop }: { shop: TShop }) => {
           // For FetchBaseQueryError, safely access the `data` property
           const errorMessage = (res.error.data as { message?: string })?.message || "Followed the shop error occurred.";
           message.error(errorMessage);
-      } else if ('message' in res.error) {
+        } else if ('message' in res.error) {
           // For SerializedError, handle the `message` property
           message.error(res.error.message || "Followed the shop error occurred.");
-      } else {
+        } else {
           // Handle unknown error types
           message.error("An unknown error occurred.");
-      }
+        }
       }
     } catch (error) {
       console.log(error);
@@ -63,13 +63,13 @@ const ShopDetails = ({ shop }: { shop: TShop }) => {
           // For FetchBaseQueryError, safely access the `data` property
           const errorMessage = (res.error.data as { message?: string })?.message || "Unfollowed the shop error occurred.";
           message.error(errorMessage);
-      } else if ('message' in res.error) {
+        } else if ('message' in res.error) {
           // For SerializedError, handle the `message` property
           message.error(res.error.message || "Unfollowed the shop error occurred.");
-      } else {
+        } else {
           // Handle unknown error types
           message.error("An unknown error occurred.");
-      }
+        }
       }
     } catch (error) {
       console.log(error);
@@ -98,7 +98,7 @@ const ShopDetails = ({ shop }: { shop: TShop }) => {
   return (
     <div
       className="bg-white shadow p-6 rounded-lg mb-4"
-      style={{ backgroundImage: `url(${shop.banner})`, backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
+      style={{ backgroundImage: `url(${shop.banner})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
     >
       {/* Breadcrumb */}
       <div className="mb-4">
