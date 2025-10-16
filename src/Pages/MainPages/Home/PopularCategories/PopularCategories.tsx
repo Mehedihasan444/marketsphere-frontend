@@ -51,20 +51,23 @@ const PopularCategories = () => {
             {/* Categories Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {categories.map((category, index) => (
-                    <div
+                    <Link
                         key={index}
-                        className="bg-gray-100 hover:bg-gray-200 transition-colors rounded-lg p-6 flex items-center justify-between cursor-pointer group"
+                        to={`/category/${category.title.toLowerCase().replace(/\s+/g, '-')}`}
+                        className="block"
                     >
-                        <div className="flex-1">
-                            <h3 className="font-semibold text-lg mb-2">{category.title}</h3>
-                            <p className="text-sm text-gray-600 leading-relaxed">
-                                {category.description}
-                            </p>
+                        <div className="bg-gray-100 hover:bg-gray-200 transition-colors rounded-lg p-6 flex items-center justify-between cursor-pointer group">
+                            <div className="flex-1">
+                                <h3 className="font-semibold text-lg mb-2">{category.title}</h3>
+                                <p className="text-sm text-gray-600 leading-relaxed">
+                                    {category.description}
+                                </p>
+                            </div>
+                            <div className="ml-4 text-5xl opacity-70 group-hover:opacity-100 transition-opacity">
+                                {category.icon}
+                            </div>
                         </div>
-                        <div className="ml-4 text-5xl opacity-70 group-hover:opacity-100 transition-opacity">
-                            {category.icon}
-                        </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>

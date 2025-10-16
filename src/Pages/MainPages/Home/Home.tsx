@@ -30,8 +30,12 @@ const Home = () => {
     return (
       <div className="max-w-7xl mx-auto min-h-screen">
         {/* Banner Skeleton */}
-        <div className="px-4 lg:px-16 mt-4">
-          <Skeleton.Input active style={{ width: '100%', height: '400px', borderRadius: '12px' }} />
+        <div className="mt-4 px-4 lg:px-16">
+          <Skeleton.Input
+            active
+            block
+            style={{ height: '400px', borderRadius: '12px' }}
+          />
         </div>
 
         {/* Features Skeleton */}

@@ -10,7 +10,7 @@ const TrendingProducts = () => {
   const [visibleProducts, setVisibleProducts] = useState<TProduct[]>([]);
   const { data = {}, isLoading } = useGetProductsQuery({});
   const { data: trendingProducts = [] } = data?.data || [];
-  
+
   // Number of products to show at once based on screen size
   const [productsToShow, setProductsToShow] = useState(4);
 
@@ -47,7 +47,7 @@ const TrendingProducts = () => {
   };
 
   const handleNext = () => {
-    setCurrentTrendingIndex(prev => 
+    setCurrentTrendingIndex(prev =>
       Math.min(prev + 1, Math.max(0, trendingProducts.length - productsToShow))
     );
   };
@@ -102,31 +102,29 @@ const TrendingProducts = () => {
             <button
               onClick={handlePrevious}
               disabled={currentTrendingIndex === 0}
-              className={`p-2 rounded-full transition-colors duration-300 ${
-                currentTrendingIndex === 0 
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+              className={`p-2 rounded-full transition-colors duration-300 ${currentTrendingIndex === 0
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   : 'bg-gray-100 hover:bg-indigo-100 text-gray-600'
-              }`}
+                }`}
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
             <button
               onClick={handleNext}
               disabled={currentTrendingIndex >= trendingProducts.length - productsToShow}
-              className={`p-2 rounded-full transition-colors duration-300 ${
-                currentTrendingIndex >= trendingProducts.length - productsToShow
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+              className={`p-2 rounded-full transition-colors duration-300 ${currentTrendingIndex >= trendingProducts.length - productsToShow
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   : 'bg-gray-100 hover:bg-indigo-100 text-gray-600'
-              }`}
+                }`}
             >
               <ChevronRight className="w-6 h-6" />
             </button>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {visibleProducts.map((product: TProduct, index: number) => (
-            <div 
-              key={product.id || index} 
+            <div
+              key={product.id || index}
               className="transition-all duration-300 transform hover:scale-105"
             >
               <ProductCard product={product} />

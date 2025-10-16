@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const SpecialDeals = () => {
   return (
     <section className="my-16 px-4 ">
@@ -9,22 +11,22 @@ const SpecialDeals = () => {
               <p className="text-sm uppercase tracking-wider text-gray-400 mb-4">
                 Special Offer
               </p>
-              
+
               <h2 className="text-4xl lg:text-5xl font-light mb-6 leading-tight">
                 Free Delivery
                 <br />
                 <span className="font-semibold">on orders over $100</span>
               </h2>
-              
+
               <p className="text-gray-300 mb-8 text-lg">
                 Shop your favorite products with complimentary shipping.
               </p>
-              
-              <button className="bg-white text-slate-900 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-300">
+              <Link to={"/products"}> <button className="bg-white text-slate-900 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-300">
                 Shop Now
-              </button>
+              </button></Link>
+
             </div>
-            
+
             {/* Right Image */}
             <div className="h-full min-h-[400px] relative">
               <img
