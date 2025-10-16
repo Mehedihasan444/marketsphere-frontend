@@ -101,8 +101,8 @@ const Filters = ({
   };
 
   return (
-    <div className="w-64 flex-shrink-0">
-      <div className="bg-white rounded-lg border border-gray-200 sticky top-4">
+    <div className="sticky top-4">
+      <div className="bg-white rounded-lg border border-gray-200 ">
         {/* Header */}
         <div className="p-4 border-b border-gray-200">
           <h3 className="font-semibold text-gray-900 flex items-center gap-2">
