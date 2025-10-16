@@ -94,10 +94,10 @@ const CompareProducts: React.FC = () => {
   const isLoading = leftLoading || rightLoading || thirdLoading;
 
   return (
-    <div className="bg-neutral-100 min-h-screen py-6">
-      <div className="max-w-8xl lg:mx-16 mx-auto">
+    <div className=" min-h-screen py-6">
+      <div className="max-w-7xl  mx-auto">
         <DynamicBreadcrumb items={breadcrumbItems} />
-        
+
         <div className="bg-white shadow-md rounded-lg p-6 mt-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-gray-800">Product Comparison</h2>
@@ -132,34 +132,34 @@ const CompareProducts: React.FC = () => {
                     className="overflow-hidden"
                     cover={
                       <div className="h-48 overflow-hidden">
-                        <img 
-                          src={leftProduct.images[0]} 
-                          alt={leftProduct.name} 
+                        <img
+                          src={leftProduct.images[0]}
+                          alt={leftProduct.name}
                           className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                         />
                       </div>
                     }
                     actions={[
                       <Tooltip title="Remove">
-                        <Button 
-                          type="text" 
-                          danger 
-                          icon={<DeleteOutlined />} 
+                        <Button
+                          type="text"
+                          danger
+                          icon={<DeleteOutlined />}
                           onClick={() => handleRemoveProduct("left")}
                         />
                       </Tooltip>,
                       <Tooltip title="Swap with Product 2">
-                        <Button 
-                          type="text" 
-                          icon={<SwapOutlined />} 
+                        <Button
+                          type="text"
+                          icon={<SwapOutlined />}
                           onClick={() => handleSwapProducts("left", "right")}
                           disabled={!rightProduct}
                         />
                       </Tooltip>,
                       <Tooltip title="Swap with Product 3">
-                        <Button 
-                          type="text" 
-                          icon={<SwapOutlined />} 
+                        <Button
+                          type="text"
+                          icon={<SwapOutlined />}
                           onClick={() => handleSwapProducts("left", "third")}
                           disabled={!thirdProduct}
                         />
@@ -187,9 +187,9 @@ const CompareProducts: React.FC = () => {
                   </Card>
                 </div>
               ) : (
-                <Empty 
-                  image={Empty.PRESENTED_IMAGE_SIMPLE} 
-                  description="No product selected" 
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description="No product selected"
                   className="mt-4 p-8 bg-gray-100 rounded-lg"
                 />
               )}
@@ -210,34 +210,34 @@ const CompareProducts: React.FC = () => {
                     className="overflow-hidden"
                     cover={
                       <div className="h-48 overflow-hidden">
-                        <img 
-                          src={rightProduct.images[0]} 
-                          alt={rightProduct.name} 
+                        <img
+                          src={rightProduct.images[0]}
+                          alt={rightProduct.name}
                           className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                         />
                       </div>
                     }
                     actions={[
                       <Tooltip title="Remove">
-                        <Button 
-                          type="text" 
-                          danger 
-                          icon={<DeleteOutlined />} 
+                        <Button
+                          type="text"
+                          danger
+                          icon={<DeleteOutlined />}
                           onClick={() => handleRemoveProduct("right")}
                         />
                       </Tooltip>,
                       <Tooltip title="Swap with Product 1">
-                        <Button 
-                          type="text" 
-                          icon={<SwapOutlined />} 
+                        <Button
+                          type="text"
+                          icon={<SwapOutlined />}
                           onClick={() => handleSwapProducts("left", "right")}
                           disabled={!leftProduct}
                         />
                       </Tooltip>,
                       <Tooltip title="Swap with Product 3">
-                        <Button 
-                          type="text" 
-                          icon={<SwapOutlined />} 
+                        <Button
+                          type="text"
+                          icon={<SwapOutlined />}
                           onClick={() => handleSwapProducts("right", "third")}
                           disabled={!thirdProduct}
                         />
@@ -265,9 +265,9 @@ const CompareProducts: React.FC = () => {
                   </Card>
                 </div>
               ) : (
-                <Empty 
-                  image={Empty.PRESENTED_IMAGE_SIMPLE} 
-                  description="No product selected" 
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description="No product selected"
                   className="mt-4 p-8 bg-gray-100 rounded-lg"
                 />
               )}
@@ -288,34 +288,34 @@ const CompareProducts: React.FC = () => {
                     className="overflow-hidden"
                     cover={
                       <div className="h-48 overflow-hidden">
-                        <img 
-                          src={thirdProduct.images[0]} 
-                          alt={thirdProduct.name} 
+                        <img
+                          src={thirdProduct.images[0]}
+                          alt={thirdProduct.name}
                           className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                         />
                       </div>
                     }
                     actions={[
                       <Tooltip title="Remove">
-                        <Button 
-                          type="text" 
-                          danger 
-                          icon={<DeleteOutlined />} 
+                        <Button
+                          type="text"
+                          danger
+                          icon={<DeleteOutlined />}
                           onClick={() => handleRemoveProduct("third")}
                         />
                       </Tooltip>,
                       <Tooltip title="Swap with Product 1">
-                        <Button 
-                          type="text" 
-                          icon={<SwapOutlined />} 
+                        <Button
+                          type="text"
+                          icon={<SwapOutlined />}
                           onClick={() => handleSwapProducts("left", "third")}
                           disabled={!leftProduct}
                         />
                       </Tooltip>,
                       <Tooltip title="Swap with Product 2">
-                        <Button 
-                          type="text" 
-                          icon={<SwapOutlined />} 
+                        <Button
+                          type="text"
+                          icon={<SwapOutlined />}
                           onClick={() => handleSwapProducts("right", "third")}
                           disabled={!rightProduct}
                         />
@@ -343,9 +343,9 @@ const CompareProducts: React.FC = () => {
                   </Card>
                 </div>
               ) : (
-                <Empty 
-                  image={Empty.PRESENTED_IMAGE_SIMPLE} 
-                  description="No product selected" 
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description="No product selected"
                   className="mt-4 p-8 bg-gray-100 rounded-lg"
                 />
               )}
@@ -414,25 +414,25 @@ const CompareProducts: React.FC = () => {
                     <td className="border p-3 font-medium bg-gray-50">Availability</td>
                     <td className="border p-3">
                       {leftProduct ? (
-                        <Badge 
-                          status={leftProduct.quantity > 0 ? "success" : "error"} 
-                          text={leftProduct.quantity > 0 ? `In Stock (${leftProduct.quantity})` : "Out of Stock"} 
+                        <Badge
+                          status={leftProduct.quantity > 0 ? "success" : "error"}
+                          text={leftProduct.quantity > 0 ? `In Stock (${leftProduct.quantity})` : "Out of Stock"}
                         />
                       ) : "-"}
                     </td>
                     <td className="border p-3">
                       {rightProduct ? (
-                        <Badge 
-                          status={rightProduct.quantity > 0 ? "success" : "error"} 
-                          text={rightProduct.quantity > 0 ? `In Stock (${rightProduct.quantity})` : "Out of Stock"} 
+                        <Badge
+                          status={rightProduct.quantity > 0 ? "success" : "error"}
+                          text={rightProduct.quantity > 0 ? `In Stock (${rightProduct.quantity})` : "Out of Stock"}
                         />
                       ) : "-"}
                     </td>
                     <td className="border p-3">
                       {thirdProduct ? (
-                        <Badge 
-                          status={thirdProduct.quantity > 0 ? "success" : "error"} 
-                          text={thirdProduct.quantity > 0 ? `In Stock (${thirdProduct.quantity})` : "Out of Stock"} 
+                        <Badge
+                          status={thirdProduct.quantity > 0 ? "success" : "error"}
+                          text={thirdProduct.quantity > 0 ? `In Stock (${thirdProduct.quantity})` : "Out of Stock"}
                         />
                       ) : "-"}
                     </td>
@@ -454,8 +454,8 @@ const CompareProducts: React.FC = () => {
                     <td className="border p-3">
                       {leftProduct && (
                         <div className="flex space-x-2">
-                          <Button 
-                            type="primary" 
+                          <Button
+                            type="primary"
                             size="small"
                             icon={<ShoppingCartOutlined />}
                             onClick={() => navigate(`/products/${leftProduct.id}`)}
@@ -468,8 +468,8 @@ const CompareProducts: React.FC = () => {
                     <td className="border p-3">
                       {rightProduct && (
                         <div className="flex space-x-2">
-                          <Button 
-                            type="primary" 
+                          <Button
+                            type="primary"
                             size="small"
                             icon={<ShoppingCartOutlined />}
                             onClick={() => navigate(`/products/${rightProduct.id}`)}
@@ -482,8 +482,8 @@ const CompareProducts: React.FC = () => {
                     <td className="border p-3">
                       {thirdProduct && (
                         <div className="flex space-x-2">
-                          <Button 
-                            type="primary" 
+                          <Button
+                            type="primary"
                             size="small"
                             icon={<ShoppingCartOutlined />}
                             onClick={() => navigate(`/products/${thirdProduct.id}`)}
@@ -499,7 +499,7 @@ const CompareProducts: React.FC = () => {
             </div>
           ) : (
             <div className="text-center p-10 bg-gray-50 rounded-lg border border-gray-200">
-              <Empty 
+              <Empty
                 description={
                   <span className="text-gray-500">
                     Select at least one product to start comparing
@@ -507,8 +507,8 @@ const CompareProducts: React.FC = () => {
                 }
                 image={Empty.PRESENTED_IMAGE_SIMPLE}
               />
-              <Button 
-                type="primary" 
+              <Button
+                type="primary"
                 className="mt-4"
                 onClick={() => navigate('/products')}
               >

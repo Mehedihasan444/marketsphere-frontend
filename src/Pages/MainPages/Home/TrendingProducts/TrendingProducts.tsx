@@ -89,10 +89,10 @@ const TrendingProducts = () => {
     );
   }
 
-  if (!trendingProducts || trendingProducts.length === 0) {
+  if (!trendingProducts) {
     return <div className="py-16 text-center">No trending products available</div>;
   }
-
+console.log("visibleProducts",visibleProducts)
   return (
     <section className="py-16 bg-white ">
       <div className="max-w-7xl mx-auto px-4">
@@ -103,8 +103,8 @@ const TrendingProducts = () => {
               onClick={handlePrevious}
               disabled={currentTrendingIndex === 0}
               className={`p-2 rounded-full transition-colors duration-300 ${currentTrendingIndex === 0
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                  : 'bg-gray-100 hover:bg-indigo-100 text-gray-600'
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-gray-100 hover:bg-indigo-100 text-gray-600'
                 }`}
             >
               <ChevronLeft className="w-6 h-6" />
@@ -113,8 +113,8 @@ const TrendingProducts = () => {
               onClick={handleNext}
               disabled={currentTrendingIndex >= trendingProducts.length - productsToShow}
               className={`p-2 rounded-full transition-colors duration-300 ${currentTrendingIndex >= trendingProducts.length - productsToShow
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                  : 'bg-gray-100 hover:bg-indigo-100 text-gray-600'
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-gray-100 hover:bg-indigo-100 text-gray-600'
                 }`}
             >
               <ChevronRight className="w-6 h-6" />
@@ -122,6 +122,9 @@ const TrendingProducts = () => {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          {
+            trendingProducts.length === 0 && <p className="text-gray-500">No trending products found.</p>
+          }
           {visibleProducts.map((product: TProduct, index: number) => (
             <div
               key={product.id || index}

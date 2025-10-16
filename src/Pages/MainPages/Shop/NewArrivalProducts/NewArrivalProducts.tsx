@@ -12,6 +12,9 @@ const NewArrivalProducts = ({ products }: { products: TProduct[] }) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4  items-center">
         {/* product list */}
+        {
+          products?.length === 0 && <p className="text-gray-500">No new arrival products found.</p>
+        }
         {products?.map((product, index) => (
           <ProductCard product={product} key={index} />
         ))}

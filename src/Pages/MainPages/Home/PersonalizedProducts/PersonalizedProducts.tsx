@@ -48,7 +48,7 @@ const PersonalizedProducts = () => {
   // Loading Spinner
   if (isLoading && page === 1) {
     return (
-      <div className="bg-white lg:mx-16 p-4 mt-4 shadow rounded-xl">
+      <div className="bg-white  p-4 mt-4 shadow rounded-xl">
         <div className="py-4">
           <Skeleton.Input style={{ width: 200 }} active />
           <Skeleton.Input style={{ width: '100%', marginTop: 10 }} active />
@@ -78,12 +78,15 @@ const PersonalizedProducts = () => {
     <div className=" max-w-7xl mx-auto p-4 mt-4  rounded-xl">
       {/* Header */}
       <div className="py-4 flex justify-between items-center">
-         <h2 className="text-3xl font-bold text-gray-800 pb-4">Just For You</h2>
+        <h2 className="text-3xl font-bold text-gray-800 pb-4">Just For You</h2>
         <a href="/products" className="text-gray-500 hover:text-blue-700 text-sm">see all →</a>
       </div>
 
       {/* Product Grid */}
       <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4 items-center">
+        {
+          products.length === 0 && <p className="text-gray-500">No products found.</p>
+        }
         {products?.map((product: TProduct, index: number) => (
           <ProductCard product={product} key={index} />
         ))}

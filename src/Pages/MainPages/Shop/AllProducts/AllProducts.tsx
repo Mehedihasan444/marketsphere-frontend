@@ -10,6 +10,9 @@ const AllProducts = ({ products }: { products: TProduct[] }) => {
         <hr />
       </div>
       <div className=" grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        {
+          products?.length === 0 && <p className="text-gray-500">No products found.</p>
+        }
         {products?.map((product, idx) => (
           <ProductCard key={idx} product={product} />
         ))}
