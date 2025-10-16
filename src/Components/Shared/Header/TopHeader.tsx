@@ -101,7 +101,8 @@ const TopHeader = () => {
             <Link to="/">
               <div className="">
                 <h1 className="text-2xl font-bold bg-white text-transparent bg-clip-text">
-                  MarketSphere
+                  {/* MarketSphere */}
+                  TechPark
                 </h1>
               </div>
               {/* <div className="">
