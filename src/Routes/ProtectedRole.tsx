@@ -12,20 +12,27 @@ type TProtectedRoute = {
 
 const ProtectedRoute = ({ children, role }: TProtectedRoute) => {
   const token = useAppSelector(useCurrentToken);
+  const dispatch = useAppDispatch();
+
+  // If no token, redirect to login
+  if (!token) {
+    return <Navigate to="/login" replace={true} />;
+  }
 
   let user;
 
-  if (token) {
-    user = verifyToken(token) as JwtPayload&{role: string};
-  }
-
-  const dispatch = useAppDispatch();
-
-  if (role !== undefined && role !== user?.role) {
+  try {
+    user = verifyToken(token) as JwtPayload & { role: string };
+  } catch (error) {
+    // If token is invalid or expired, logout and redirect
+    console.error('Token verification failed:', error);
     dispatch(logout());
     return <Navigate to="/login" replace={true} />;
   }
-  if (!token) {
+
+  // If role is required and doesn't match user's role, logout and redirect
+  if (role !== undefined && role !== user?.role) {
+    dispatch(logout());
     return <Navigate to="/login" replace={true} />;
   }
 

@@ -81,7 +81,7 @@ const router = createBrowserRouter([
         path: "/shops/:id",
         element: <Shop />,
       },
-   
+
       {
         path: "/products/:id",
         element: <ProductDetails />,
@@ -104,7 +104,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/checkout",
-        element: <ProtectedRoute role="CUSTOMER"><Checkout /></ProtectedRoute> ,
+        element: <ProtectedRoute role="CUSTOMER"><Checkout /></ProtectedRoute>,
       }
     ],
   },
@@ -145,7 +145,7 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/customer/followed-shops",
         element: <FollowedShops />,
-      },{
+      }, {
         path: "/dashboard/customer/leave-reviews",
         element: <LeaveReviews />,
       },
@@ -203,7 +203,11 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/vendor/flash-sale",
         element: <FlashSaleProductManagement />,
-      }
+      },
+      {
+        path: "/dashboard/vendor/profile",
+        element: <Profile />,
+      },
     ],
   },
   {
@@ -262,7 +266,11 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/admin/flash-sale",
         element: <FlashSaleManagement />,
-      }
+      },
+      {
+        path: "/dashboard/admin/profile",
+        element: <Profile />,
+      },
     ],
   },
   {
