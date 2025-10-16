@@ -1,72 +1,74 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {  CloseOutlined, RightOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu, Drawer } from "antd";
 import { RiDiscountPercentFill } from "react-icons/ri";
 import {
-  MobileOutlined,
-  LaptopOutlined,
   ApiOutlined,
-  RocketOutlined,
   FireOutlined,
   ThunderboltOutlined,
   StarOutlined
 } from "@ant-design/icons";
 import { LuMenu } from "react-icons/lu";
+import { Link } from "react-router-dom";
+import { useGetAllCategoriesQuery } from "../../../Redux/Features/Category/categoryApi";
 
 type MenuItem = Required<MenuProps>["items"][number];
+
+interface Category {
+  id: string;
+  name: string;
+  parentId: string | null;
+}
 
 // Professional Megamenu Component
 const CategoriesMegaMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const categories = [
-    {
-      title: "Mobiles & Tablets",
-      icon: <MobileOutlined />,
-      items: [
-        { name: "Smartphones", link: "/category/smartphones" },
-        { name: "Feature Phones", link: "/category/feature-phones" },
-        { name: "Tablets", link: "/category/tablets" },
-        { name: "Smart Watches", link: "/category/smartwatches" },
-        { name: "Mobile Accessories", link: "/category/mobile-accessories" },
-      ]
-    },
-    {
-      title: "Computers & Laptops",
-      icon: <LaptopOutlined />,
-      items: [
-        { name: "Laptops", link: "/category/laptops" },
-        { name: "Desktop PCs", link: "/category/desktops" },
-        { name: "Monitors", link: "/category/monitors" },
-        { name: "Keyboards & Mice", link: "/category/keyboards-mice" },
-        { name: "Computer Accessories", link: "/category/computer-accessories" },
-      ]
-    },
-    {
-      title: "Gaming",
-      icon: <ApiOutlined />,
-      items: [
-        { name: "Gaming Consoles", link: "/category/consoles" },
-        { name: "Gaming Laptops", link: "/category/gaming-laptops" },
-        { name: "Gaming Accessories", link: "/category/gaming-accessories" },
-        { name: "Video Games", link: "/category/games" },
-        { name: "VR Headsets", link: "/category/vr-headsets" },
-      ]
-    },
-    {
-      title: "Electronics & Gadgets",
-      icon: <RocketOutlined />,
-      items: [
-        { name: "Cameras", link: "/category/cameras" },
-        { name: "Drones", link: "/category/drones" },
-        { name: "Audio & Headphones", link: "/category/audio" },
-        { name: "Smart Home Devices", link: "/category/smart-home" },
-        { name: "Wearable Tech", link: "/category/wearables" },
-      ]
-    },
-  ];
+  const { data: categoriesData } = useGetAllCategoriesQuery({ limit: 100 }); // Get all categories
+  
+  // Extract categories array from the response
+  const allCategories = useMemo(() => categoriesData?.data?.data || [], [categoriesData]);
+  
+  // Get parent categories with their children
+  const parentCategories = useMemo(() => 
+    Array.isArray(allCategories) 
+      ? allCategories.filter((cat: Category) => !cat.parentId)
+      : []
+  , [allCategories]);
+  
+  // Helper function to convert category name to slug
+  const categoryToSlug = (name: string) => {
+    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  };
+  
+  // Map parent categories to megamenu format - memoized to prevent re-renders
+  const categories = useMemo(() => {
+    return parentCategories
+      .map((parent: Category) => {
+        const children = Array.isArray(allCategories)
+          ? allCategories.filter((cat: Category) => cat.parentId === parent.id)
+          : [];
+        
+        return {
+          id: parent.id,
+          title: parent.name,
+          icon: <ApiOutlined />,
+          items: children.map((child: Category) => {
+            const slug = categoryToSlug(child.name);
+            const link = `/category/${slug}`;
+            return {
+              id: child.id,
+              name: child.name,
+              link: link,
+            };
+          }),
+          hasChildren: children.length > 0
+        };
+      })
+      .filter((category) => category.hasChildren);
+  }, [parentCategories, allCategories]);
 
   const featuredBanners = [
     {
@@ -104,26 +106,30 @@ const CategoriesMegaMenu = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 top-full mt-0 w-[980px] bg-white shadow-xl z-50 border-t-2 border-[#1890ff]">
+        <div className="absolute left-0 top-full mt-0 w-[1200px] bg-white shadow-xl z-[9999] border-t-2 border-[#1890ff] pointer-events-auto">
           <div className="p-8">
             {/* Main Categories Grid */}
-            <div className="grid grid-cols-4 gap-8 mb-8">
-              {categories.map((category, idx) => (
-                <div key={idx}>
-                  <div className="flex items-center gap-2 mb-4 pb-2 border-b-2 border-gray-100">
+            <div className="grid grid-cols-4 gap-4 mb-8">
+              {categories.map((category: any) => (
+                <div key={category.id} className="min-w-0">
+                  <div className="flex items-center gap-2 mb-2 pb-2 border-b-2 border-gray-100">
                     <span className="text-[#1890ff] text-lg">{category.icon}</span>
                     <h3 className="font-semibold text-gray-800 text-[15px]">{category.title}</h3>
                   </div>
-                  <ul className="space-y-2.5">
-                    {category.items.map((item, itemIdx) => (
-                      <li key={itemIdx}>
-                        <a
-                          href={item.link}
-                          className="text-gray-600 hover:text-[#1890ff] hover:pl-2 transition-all duration-200 text-[14px] flex items-center gap-1 group/link"
+                  <ul className="">
+                    {category.items.map((item: any) => (
+                      <li key={item.id} className="relative" >
+                        <Link
+                          to={item.link}
+                          onClick={() => setIsOpen(false)}
+                          className="text-gray-600 hover:text-[#1890ff] hover:pl-2 transition-all duration-200 text-[14px] flex items-center gap-1 group/link relative z-10 hover:bg-gray-100"
+                          data-category={item.name}
+                          data-link={item.link}
+                          style={{ display: 'block', padding: '4px' }}
                         >
                           <RightOutlined className="text-[8px] opacity-0 group-hover/link:opacity-100 transition-opacity" />
-                          {item.name}
-                        </a>
+                          <span>{item.name}</span>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -134,9 +140,10 @@ const CategoriesMegaMenu = () => {
             {/* Featured Banners */}
             <div className="grid grid-cols-3 gap-4 pt-6 border-t border-gray-100">
               {featuredBanners.map((banner, idx) => (
-                <a
+                <Link
                   key={idx}
-                  href={banner.link}
+                  to={banner.link}
+                  onClick={() => setIsOpen(false)}
                   className="group/banner relative overflow-hidden rounded-lg h-24 block"
                 >
                   <div className={`absolute inset-0 bg-gradient-to-br ${banner.gradient} opacity-90 group-hover/banner:opacity-100 transition-opacity`}></div>
@@ -149,7 +156,7 @@ const CategoriesMegaMenu = () => {
                       {banner.icon}
                     </span>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -162,11 +169,11 @@ const CategoriesMegaMenu = () => {
 
 const items: MenuItem[] = [
   {
-    label: <a href="/" >Home</a>,
+    label: <Link to="/">Home</Link>,
     key: "home",
   },
   {
-    label: (<a href="/products" >Products</a>),
+    label: <Link to="/products">Products</Link>,
     key: "products",
   },
   {
@@ -174,15 +181,15 @@ const items: MenuItem[] = [
     key: "categories",
   },
   {
-    label: (<a href="/compare-products" >Compare</a>),
+    label: <Link to="/compare-products">Compare</Link>,
     key: "compare",
   },
   {
-    label: (<a href="/about" >About Us</a>),
+    label: <Link to="/about">About Us</Link>,
     key: "about",
   },
   {
-    label: (<a href="/contact" >Contact</a>),
+    label: <Link to="/contact">Contact</Link>,
     key: "contact",
   },
   // {
@@ -198,11 +205,67 @@ const items: MenuItem[] = [
 const Navbar: React.FC = () => {
   const [current, setCurrent] = useState("mail");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { data: categoriesData } = useGetAllCategoriesQuery({ limit: 100 });
 
   const onClick: MenuProps["onClick"] = (e) => {
     setCurrent(e.key);
     setMobileMenuOpen(false);
   };
+
+  // Helper function to convert category name to slug
+  const categoryToSlug = (name: string) => {
+    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  };
+
+  // Get categories for mobile menu
+  const allCategories = categoriesData?.data?.data || [];
+  const parentCategories = Array.isArray(allCategories) 
+    ? allCategories.filter((cat: Category) => !cat.parentId)
+    : [];
+
+  // Create mobile menu items with categories
+  const mobileMenuItems: MenuItem[] = [
+    {
+      label: <Link to="/">Home</Link>,
+      key: "home",
+    },
+    {
+      label: <Link to="/products">Products</Link>,
+      key: "products",
+    },
+    {
+      label: "Categories",
+      key: "categories-mobile",
+      children: parentCategories.map((parent: Category) => {
+        const children = Array.isArray(allCategories)
+          ? allCategories.filter((cat: Category) => cat.parentId === parent.id)
+          : [];
+        
+        return {
+          label: parent.name,
+          key: `parent-${parent.id}`,
+          children: children.length > 0 
+            ? children.map((child: Category) => ({
+                label: <Link to={`/category/${categoryToSlug(child.name)}`}>{child.name}</Link>,
+                key: `child-${child.id}`,
+              }))
+            : undefined,
+        };
+      }),
+    },
+    {
+      label: <Link to="/compare-products">Compare</Link>,
+      key: "compare",
+    },
+    {
+      label: <Link to="/about">About Us</Link>,
+      key: "about",
+    },
+    {
+      label: <Link to="/contact">Contact</Link>,
+      key: "contact",
+    },
+  ];
 
   return (
     <section className="w-full bg-neutral-100 px-4 lg:px-0 sm:bg-none">
@@ -248,16 +311,15 @@ const Navbar: React.FC = () => {
         open={mobileMenuOpen}
         className="lg:hidden"
         closeIcon={<CloseOutlined />}
-        width={300}
+        width={280}
       >
         <Menu
           onClick={onClick}
           selectedKeys={[current]}
           mode="inline"
-          items={items}
+          items={mobileMenuItems}
           className="border-none"
         />
-
       </Drawer>
     </section>
   );
