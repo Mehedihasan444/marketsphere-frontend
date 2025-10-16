@@ -108,11 +108,11 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
       cover={
         <div className="relative flex justify-center items-center">
           <div className="flex justify-center items-center">
-
             <img
               alt={product.name}
               src={product.images[0]}
               style={{ height: 200, objectFit: "cover" }}
+              className="w-full"
             />
           </div>
           {/* Discount Badge */}
@@ -136,50 +136,53 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
         </div>
       }
       onClick={() => handleAddRecentViewProduct(product.id)}
-      className="shadow hover:shadow-lg"
+      className="shadow hover:shadow-lg group"
     >
       {/* Hover icons */}
       <div
-        style={{
-          position: "absolute",
-          top: 10,
-          right: 10,
-          display: "flex",
-          flexDirection: "column",
-          gap: 8,
-          // opacity: 0,
-          transition: "opacity 0.3s",
-        }}
-        className="hover:block hidden"
+        className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
       >
         <Tooltip title="Add to Wishlist">
-
-          <FaRegHeart onClick={() => handleAddToWishlist(product.id)} className="" style={{ fontSize: 16, color: "#1890ff" }} />
+          <div 
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddToWishlist(product.id);
+            }}
+            className="bg-white rounded-full p-2 shadow-md hover:bg-blue-50 cursor-pointer transition-all duration-200 hover:scale-110"
+          >
+            <FaRegHeart style={{ fontSize: 16, color: "#1890ff" }} />
+          </div>
         </Tooltip>
         <Tooltip title="View Details">
-          <Link to={`/products/${product.id}`} style={{ color: "#1890ff" }}>
+          <Link 
+            to={`/products/${product.id}`}
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transition-all duration-200 hover:scale-110 flex items-center justify-center"
+          >
             <IoEyeOutline style={{ fontSize: 18, color: "#1890ff" }} />
           </Link>
         </Tooltip>
         <Tooltip title="Compare">
-          <IoLayersOutline style={{ fontSize: 18, color: "#1890ff" }} onClick={addToCompare} />
-        </Tooltip>
-        <Tooltip title="Cart">
-          <IoCartOutline
-            onClick={() => handleAddToCart(product.id)}
-            style={{ fontSize: 18, color: "#1890ff" }}
-          />
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              addToCompare();
+            }}
+            className="bg-white rounded-full p-2 shadow-md hover:bg-blue-50 cursor-pointer transition-all duration-200 hover:scale-110"
+          >
+            <IoLayersOutline style={{ fontSize: 18, color: "#1890ff" }} />
+          </div>
         </Tooltip>
       </div>
 
       <div className="" >
         <div className="cursor-pointer group" onClick={() => navigate(`/products/${product.id}`)}>
-          <Meta 
+          <Meta
             title={
               <span className="text-black group-hover:text-blue-800 transition-colors duration-200">
                 {product.name}
               </span>
-            } 
+            }
           />
         </div>
         <div style={{ marginTop: 10 }}>
