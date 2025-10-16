@@ -6,32 +6,32 @@ const items = [
   {
     src: "https://demo-uminex.myshopify.com/cdn/shop/files/col_3_1.png?v=1681548716&width=2000",
     alt: "Tablets/Ipad",
-    title: "Tablet",
+    title: "Tablets",
   },
   {
     src: "https://demo-uminex.myshopify.com/cdn/shop/files/col_3_2.png?v=1681548716&width=2000",
-    alt: "Smart Phone",
-    title: "Smart Phone",
+    alt: "Smartphones",
+    title: "Smartphones",
   },
   {
     src: "https://demo-uminex.myshopify.com/cdn/shop/files/col_3_3.png?v=1681548716&width=2000",
-    alt: "Camera",
-    title: "Camera",
+    alt: "Cameras",
+    title: "Cameras",
   },
   {
     src: "https://demo-uminex.myshopify.com/cdn/shop/files/col_3_4.png?v=1681548715&width=2000",
-    alt: "Gamepad",
-    title: "Gamepad",
+    alt: "Consoles",
+    title: "Consoles",
   },
   {
     src: "https://demo-uminex.myshopify.com/cdn/shop/files/col_3_5.png?v=1681548716&width=2000",
-    alt: "Cooler",
-    title: "Cooler",
+    alt: "Coolers",
+    title: "Coolers",
   },
   {
     src: "https://demo-uminex.myshopify.com/cdn/shop/products/products_33_2.jpg?v=1678075353&width=360",
-    alt: "Smart Watch",
-    title: "Smart Watch",
+    alt: "Smartwatches",
+    title: "Smartwatches",
   },
 ];
 

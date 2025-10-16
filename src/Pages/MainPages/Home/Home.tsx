@@ -30,7 +30,7 @@ const Home = () => {
     return (
       <div className="max-w-7xl mx-auto min-h-screen">
         {/* Banner Skeleton */}
-        <div className="mt-4 px-4 lg:px-16">
+        <div className="mt-4 px-4 ">
           <Skeleton.Input
             active
             block
