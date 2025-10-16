@@ -79,7 +79,7 @@ const ProductDetails = () => {
     );
   }
   return (
-    <div className=" bg-neutral-100 ">
+    <div className="min-h-screen ">
       <div className="lg:mx-16 max-w-8xl mx-auto bg-white p-8">
         {/* Breadcrumb */}
         <div className="mb-4">
