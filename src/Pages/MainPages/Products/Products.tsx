@@ -15,28 +15,28 @@ const Products = () => {
   const [category, setCategory] = useState("");
   const [sortBy, setSortBy] = useState("price");
   const [sortOrder, setSortOrder] = useState("");
-  
-  const { data = {}, isLoading, error } = useGetProductsQuery({ 
-    brand, 
+
+  const { data = {}, isLoading, error } = useGetProductsQuery({
+    brand,
     category,
-    sortOrder, 
-    page: currentPage, 
-    limit, 
+    sortOrder,
+    page: currentPage,
+    limit,
     searchTerm,
     sortBy
     // TODO: Add minPrice and maxPrice to API query when backend supports it
     // minPrice: priceRange[0],
     // maxPrice: priceRange[1]
   });
-  
+
   const { data: products, meta } = data?.data || {};
   const { total } = meta || {};
-  
+
   // Filter products by price range on the frontend until backend supports it
-  const filteredProducts = products?.filter((product: TProduct) => 
+  const filteredProducts = products?.filter((product: TProduct) =>
     product.price >= priceRange[0] && product.price <= priceRange[1]
   ) || [];
-  
+
   const location = useLocation();
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const Products = () => {
     if (search) {
       setSearchTerm(search);
     }
-    if(filterBycategory){
+    if (filterBycategory) {
       setCategory(filterBycategory);
     }
   }, [location.search]);
@@ -69,7 +69,7 @@ const Products = () => {
       />
     );
   }
-  const handlePageChange=( page: number )=> {
+  const handlePageChange = (page: number) => {
     setCurrentPage(page);
     setSearchTerm(searchTerm);
     setSortBy("price")
@@ -85,18 +85,20 @@ const Products = () => {
   return (
     <div className="min-h-screen ">
       <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="flex gap-6">
+        <div className="flex gap-4">
           {/* Filters Sidebar */}
-          <Filters 
-            setBrand={setBrand}  
-            setCategory={setCategory}
-            setPriceRange={setPriceRange}
-            brand={brand}
-            category={category}
-            priceRange={priceRange}
-            onClearFilters={handleClearFilters}
-          />
-          
+          <div className="hidden lg:inline-block w-64 flex-shrink-0">
+            <Filters
+              setBrand={setBrand}
+              setCategory={setCategory}
+              setPriceRange={setPriceRange}
+              brand={brand}
+              category={category}
+              priceRange={priceRange}
+              onClearFilters={handleClearFilters}
+            />
+          </div>
+
           {/* Main Content */}
           <div className="flex-1 relative">
             <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
@@ -134,10 +136,10 @@ const Products = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Product Grid */}
               <div className="p-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[70vh]">
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 min-h-[70vh]">
                   {filteredProducts.length > 0 ? (
                     filteredProducts.map((product: TProduct, index: number) => (
                       <div key={index}>
