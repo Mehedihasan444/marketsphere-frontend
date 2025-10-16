@@ -89,16 +89,16 @@ interface Credentials {
 // Add default values object
 const defaultCredentials: Record<string, Credentials> = {
   admin: {
-    email: "admin@gmail.com",
-    password: "admin@gmail.com",
+    email: "admin@marketsphere.com",
+    password: "password123",
   },
   vendor: {
-    email: "vendor@gmail.com",
-    password: "vendor@gmail.com",
+    email: "vendor1@marketsphere.com",
+    password: "password123",
   },
   customer: {
-    email: "customer@gmail.com",
-    password: "customer@gmail.com",
+    email: "customer1@gmail.com",
+    password: "password123",
   },
 };
 
