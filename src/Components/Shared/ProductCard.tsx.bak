@@ -111,7 +111,7 @@ const ProductCard: React.FC<{ product: TProduct }> = ({ product }) => {
   };
 
   return (
-    <div className="p-2"> {/* Container with padding to provide space for hover effects */}
+    <div className="p-2"> {/* max-w-7xl with padding to provide space for hover effects */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

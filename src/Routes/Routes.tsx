@@ -45,6 +45,10 @@ import RecentViewProducts from "../Pages/DashboardPages/CustomerPages/RecentView
 import FlashSaleManagement from "../Pages/DashboardPages/AdminPages/FlashSaleManagement/FlashSaleManagement";
 import FlashSaleProductManagement from "../Pages/DashboardPages/VendorPages/FlashSaleProductManagement/FlashSaleProductManagement";
 import FlashSale from "../Pages/MainPages/FlashSale/FlashSale";
+import AllCategories from "../Pages/MainPages/AllCategories/AllCategories";
+import CategoryPage from "../Pages/MainPages/CategoryPage/CategoryPage";
+import About from "../Pages/MainPages/About/About";
+import Contact from "../Pages/MainPages/Contact/Contact";
 
 // Router configuration
 const router = createBrowserRouter([
@@ -60,6 +64,14 @@ const router = createBrowserRouter([
       {
         path: "/products",
         element: <Products />,
+      },
+      {
+        path: "/categories",
+        element: <AllCategories />,
+      },
+      {
+        path: "/category/:categoryName",
+        element: <CategoryPage />,
       },
       {
         path: "/flash-sale",
@@ -81,6 +93,14 @@ const router = createBrowserRouter([
       {
         path: "/compare-products",
         element: <CompareProducts />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
       },
       {
         path: "/checkout",

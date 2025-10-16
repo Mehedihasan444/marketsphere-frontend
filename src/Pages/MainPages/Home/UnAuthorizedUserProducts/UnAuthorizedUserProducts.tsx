@@ -78,7 +78,7 @@ const UnAuthorizedUserProducts = () => {
   }
 
   return (
-    <div className=" container mx-auto p-4 mt-4  rounded-xl">
+    <div className=" max-w-7xl mx-auto p-4 mt-4  rounded-xl">
       {/* Header */}
       <div className="py-4 flex items-center justify-between">
         {/* <h2 className="text-xl font-semibold ">Just For You</h2> */}

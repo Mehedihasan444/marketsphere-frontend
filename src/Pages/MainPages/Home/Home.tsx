@@ -28,7 +28,7 @@ const Home = () => {
   // Loading skeleton
   if (isLoading) {
     return (
-      <div className="container mx-auto min-h-screen">
+      <div className="max-w-7xl mx-auto min-h-screen">
         {/* Banner Skeleton */}
         <div className="px-4 lg:px-16 mt-4">
           <Skeleton.Input active style={{ width: '100%', height: '400px', borderRadius: '12px' }} />
@@ -118,7 +118,7 @@ const Home = () => {
   }
 
   return (
-    <div className="container mx-auto  min-h-screen">
+    <div className="max-w-7xl mx-auto  min-h-screen">
       {/*banner section  */}
       <Banner />
 

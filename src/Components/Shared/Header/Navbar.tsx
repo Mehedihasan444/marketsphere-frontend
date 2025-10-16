@@ -182,7 +182,7 @@ const items: MenuItem[] = [
     key: "about",
   },
   {
-    label: "Contact",
+    label: (<a href="/contact" >Contact</a>),
     key: "contact",
   },
   // {
@@ -207,7 +207,7 @@ const Navbar: React.FC = () => {
   return (
     <section className="w-full bg-neutral-100 px-4 lg:px-0 sm:bg-none">
       {/* Desktop Navigation */}
-      <div className="container mx-auto hidden lg:grid grid-cols-5 gap-4 items-center  justify-center py-2">
+      <div className="max-w-7xl mx-auto hidden lg:grid grid-cols-5 gap-4 items-center  justify-center py-2">
 
         <div className="col-span-3 flex justify-end">
 

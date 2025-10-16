@@ -71,7 +71,7 @@ const TrendingProducts = () => {
   if (isLoading) {
     return (
       <section className="py-16 bg-white lg:px-16">
-        <div className="container mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <Skeleton.Input active size="large" className="w-1/4" />
             <div className="flex space-x-2">
@@ -95,7 +95,7 @@ const TrendingProducts = () => {
 
   return (
     <section className="py-16 bg-white ">
-      <div className="container mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-3xl font-bold text-gray-800">Trending Now</h2>
           <div className="flex space-x-2">

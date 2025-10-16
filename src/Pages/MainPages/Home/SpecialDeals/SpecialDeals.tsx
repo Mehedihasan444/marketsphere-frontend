@@ -1,7 +1,7 @@
 const SpecialDeals = () => {
   return (
     <section className="my-16 px-4 ">
-      <div className="container mx-auto">
+      <div className="max-w-7xl mx-auto">
         <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl overflow-hidden shadow-lg">
           <div className="grid lg:grid-cols-2 items-center">
             {/* Left Content */}

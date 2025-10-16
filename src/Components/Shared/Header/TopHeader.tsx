@@ -89,13 +89,13 @@ const TopHeader = () => {
 
       {/* Header with animated gradient */}
       {/* <header className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 text-white py-2 bg-[length:200%_100%] animate-gradient">
-        <div className="container mx-auto px-4 flex justify-center items-center text-sm">
+        <div className="max-w-7xl mx-auto px-4 flex justify-center items-center text-sm">
           <Percent size={16} className="mr-2 animate-bounce" />
           <p>Special offer: Free shipping on orders over $50!</p>
         </div>
       </header> */}
       {/*  */}
-      <div className="container mx-auto  ">
+      <div className="max-w-7xl mx-auto  ">
         <div className="grid  grid-cols-5 gap-4 justify-between items-center ">
           <Link to="/">
             <div className="col-span-1 flex items-center">
@@ -156,17 +156,17 @@ const TopHeader = () => {
               </div>
             </div>}
           </div>
-       
-         
+
+
           <div className="flex items-center space-x-6 col-span-1 justify-end">
-            <Wishlist />
             <button className="text-white hover:text-blue-400 transition-transform duration-300 hover:scale-110">
               <Bell size={24} />
             </button>
-            <button className="text-white hover:text-blue-400 transition-transform duration-300 hover:scale-110" onClick={() => navigate("/login")}>
-              <User size={24} />
-            </button>
+            <Wishlist />
             <Cart />
+            <button className="text-white hover:text-blue-400 transition-transform duration-300 hover:scale-110" onClick={() => navigate("/login")}>
+              <User size={26} />
+            </button>
 
             {user && (
               <div className="flex justify-between items-center gap-2">

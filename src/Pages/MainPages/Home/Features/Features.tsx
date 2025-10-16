@@ -2,7 +2,7 @@ import { Clock, Truck, Shield, HeadphonesIcon as HeadphoneIcon } from 'lucide-re
 
 const Features = () => {
   return (<section className="py-12 ">
-    <div className="container mx-auto ">
+    <div className="max-w-7xl mx-auto ">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
         {[
           { icon: Truck, title: 'Free Shipping', desc: 'On orders over $50' },

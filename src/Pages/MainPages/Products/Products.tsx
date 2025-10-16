@@ -64,7 +64,7 @@ const Products = () => {
     setSortBy("price")
   }
   return (
-    <div className="container mx-auto  min-h-screen">
+    <div className="max-w-7xl mx-auto  min-h-screen">
       <div className="flex  space-x-4  ">
         {/* Filters Sidebar */}
         <aside className="w-1/4 ">

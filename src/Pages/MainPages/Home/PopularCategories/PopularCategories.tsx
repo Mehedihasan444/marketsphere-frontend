@@ -1,6 +1,8 @@
 
 
 
+import { Link } from "react-router-dom";
+
 const PopularCategories = () => {
     const categories = [
         {
@@ -36,13 +38,13 @@ const PopularCategories = () => {
     ];
 
     return (
-        <div className="my-8 container mx-auto ">
+        <div className="my-8 max-w-7xl mx-auto ">
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl md:text-3xl font-bold">Popular Categories</h2>
-                <a href="#" className="text-sm text-gray-500 hover:text-blue-700 flex items-center gap-1">
+                <Link to="/categories" className="text-sm text-gray-500 hover:text-blue-700 flex items-center gap-1">
                     all categories →
-                </a>
+                </Link>
             </div>
 
 
