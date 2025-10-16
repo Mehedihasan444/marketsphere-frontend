@@ -123,7 +123,7 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
       children: [
         {
           key: "10",
-          onClick: () => navigate("/dashboard/customer/contact-us"),
+          onClick: () => navigate("/contact"),
           label: "Contact Us"
         },
         {
@@ -244,6 +244,16 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
       label: (
         <button onClick={() => navigate("/dashboard/vendor/flash-sale")}>
           Flash Sale
+        </button>
+      ),
+    },
+    {
+      key: "20",
+      icon: <UserOutlined />,
+      onClick: () => navigate("/dashboard/vendor/profile"),
+      label: (
+        <button onClick={() => navigate("/dashboard/vendor/profile")}>
+          Profile
         </button>
       ),
     },
@@ -378,6 +388,16 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
       ),
     },
     {
+      key: "16",
+      icon: <UserOutlined />,
+      onClick: () => navigate("/dashboard/admin/profile"),
+      label: (
+        <button onClick={() => navigate("/dashboard/admin/profile")}>
+          Profile
+        </button>
+      ),
+    },
+    {
       key: "10",
       icon: <LogoutOutlined />,
       onClick: () => handleLogout(),
@@ -494,9 +514,15 @@ const DashboardSidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
           <Link to="/">
           {/* bg-gradient-to-r from-indigo-600 to-purple-600 */}
           <h1 className={`font-bold text-white  text-transparent bg-clip-text ${collapsed ? 'text-xl' : 'text-2xl'}`} >
-            {collapsed ? 'MS' : 'MarketSphere'}
+            {collapsed ? 'TP' : 'TechPark'}
           </h1>
           </Link>
+          {/* <Link to="/">
+         bg-gradient-to-r from-indigo-600 to-purple-600 
+          <h1 className={`font-bold text-white  text-transparent bg-clip-text ${collapsed ? 'text-xl' : 'text-2xl'}`} >
+            {collapsed ? 'MS' : 'MarketSphere'}
+          </h1>
+          </Link> */}
         </div>
       </div>
       {/* Sidebar Menu */}
