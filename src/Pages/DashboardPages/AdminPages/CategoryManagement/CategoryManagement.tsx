@@ -101,6 +101,20 @@ const CategoryManagement: React.FC = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      render: (text: string, record: TCategory) => (
+        <div>
+          {record.parentId && <span className="text-gray-400 mr-2">↳</span>}
+          <span className={record.parentId ? 'ml-2' : ''}>{text}</span>
+        </div>
+      ),
+    },
+    {
+      title: "Parent Category",
+      dataIndex: "parent",
+      key: "parent",
+      render: (parent: TCategory) => (
+        parent ? <span className="text-blue-600">{parent.name}</span> : <span className="text-gray-400">—</span>
+      ),
     },
     {
       title: "Description",

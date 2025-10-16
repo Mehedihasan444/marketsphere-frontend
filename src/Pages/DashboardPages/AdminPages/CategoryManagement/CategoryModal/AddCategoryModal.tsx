@@ -1,19 +1,25 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, message } from "antd";
-import { useAddCategoryMutation } from "../../../../../Redux/Features/Category/categoryApi";
+import { Button, Modal, Form, Input, message, Select } from "antd";
+import { useAddCategoryMutation, useGetAllCategoriesQuery } from "../../../../../Redux/Features/Category/categoryApi";
+import { TCategory } from "../../../../../Interface";
 
-// const { Option } = Select;
+const { Option } = Select;
 const { TextArea } = Input;
 const AddCategoryModal: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File | null>();
   const [form] = Form.useForm();
   const [addCategory, { isLoading }] = useAddCategoryMutation();
+  
+  // Fetch all categories for parent selection
+  const { data: categoriesData } = useGetAllCategoriesQuery({ limit: 100 });
+  const allCategories = categoriesData?.data?.data || [];
 
 
   const handleSubmit = async (values: {
     name: string;
     description: string;
+    parentId?: string;
     image: File;
   }) => {
     try {
@@ -21,6 +27,7 @@ const AddCategoryModal: React.FC = () => {
       const data = {
         name: values.name,
         description: values.description,
+        parentId: values.parentId || null,
       };
       formData.append("data", JSON.stringify(data));
       if (file) {
@@ -86,6 +93,28 @@ const AddCategoryModal: React.FC = () => {
           >
             <Input placeholder="Enter category name" />
           </Form.Item>
+
+          <Form.Item
+            name="parentId"
+            label="Parent Category (Optional)"
+            help="Leave empty to create a top-level category"
+          >
+            <Select
+              placeholder="Select parent category"
+              allowClear
+              showSearch
+              optionFilterProp="children"
+            >
+              {allCategories
+                .filter((cat: TCategory) => !cat.parentId) // Only show top-level categories as parent options
+                .map((category: TCategory) => (
+                  <Option key={category.id} value={category.id}>
+                    {category.name}
+                  </Option>
+                ))}
+            </Select>
+          </Form.Item>
+
           <Form.Item
             name="description"
             label="Description"
@@ -93,7 +122,7 @@ const AddCategoryModal: React.FC = () => {
               { required: true, message: "Please enter category description!" },
             ]}
           >
-            <TextArea placeholder="Enter category name" />
+            <TextArea placeholder="Enter category description" rows={3} />
           </Form.Item>
           <Form.Item
             name="image"

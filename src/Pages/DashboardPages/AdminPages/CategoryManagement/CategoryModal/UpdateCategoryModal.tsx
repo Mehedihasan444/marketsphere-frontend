@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, message } from "antd";
-import {  useUpdateCategoryMutation } from "../../../../../Redux/Features/Category/categoryApi";
+import { Button, Modal, Form, Input, message, Select } from "antd";
+import { useUpdateCategoryMutation, useGetAllCategoriesQuery } from "../../../../../Redux/Features/Category/categoryApi";
 import { TCategory } from "../../../../../Interface";
 
-// const { Option } = Select;
+const { Option } = Select;
 const { TextArea } = Input;
 const UpdateCategoryModal: React.FC<{ category: TCategory | null }> = ({
   category,
@@ -13,10 +13,15 @@ const UpdateCategoryModal: React.FC<{ category: TCategory | null }> = ({
   const [form] = Form.useForm();
   const [updateCategory, { isLoading }] = useUpdateCategoryMutation();
 
+  // Fetch all categories for parent selection
+  const { data: categoriesData } = useGetAllCategoriesQuery({ limit: 100 });
+  const allCategories = categoriesData?.data?.data || [];
+
  
   const handleSubmit = async (values: {
     name: string;
     description: string;
+    parentId?: string;
     image: File;
   }) => {
     try {
@@ -24,6 +29,7 @@ const UpdateCategoryModal: React.FC<{ category: TCategory | null }> = ({
       const data = {
         name: values.name,
         description: values.description,
+        parentId: values.parentId || null,
       };
       formData.append("data", JSON.stringify(data));
       if (file) {
@@ -31,18 +37,18 @@ const UpdateCategoryModal: React.FC<{ category: TCategory | null }> = ({
       }
       const res = await updateCategory({CategoryId:category?.id,formData});
       if (res?.data?.success) {
-        message.success("Category added successfully!");
+        message.success("Category updated successfully!");
         form.resetFields(); // Reset the form
         setOpen(false); // Close the modal
       } else if (res?.error) {
        
         if ('data' in res.error) {
           // For FetchBaseQueryError, safely access the `data` property
-          const errorMessage = (res.error.data as { message?: string })?.message || "Failed to add category.";
+          const errorMessage = (res.error.data as { message?: string })?.message || "Failed to update category.";
           message.error(errorMessage);
       } else if ('message' in res.error) {
           // For SerializedError, handle the `message` property
-          message.error(res.error.message || "Failed to add category.");
+          message.error(res.error.message || "Failed to update category.");
       } else {
           // Handle unknown error types
           message.error("An unknown error occurred.");
@@ -50,7 +56,7 @@ const UpdateCategoryModal: React.FC<{ category: TCategory | null }> = ({
       }
     } catch (error) {
       console.error(error);
-      message.error("An error occurred while adding the category.");
+      message.error("An error occurred while updating the category.");
     }
   };
 
@@ -98,6 +104,28 @@ const UpdateCategoryModal: React.FC<{ category: TCategory | null }> = ({
           >
             <Input placeholder="Enter category name" />
           </Form.Item>
+
+          <Form.Item
+            name="parentId"
+            label="Parent Category (Optional)"
+            help="Leave empty for top-level category"
+          >
+            <Select
+              placeholder="Select parent category"
+              allowClear
+              showSearch
+              optionFilterProp="children"
+            >
+              {allCategories
+                .filter((cat: TCategory) => !cat.parentId && cat.id !== category?.id) // Exclude self and show only top-level
+                .map((cat: TCategory) => (
+                  <Option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </Option>
+                ))}
+            </Select>
+          </Form.Item>
+
           <Form.Item
             name="description"
             label="Description"
@@ -105,7 +133,7 @@ const UpdateCategoryModal: React.FC<{ category: TCategory | null }> = ({
               { required: true, message: "Please enter category description!" },
             ]}
           >
-            <TextArea placeholder="Enter category name" />
+            <TextArea placeholder="Enter category description" rows={3} />
           </Form.Item>
           <Form.Item
             name="image"
