@@ -137,7 +137,7 @@ const CategoryPage = () => {
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex gap-6">
           {/* Sidebar Filters */}
-          <div className="w-64 flex-shrink-0">
+          <div className="hidden lg:inline-block lg:w-64 flex-shrink-0">
             <div className="bg-white rounded-lg border border-gray-200 sticky top-4">
               <div className="p-4 border-b border-gray-200">
                 <h3 className="font-semibold text-gray-900 flex items-center gap-2">
@@ -234,7 +234,7 @@ const CategoryPage = () => {
               <div
                 className={
                   viewMode === 'grid'
-                    ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+                    ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6'
                     : 'space-y-4'
                 }
               >
